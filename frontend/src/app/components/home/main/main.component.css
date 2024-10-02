@@ -1,0 +1,105 @@
+.section1{
+    margin: 0 auto;
+    width: 97%;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc(100% / 3) - 12px;
+    gap: 25px;
+    overflow: hidden;
+    box-shadow: none;
+    padding: 0 30px;
+}
+.body-nh{
+    padding-top: 5vh;
+    padding-bottom: 10vh;
+}
+.body-nh i{
+    top: 50%;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    font-size: 1.25rem;
+    position: relative;
+    text-align: center;
+    line-height: 50px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.23);
+    transform: translateY(-50%);
+    transition: transform 0.1s linear;
+    z-index: 20;
+}
+.body-nh i:active{
+    transform: translateY(-50%) scale(1.1);
+}
+.body-nh i:first-child {
+    left: 0;
+}
+.body-nh i:last-child {
+    right: 0;
+}
+.body i{
+    top: 50%;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    font-size: 1.25rem;
+    position: relative;
+    text-align: center;
+    line-height: 50px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.23);
+    transform: translateY(-50%);
+    transition: transform 0.1s linear;
+    z-index: 20;
+}
+.body i:active{
+    transform: translateY(-50%) scale(1.1);
+}
+.body i:first-child {
+    left: 0;
+}
+.body i:last-child {
+    right: 0;
+}
+.size{
+    min-width: 20rem;
+    min-height: 20rem;
+    max-width: 20rem;
+    max-height: 20rem;
+    position: relative;
+}
+.carousel{
+    margin: 0 auto;
+    margin-top: 5vh;
+    width: 100%;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc(100% / 3) - 12px;
+    gap: 25px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    box-shadow: none;
+    padding: 0 30px;
+    scroll-behavior: smooth;
+}
+.carousel::-webkit-scrollbar{
+    display: none;
+}
+.carousel.dragging{
+    scroll-behavior: auto;
+}
+.carousel.dragging div{
+    cursor: grab;
+    user-select: none;
+}
+.card{
+    scroll-snap-align: start;
+}
+.body-nh h1{
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
