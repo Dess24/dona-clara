@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { NavbarComponent } from '../home/navbar/navbar.component';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-shopping-cart',
   standalone: true,
   imports: [ NavbarComponent ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: './shopping-cart.component.html',
+  styleUrl: './shopping-cart.component.css'
 })
-export class LoginComponent {
+export class ShoppingCartComponent {
 
 }

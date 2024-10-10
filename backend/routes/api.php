@@ -32,3 +32,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/carrito/checkout', [CarritoController::class, 'checkout']);
     Route::post('/restar-producto', [CarritoController::class, 'restarProducto']);
 });
+
+// Rutas para administradores
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::post('agregar', [ProductoController::class, 'agregarProducto']);
+    Route::delete('quitar/{id}', [ProductoController::class, 'quitarProducto']);
+    Route::put('modificar/{id}', [ProductoController::class, 'modificarProducto']);
+    Route::put('actualizar-stock/{id}', [ProductoController::class, 'actualizarStock']);
+});

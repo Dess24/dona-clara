@@ -103,3 +103,15 @@
     font-weight: 700;
     margin-bottom: 1rem;
 }
+.categories{
+    margin-bottom: 6vh;
+}
+.wpp{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+.primary{
+    background-color: #1B335F;
+}

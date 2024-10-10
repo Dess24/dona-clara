@@ -44,4 +44,96 @@ class ProductoController extends Controller
         $productos = Producto::where('nombre', 'LIKE', '%' . $nombre . '%')->get();
         return response()->json($productos);
     }
+
+
+
+    // Función para agregar un producto
+    public function agregarProducto(Request $request)
+    {
+        // Lista de campos requeridos
+        $requiredFields = ['nombre', 'descripcion', 'precio', 'cantidad', 'categoria'];
+        
+        // Verificar si todos los campos requeridos están presentes en la solicitud
+        foreach ($requiredFields as $field) {
+            if (!$request->has($field)) {
+                return response()->json(['message' => "No se ha introducido un valor para el campo: $field"], 400);
+            }
+        }
+    
+        // Validar los datos de la solicitud
+        $validatedData = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:1000',
+            'precio' => 'required|integer|min:0',
+            'cantidad' => 'required|integer|min:0',
+            'categoria' => 'required|string|max:255',
+        ]);
+    
+        // Crear un nuevo producto con los datos validados
+        $producto = Producto::create($validatedData);
+    
+        return response()->json(['message' => 'Producto agregado exitosamente', 'producto' => $producto], 201);
+    }
+
+
+
+    // Función para quitar un producto
+    public function quitarProducto($id)
+    {
+        $producto = Producto::find($id);
+        if (!$producto) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
+
+        $producto->delete();
+        return response()->json(['message' => 'Producto eliminado exitosamente'], 200);
+    }
+
+
+
+    // Función para modificar un producto
+    public function modificarProducto(Request $request, $id)
+    {
+        $producto = Producto::find($id);
+        if (!$producto) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
+
+        // Validar los datos de la solicitud
+        $validatedData = $request->validate([
+            'nombre' => 'sometimes|string|max:255',
+            'descripcion' => 'sometimes|string|max:1000',
+            'precio' => 'sometimes|integer|min:0',
+            'cantidad' => 'sometimes|integer|min:0',
+            'categoria' => 'sometimes|string|max:255',
+        ]);
+
+        // Actualizar solo los campos presentes en la solicitud
+        $producto->update($validatedData);
+        return response()->json(['message' => 'Producto modificado exitosamente', 'producto' => $producto], 200);
+    }
+
+
+
+    // Función para actualizar el stock de un producto
+    public function actualizarStock(Request $request, $id)
+    {
+        $producto = Producto::find($id);
+        if (!$producto) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
+        if (!$request->has('cantidad')) {
+            return response()->json(['message' => 'No se ha introducido una cantidad de stock'], 400);
+        }
+        // Validar los datos de la solicitud
+        $validatedData = $request->validate([
+            'cantidad' => 'required|integer|min:0',
+        ]);
+
+        // Actualizar el stock
+        $producto->cantidad = $validatedData['cantidad'];
+        $producto->save();
+        return response()->json(['message' => 'Stock actualizado exitosamente', 'producto' => $producto], 200);
+    }
+
 }

@@ -1,0 +1,12 @@
+.primary{
+    background-color: #1B335F;
+}
+.text{
+    color: #111f3b;
+}
+.wpp{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}

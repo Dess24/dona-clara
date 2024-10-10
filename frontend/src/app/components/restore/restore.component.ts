@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { NavbarComponent } from '../home/navbar/navbar.component';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-restore',
   standalone: true,
   imports: [ NavbarComponent ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: './restore.component.html',
+  styleUrl: './restore.component.css'
 })
-export class LoginComponent {
+export class RestoreComponent {
 
 }

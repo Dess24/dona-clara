@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('precio');
             $table->integer('cantidad');
             $table->string('categoria');
+            $table->string('imagen')->default('noimage.jpeg');
             $table->timestamps();
             $table->engine = 'InnoDB'; // Especificar el motor de almacenamiento
         });
