@@ -1,3 +1,27 @@
 .primary{
     background-color: #1B335F;
 }
+ul.dropdown li{
+    display: block;
+}
+ul.dropdown{
+    width: 100%;
+    position: absolute;
+    z-index: 999;
+    display: none;
+}
+ul li ul.dropdown li{
+    display: block;
+    padding: 1em 1em;
+}
+ul li ul.dropdown{
+    width: 10vw;
+    position: absolute;
+    z-index: 10;
+    display: none;
+    text-align: center;
+}
+ul li:hover ul.dropdown{
+    display: block;
+    background-color: #1B335F;
+}

@@ -1,3 +1,9 @@
+<head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+  </head>
 <header>  
     <nav class="z-20 primary text-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
         <div class="flex flex-wrap justify-around items-center mx-auto max-w-screen-xl">
@@ -30,6 +36,13 @@
                     </li>
                     <li>
                         <a routerLink="/contact" class="pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Contáctanos</a>
+                    </li>
+                    <li *ngIf="!isLoggedIn">
+                        <a class=" cursor-pointer flex flex-row items-center pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700" id="">Panel Admin<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/></svg></a>
+                        <ul class="dropdown list-none primary">
+                            <li class=""><a href="" class="text-gray-300 hover:text-white block py-2 px-2 text-center">Productos</a></li>
+                            <li class=""><a href="" class="text-gray-300 hover:text-white block py-2 px-2 text-center">Usuarios</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
