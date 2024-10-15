@@ -14,7 +14,6 @@ import { HttpClientModule } from '@angular/common/http';
 export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
   isLoggedInAdmin: boolean = false;
-  isLoggedInAdmin: boolean = false;
 
   constructor(private router: Router, private userService: UserService) {}
 
