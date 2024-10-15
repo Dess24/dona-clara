@@ -16,11 +16,16 @@ class Producto extends Model
         'descripcion',
         'precio', 
         'cantidad',
-        'categoria',
+        'categoria_id', // Cambiado de 'categoria' a 'categoria_id'
     ];
 
     public function carritoProductos()
     {
         return $this->hasMany(CarritoProducto::class);
+    }
+
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class);
     }
 }

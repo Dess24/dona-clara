@@ -20,13 +20,18 @@ export class ProductoService {
     return this.http.get<any>(`${this.apiUrl}/productos/${id}`);
   }
 
-  // Buscar productos por categoría
-  buscarPorCategoria(categoria: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/productos/categoria/${categoria}`);
-  }
+// Buscar productos por categoría
+buscarPorCategoria(categoria: string): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/productos/categoria/${categoria}`);
+}
 
   // Buscar productos por nombre
   buscarPorNombre(nombre: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/productos/nombre/${nombre}`);
+  }
+
+  // Obtener todas las categorías
+  getCategorias(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/categorias`);
   }
 }
