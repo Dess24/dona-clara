@@ -35,7 +35,9 @@ return new class extends Migration
             ['nombre' => 'Pollo Orgánico', 'descripcion' => 'Pollo criado en libertad y alimentado de forma natural.', 'precio' => 750, 'cantidad' => 75, 'categoria' => 'Carnes'],
             ['nombre' => 'Pasta de Trigo', 'descripcion' => 'Pasta de trigo duro, perfecta para cualquier plato.', 'precio' => 850, 'cantidad' => 85, 'categoria' => 'Granos'],
             ['nombre' => 'Cereal Integral', 'descripcion' => 'Cereal integral para un desayuno saludable.', 'precio' => 950, 'cantidad' => 95, 'categoria' => 'Desayunos'],
-            ['nombre' => 'Café 100% Arábica', 'descripcion' => 'Café premium, 100% arábica, tostado a la perfección.', 'precio' => 1100, 'cantidad' => 110, 'categoria' => 'Bebidas'],
+            ['nombre' => 'Café 100% Arábica', 'descripcion' => 'Café premium, 100% arábica, tostado a la perfección.', 'precio' => 1100, 'cantidad' => 110, 'categoria' => 'Jugos'],
+            ['nombre' => 'Aceitunas Prueba', 'descripcion' => 'Café premium, 100% arábica, tostado a la perfección.', 'precio' => 1100, 'cantidad' => 110, 'categoria' => 'Aceitunas'],
+            ['nombre' => 'Frutos secos prueba', 'descripcion' => 'Café premium, 100% arábica, tostado a la perfección.', 'precio' => 1100, 'cantidad' => 110, 'categoria' => 'Frutos Secos'],
         ]);
         
     }

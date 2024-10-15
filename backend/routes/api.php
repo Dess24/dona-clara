@@ -15,9 +15,11 @@ Route::get('/user', function () {
 Route::post('/register', [UsersController::class, 'register']);
 Route::post('/login', [UsersController::class, 'login']);
 Route::post('/logout', [UsersController::class, 'logout'])->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->get('/userinfo', [UsersController::class, 'userData']);
 
 //Testeo de conexión
 Route::get('/test-connection', [UsersController::class, 'testConnection']);
+Route::post('/welcome', [UsersController::class, 'welcome']);
 
 //Productos
 Route::get('/productos', [ProductoController::class, 'index']);
