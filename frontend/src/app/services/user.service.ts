@@ -33,4 +33,11 @@ export class UserService {
       })
     });
   }
+
+getUserInfo(): Observable<{ user: { admin: number } }> {
+    const token = localStorage.getItem('auth_token');
+    return this.http.get<{ user: { admin: number } }>(`${this.apiUrl}/userinfo`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+  }
 }

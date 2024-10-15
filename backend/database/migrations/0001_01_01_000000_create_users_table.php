@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -17,10 +18,38 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->boolean('admin')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->engine = 'InnoDB'; // Especificar el motor de almacenamiento
         });
+
+        DB::table('users')->insert([
+            [
+                'name' => 'Admin1',
+                'email' => 'admin1@example.com',
+                'password' => bcrypt('Da242424'),
+                'admin' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Admin2',
+                'email' => 'admin2@example.com',
+                'password' => bcrypt('Da242424'),
+                'admin' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Admin3',
+                'email' => 'admin3@example.com',
+                'password' => bcrypt('Da242424'),
+                'admin' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
