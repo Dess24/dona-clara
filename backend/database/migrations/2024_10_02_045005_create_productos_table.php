@@ -12,42 +12,61 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Crear la tabla categorias primero
+        Schema::create('categorias', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre')->unique();
+            $table->timestamps();
+            $table->engine = 'InnoDB';
+        });
+
+        // Crear la tabla productos después
         Schema::create('productos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
             $table->text('descripcion')->nullable();
             $table->integer('precio');
             $table->integer('cantidad');
-            $table->string('categoria');
+            $table->unsignedBigInteger('categoria_id')->nullable();
             $table->string('imagen')->default('noimage.jpeg');
             $table->timestamps();
             $table->engine = 'InnoDB'; // Especificar el motor de almacenamiento
+
+            // Definir la clave foránea
+            $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('set null');
         });
 
         // Datos de ejemplo
-        DB::table('productos')->insert([
-            ['nombre' => 'Arroz Integral', 'descripcion' => 'Arroz integral de alta calidad.', 'precio' => 150, 'cantidad' => 15, 'categoria' => 'Granos'],
-            ['nombre' => 'Aceite de Oliva', 'descripcion' => 'Aceite de oliva extra virgen, ideal para cocinar.', 'precio' => 250, 'cantidad' => 25, 'categoria' => 'Condimentos'],
-            ['nombre' => 'Leche Entera', 'descripcion' => 'Leche fresca y nutritiva.', 'precio' => 350, 'cantidad' => 35, 'categoria' => 'Lácteos'],
-            ['nombre' => 'Pan Integral', 'descripcion' => 'Pan integral recién horneado.', 'precio' => 450, 'cantidad' => 45, 'categoria' => 'Panadería'],
-            ['nombre' => 'Frutas Variadas', 'descripcion' => 'Selección de frutas frescas y orgánicas.', 'precio' => 550, 'cantidad' => 55, 'categoria' => 'Frutas y Verduras'],
-            ['nombre' => 'Verduras Frescas', 'descripcion' => 'Verduras de la temporada, frescas y saludables.', 'precio' => 650, 'cantidad' => 65, 'categoria' => 'Frutas y Verduras'],
-            ['nombre' => 'Pollo Orgánico', 'descripcion' => 'Pollo criado en libertad y alimentado de forma natural.', 'precio' => 750, 'cantidad' => 75, 'categoria' => 'Carnes'],
-            ['nombre' => 'Pasta de Trigo', 'descripcion' => 'Pasta de trigo duro, perfecta para cualquier plato.', 'precio' => 850, 'cantidad' => 85, 'categoria' => 'Granos'],
-            ['nombre' => 'Cereal Integral', 'descripcion' => 'Cereal integral para un desayuno saludable.', 'precio' => 950, 'cantidad' => 95, 'categoria' => 'Desayunos'],
-            ['nombre' => 'Café 100% Arábica', 'descripcion' => 'Café premium, 100% arábica, tostado a la perfección.', 'precio' => 1100, 'cantidad' => 110, 'categoria' => 'Jugos'],
-            ['nombre' => 'Aceitunas Prueba', 'descripcion' => 'Café premium, 100% arábica, tostado a la perfección.', 'precio' => 1100, 'cantidad' => 110, 'categoria' => 'Aceitunas'],
-            ['nombre' => 'Frutos secos prueba', 'descripcion' => 'Café premium, 100% arábica, tostado a la perfección.', 'precio' => 1100, 'cantidad' => 110, 'categoria' => 'Frutos Secos'],
+        DB::table('categorias')->insert([
+            ['nombre' => 'Jugos'],
+            ['nombre' => 'Quesos'],
+            ['nombre' => 'Fiambres'],
+            ['nombre' => 'Aceitunas'],
+            ['nombre' => 'Yerbas'],
+            ['nombre' => 'Cervezas'],
+            ['nombre' => 'Agua'],
+            ['nombre' => 'Frutos Secos'],
         ]);
-        
+
+        DB::table('productos')->insert([
+            ['nombre' => 'Jugo de Naranja', 'descripcion' => 'Jugo de naranja natural.', 'precio' => 150, 'cantidad' => 15, 'categoria_id' => 1],
+            ['nombre' => 'Queso Cheddar', 'descripcion' => 'Queso cheddar de alta calidad.', 'precio' => 250, 'cantidad' => 25, 'categoria_id' => 2],
+            ['nombre' => 'Jamón Serrano', 'descripcion' => 'Jamón serrano curado.', 'precio' => 350, 'cantidad' => 35, 'categoria_id' => 3],
+            ['nombre' => 'Aceitunas Verdes', 'descripcion' => 'Aceitunas verdes en salmuera.', 'precio' => 450, 'cantidad' => 45, 'categoria_id' => 4],
+            ['nombre' => 'Yerba Mate', 'descripcion' => 'Yerba mate tradicional.', 'precio' => 550, 'cantidad' => 55, 'categoria_id' => 5],
+            ['nombre' => 'Cerveza Artesanal', 'descripcion' => 'Cerveza artesanal de trigo.', 'precio' => 650, 'cantidad' => 65, 'categoria_id' => 6],
+            ['nombre' => 'Agua Mineral', 'descripcion' => 'Agua mineral natural.', 'precio' => 750, 'cantidad' => 75, 'categoria_id' => 7],
+            ['nombre' => 'Almendras', 'descripcion' => 'Frutos secos de almendra.', 'precio' => 850, 'cantidad' => 85, 'categoria_id' => 8],
+            ['nombre' => 'Pistachos', 'descripcion' => 'Frutos secos de pistacho.', 'precio' => 950, 'cantidad' => 95, 'categoria_id' => 8],
+        ]);
     }
-    
-    
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
         Schema::dropIfExists('productos');
+        Schema::dropIfExists('categorias');
     }
 };

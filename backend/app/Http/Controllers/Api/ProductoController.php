@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Producto;
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
@@ -29,19 +30,24 @@ class ProductoController extends Controller
     }
 
     // Buscar productos por categoría
-    public function buscarPorCategoria($categoria)
+    public function buscarPorCategoria($categoriaNombre)
     {
-        $productos = Producto::where('categoria', $categoria)->get();
-        if ($productos->isEmpty()) {
+        // Buscar la categoría por nombre
+        $categoria = Categoria::where('nombre', $categoriaNombre)->first();
+    
+        // Verificar si la categoría existe
+        if (!$categoria) {
             return response()->json(['message' => 'Categoría inválida o carente de productos'], 404);
         }
-        return response()->json($productos);
-    }
-
-    // Buscar productos por nombre
-    public function buscarPorNombre($nombre)
-    {
-        $productos = Producto::where('nombre', 'LIKE', '%' . $nombre . '%')->get();
+    
+        // Buscar productos por categoría_id
+        $productos = Producto::where('categoria_id', $categoria->id)->get();
+    
+        // Verificar si hay productos en la categoría
+        if ($productos->isEmpty()) {
+            return response()->json(['message' => 'Categoría carente de productos'], 404);
+        }
+    
         return response()->json($productos);
     }
 
@@ -69,8 +75,20 @@ class ProductoController extends Controller
             'categoria' => 'required|string|max:255',
         ]);
     
-        // Crear un nuevo producto con los datos validados
-        $producto = Producto::create($validatedData);
+        // Verificar si la categoría es válida
+        $categoria = Categoria::where('nombre', $validatedData['categoria'])->first();
+        if (!$categoria) {
+            return response()->json(['message' => 'La categoría proporcionada no es válida'], 400);
+        }
+    
+        // Crear un nuevo producto con los datos validados y la categoría válida
+        $producto = Producto::create([
+            'nombre' => $validatedData['nombre'],
+            'descripcion' => $validatedData['descripcion'],
+            'precio' => $validatedData['precio'],
+            'cantidad' => $validatedData['cantidad'],
+            'categoria_id' => $categoria->id,
+        ]);
     
         return response()->json(['message' => 'Producto agregado exitosamente', 'producto' => $producto], 201);
     }
@@ -98,16 +116,26 @@ class ProductoController extends Controller
         if (!$producto) {
             return response()->json(['message' => 'Producto no encontrado'], 404);
         }
-
+    
         // Validar los datos de la solicitud
         $validatedData = $request->validate([
             'nombre' => 'sometimes|string|max:255',
             'descripcion' => 'sometimes|string|max:1000',
             'precio' => 'sometimes|integer|min:0',
             'cantidad' => 'sometimes|integer|min:0',
-            'categoria' => 'sometimes|string|max:255',
+            'categoria' => 'sometimes|string|max:255', // Cambiar a string para el nombre de la categoría
         ]);
-
+    
+        // Verificar si la categoría es válida
+        if (isset($validatedData['categoria'])) {
+            $categoria = Categoria::where('nombre', $validatedData['categoria'])->first();
+            if (!$categoria) {
+                return response()->json(['message' => 'La categoría proporcionada no es válida'], 400);
+            }
+            $validatedData['categoria_id'] = $categoria->id;
+            unset($validatedData['categoria']); // Eliminar el campo 'categoria' ya que no existe en la tabla 'productos'
+        }
+    
         // Actualizar solo los campos presentes en la solicitud
         $producto->update($validatedData);
         return response()->json(['message' => 'Producto modificado exitosamente', 'producto' => $producto], 200);
@@ -134,6 +162,48 @@ class ProductoController extends Controller
         $producto->cantidad = $validatedData['cantidad'];
         $producto->save();
         return response()->json(['message' => 'Stock actualizado exitosamente', 'producto' => $producto], 200);
+    }
+
+        
+        // Función para agregar una categoría
+    public function agregarCategoria(Request $request)
+    {
+        // Validar los datos de la solicitud
+        $validatedData = $request->validate([
+            'nombre' => 'required|string|unique:categorias,nombre',
+        ]);
+
+        // Crear una nueva categoría
+        $categoria = new Categoria();
+        $categoria->nombre = $validatedData['nombre'];
+        $categoria->save();
+
+        return response()->json(['message' => 'Categoría agregada exitosamente', 'categoria' => $categoria], 201);
+    }
+
+    // Función para borrar una categoría
+    public function borrarCategoria($id)
+    {
+        // Buscar la categoría por su ID
+        $categoria = Categoria::find($id);
+
+        if (!$categoria) {
+            return response()->json(['message' => 'Categoría no encontrada'], 404);
+        }
+
+        // Eliminar la categoría
+        $categoria->delete();
+
+        return response()->json(['message' => 'Categoría borrada exitosamente'], 200);
+    }
+
+        public function mostrarCategorias()
+    {
+        // Obtener todas las categorías
+        $categorias = Categoria::all();
+
+        // Retornar las categorías en formato JSON
+        return response()->json($categorias, 200);
     }
 
 }

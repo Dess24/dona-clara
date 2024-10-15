@@ -27,6 +27,11 @@ Route::get('/productos/{id}', [ProductoController::class, 'show']);
 Route::get('/productos/categoria/{categoria}', [ProductoController::class, 'buscarPorCategoria']);
 Route::get('/productos/nombre/{nombre}', [ProductoController::class, 'buscarPorNombre']);
 
+//Categorias
+Route::post('/create-categoria', [ProductoController::class, 'agregarCategoria']);
+Route::delete('/delete-categoria/{id}', [ProductoController::class, 'borrarCategoria']);
+Route::get('/categorias', [ProductoController::class, 'mostrarCategorias']);
+
 // Rutas para el carrito de compras
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/carrito/add', [CarritoController::class, 'añadirProducto']);
@@ -41,4 +46,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('quitar/{id}', [ProductoController::class, 'quitarProducto']);
     Route::put('modificar/{id}', [ProductoController::class, 'modificarProducto']);
     Route::put('actualizar-stock/{id}', [ProductoController::class, 'actualizarStock']);
+
 });
