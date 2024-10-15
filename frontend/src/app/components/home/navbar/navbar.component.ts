@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
   isLoggedInAdmin: boolean = false;
+  isLoggedInAdmin: boolean = false;
 
   constructor(private router: Router, private userService: UserService) {}
 
@@ -36,11 +37,17 @@ export class NavbarComponent implements OnInit {
         this.isLoggedInAdmin = !!response.user.admin;
       });
     }
+    if (this.isLoggedIn) {
+      this.userService.getUserInfo().subscribe(response => {
+        this.isLoggedInAdmin = !!response.user.admin;
+      });
+    }
   }
 
   onLogout(): void {
     localStorage.removeItem('auth_token');
     this.isLoggedIn = false;
+    this.isLoggedInAdmin = false;
     this.isLoggedInAdmin = false;
     this.router.navigate(['/login']);
   }

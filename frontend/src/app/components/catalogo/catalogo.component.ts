@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../home/navbar/navbar.component';
 import { FooterComponent } from '../home/footer/footer.component';
+import { ProductoService } from '../../services/producto.service';
+import { UserService } from '../../services/user.service';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ProductoService } from '../../services/producto.service';
 import { UserService } from '../../services/user.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -11,7 +17,10 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-catalogo',
   standalone: true,
   imports: [NavbarComponent, FooterComponent, HttpClientModule, CommonModule, FormsModule],
+  imports: [NavbarComponent, FooterComponent, HttpClientModule, CommonModule, FormsModule],
   templateUrl: './catalogo.component.html',
+  styleUrl: './catalogo.component.css',
+  providers: [ProductoService, UserService]
   styleUrl: './catalogo.component.css',
   providers: [ProductoService, UserService]
 })
