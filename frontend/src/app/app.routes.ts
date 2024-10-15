@@ -61,6 +61,13 @@ export const routes: Routes = [
         (m) => m.ShoppingCartComponent
         ),
     },
+    {
+        path: 'admin-product',
+        loadComponent: () =>
+        import('./components/admin-product-panel/admin-product-panel.component').then(
+        (m) => m.AdminProductPanelComponent
+        ),
+    },
     // Dejar '**' siempre al final
     {
         path: '**',
