@@ -1,6 +1,13 @@
 .primary{
     background-color: #1B335F;
 }
+.primary-hover:hover{
+    background-color: #16294d;
+}
+.primary-hover2:hover{
+    background-color: #1B335F;
+    color: white;
+}
 .primary-text{
     color: #0e1b34;
 }

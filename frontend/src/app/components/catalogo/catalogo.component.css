@@ -5,6 +5,10 @@
 .primary:hover{
     background-color: #182c51;
 }
+.primary-hover2:hover{
+    background-color: #1B335F;
+    color: white;
+}
 .border-primary{
     border: 1px solid #020d2136;
 }

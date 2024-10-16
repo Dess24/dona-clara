@@ -140,4 +140,29 @@ getCategorias(): void {
     }
   );
 }
+
+modal2(){
+  const modal = document.getElementById('deleteModal') as HTMLElement;
+  modal.style.display = 'flex';
+}
+
+modalClose2() {
+  const modal = document.getElementById('deleteModal') as HTMLElement;
+  modal.style.display = 'none';
+}
+
+modal3(){
+  const modal = document.getElementById('crud-modal') as HTMLElement;
+  modal.style.display = 'flex';
+}
+
+modalClose3() {
+  const modal = document.getElementById('crud-modal') as HTMLElement;
+  modal.style.display = 'none';
+}
+
+
+
+
+
 }

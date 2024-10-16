@@ -153,11 +153,11 @@ export class ShoppingCartComponent implements OnInit {
     );
   }
 
-  modal() {
+  modal(){
     const modal = document.getElementById('container-modal') as HTMLElement;
     modal.style.display = 'flex';
   }
-
+  
   modalClose() {
     const modal = document.getElementById('container-modal') as HTMLElement;
     modal.style.display = 'none';
@@ -177,7 +177,9 @@ export class ShoppingCartComponent implements OnInit {
       });
     });
   }
-
+  
+  
+  
   cambiarColorOpcion(event: Event): void {
     const target = event.target as HTMLElement;
     const isSelected = target.classList.contains('selected');
