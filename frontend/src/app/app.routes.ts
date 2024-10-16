@@ -68,6 +68,13 @@ export const routes: Routes = [
         (m) => m.AdminProductPanelComponent
         ),
     },
+    {
+        path: 'admin-users',
+        loadComponent: () =>
+        import('./components/admin-usres-panel/admin-usres-panel.component').then(
+        (m) => m.AdminUsresPanelComponent
+        ),
+    },
     // Dejar '**' siempre al final
     {
         path: '**',
