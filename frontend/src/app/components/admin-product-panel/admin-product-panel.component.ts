@@ -241,6 +241,16 @@ modalClose3() {
   modal.style.display = 'none';
 }
 
+modal4(){
+  const modal = document.getElementById('modify-modal') as HTMLElement;
+  modal.style.display = 'flex';
+}
+
+modalClose4() {
+  const modal = document.getElementById('modify-modal') as HTMLElement;
+  modal.style.display = 'none';
+}
+
 
 
 
