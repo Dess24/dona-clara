@@ -22,6 +22,7 @@ export class CatalogoComponent implements OnInit {
   errorMessage: string | null = null;
   searchQuery: string = '';
   baseUrl: string = 'http://localhost:8000/images/uploads/';
+  sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente
 
   constructor(private productoService: ProductoService, private carritoService: CarritoService) {} // Inyectar CarritoService
 
@@ -125,7 +126,6 @@ export class CatalogoComponent implements OnInit {
     });
   }
 
-
   cambiarColorOpcion(event: Event): void {
     const target = event.target as HTMLElement;
     const isSelected = target.classList.contains('selected');
@@ -150,6 +150,17 @@ export class CatalogoComponent implements OnInit {
       childElement.style.pointerEvents = isSelected ? '' : 'none';
     });
   }
-
-
+  
+  ordenarAlfabeticamente(): void {
+    if (this.sortState === 0) {
+      this.productos.sort((a, b) => a.nombre.localeCompare(b.nombre));
+      this.sortState = 1;
+    } else if (this.sortState === 1) {
+      this.productos.sort((a, b) => b.nombre.localeCompare(a.nombre));
+      this.sortState = 2;
+    } else {
+      this.getProductos();
+      this.sortState = 0;
+    }
+  }
 }

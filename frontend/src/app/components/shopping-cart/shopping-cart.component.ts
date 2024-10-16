@@ -71,6 +71,10 @@ export class ShoppingCartComponent implements OnInit {
     );
   }
 
+  isRestarDisabled(cantidad: number): boolean {
+    return cantidad <= 1;
+  }
+
   checkout(): void {
     this.carritoService.checkout().subscribe(
       data => {

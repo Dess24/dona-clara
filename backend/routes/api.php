@@ -16,6 +16,8 @@ Route::post('/register', [UsersController::class, 'register']);
 Route::post('/login', [UsersController::class, 'login']);
 Route::post('/logout', [UsersController::class, 'logout'])->middleware('auth:sanctum');
 Route::middleware('auth:sanctum')->get('/userinfo', [UsersController::class, 'userData']);
+Route::post('password/reset/code', [UsersController::class, 'generateResetCode']);
+Route::post('password/resetPass', [UsersController::class, 'resetPassword']);
 
 //Testeo de conexión
 Route::get('/test-connection', [UsersController::class, 'testConnection']);
@@ -26,6 +28,8 @@ Route::get('/productos', [ProductoController::class, 'index']);
 Route::get('/productos/{id}', [ProductoController::class, 'show']);
 Route::get('/productos/categoria/{categoria}', [ProductoController::class, 'buscarPorCategoria']);
 Route::get('/productos/nombre/{nombre}', [ProductoController::class, 'buscarPorNombre']);
+Route::get('/recientes', [ProductoController::class, 'mostrarRecientes']);
+
 
 //Categorias
 Route::post('/create-categoria', [ProductoController::class, 'agregarCategoria']);
