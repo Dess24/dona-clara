@@ -1,5 +1,9 @@
+@import url('https://fonts.cdnfonts.com/css/claudina-personal-use');
 .primary{
     background-color: #1B335F;
+}
+.primary-text{
+    color: #0b172f;
 }
 ul.dropdown li{
     display: block;
@@ -46,4 +50,7 @@ ul li:hover ul.dropdown{
     top: 0;
     right: 0;
     cursor: pointer;
+}
+.carrito:hover svg{
+    color: rgb(44, 51, 63);
 }

@@ -1,6 +1,16 @@
 .primary{
     background-color: #1B335F;
 }
+.primary-hover:hover{
+    background-color: #16294d;
+}
+.primary-hover2:hover{
+    background-color: #1B335F;
+    color: white;
+}
+.primary-text{
+    color: #0e1b34;
+}
 #btn-modal{
     display: none;
 }
@@ -21,18 +31,4 @@
 }
 .element{
     pointer-events: none;
-}
-
-/* Ocultar flechas de incremento y decremento en Chrome, Safari, Edge y Opera */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  appearance: none;
-  margin: 0;
-}
-
-/* Ocultar flechas de incremento y decremento en Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
-  appearance: textfield;
 }

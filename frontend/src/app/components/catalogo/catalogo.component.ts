@@ -7,16 +7,19 @@ import { CarritoService } from '../../services/carrito.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterOutlet, RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-catalogo',
   standalone: true,
-  imports: [NavbarComponent, FooterComponent, HttpClientModule, CommonModule, FormsModule],
+  imports: [NavbarComponent, FooterComponent, HttpClientModule, CommonModule, FormsModule, RouterModule, RouterOutlet],
   templateUrl: './catalogo.component.html',
   styleUrl: './catalogo.component.css',
   providers: [ProductoService, UserService, CarritoService] // Añadir CarritoService a los proveedores
 })
 export class CatalogoComponent implements OnInit {
+  isLoggedIn: boolean = false;
+  isLoggedInAdmin: boolean = false;
   productos: any[] = [];
   categorias: any[] = [];
   errorMessage: string | null = null;
@@ -24,11 +27,30 @@ export class CatalogoComponent implements OnInit {
   baseUrl: string = 'http://localhost:8000/images/uploads/';
   sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente
 
-  constructor(private productoService: ProductoService, private carritoService: CarritoService) {} // Inyectar CarritoService
+  constructor(private productoService: ProductoService, private carritoService: CarritoService, private router: Router, private userService: UserService) {} // Inyectar CarritoService
 
   ngOnInit(): void {
     this.getProductos();
     this.getCategorias();
+    this.isLoggedIn = !!localStorage.getItem('auth_token');
+    if (this.isLoggedIn) {
+      this.userService.getUserInfo().subscribe(response => {
+        this.isLoggedInAdmin = !!response.user.admin;
+      });
+    }
+    if (this.isLoggedIn) {
+      this.userService.getUserInfo().subscribe(response => {
+        this.isLoggedInAdmin = !!response.user.admin;
+      });
+    }
+  }
+
+  onLogout(): void {
+    localStorage.removeItem('auth_token');
+    this.isLoggedIn = false;
+    this.isLoggedInAdmin = false;
+    this.isLoggedInAdmin = false;
+    this.router.navigate(['/login']);
   }
 
   // Listar todos los productos
