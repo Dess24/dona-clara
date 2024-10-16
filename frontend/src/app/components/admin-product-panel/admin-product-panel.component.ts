@@ -181,18 +181,31 @@ modificarProducto(id: number, producto: any): void {
 }
 
 actualizarStock(id: number, cantidad: number): void {
-  this.productoService.actualizarStock(id, cantidad).subscribe(
+  // No hacer nada aquí, la actualización del stock se hará en guardarProducto
+}
+
+guardarProducto(producto: any): void {
+  this.productoService.modificarProducto(producto.id, producto).subscribe(
     response => {
-      console.log('Stock actualizado exitosamente', response);
-      // Actualizar el stock en el array de productos
-      const producto = this.productos.find(p => p.id === id);
-      if (producto) {
-        producto.cantidad = cantidad;
-      }
+      console.log('Producto modificado exitosamente', response);
+      // Después de guardar el producto, actualizar el stock
+      this.productoService.actualizarStock(producto.id, producto.cantidad).subscribe(
+        stockResponse => {
+          console.log('Stock actualizado exitosamente', stockResponse);
+          const productoActualizado = this.productos.find(p => p.id === producto.id);
+          if (productoActualizado) {
+            productoActualizado.cantidad = producto.cantidad;
+          }
+        },
+        stockError => {
+          this.errorMessage = 'Error al actualizar el stock';
+          console.error('Error al actualizar el stock', stockError);
+        }
+      );
     },
     error => {
-      this.errorMessage = 'Error al actualizar el stock';
-      console.error('Error al actualizar el stock', error);
+      this.errorMessage = 'Error al modificar el producto';
+      console.error('Error al modificar el producto', error);
     }
   );
 }
