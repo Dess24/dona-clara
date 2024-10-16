@@ -32,3 +32,6 @@
 .element{
     pointer-events: none;
 }
+.contenedor:hover .imagen{
+    color: white;
+}
