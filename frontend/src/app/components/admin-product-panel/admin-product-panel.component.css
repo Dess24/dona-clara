@@ -1,6 +1,9 @@
 .primary{
     background-color: #1B335F;
 }
+.primary-text{
+    color: #0e1b34;
+}
 #btn-modal{
     display: none;
 }
@@ -21,4 +24,7 @@
 }
 .element{
     pointer-events: none;
+}
+.contenedor:hover .imagen{
+    color: white;
 }
