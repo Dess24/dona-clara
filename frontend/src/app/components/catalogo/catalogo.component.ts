@@ -21,6 +21,7 @@ export class CatalogoComponent implements OnInit {
   categorias: any[] = [];
   errorMessage: string | null = null;
   searchQuery: string = '';
+  baseUrl: string = 'http://localhost:8000/images/uploads/';
 
   constructor(private productoService: ProductoService, private carritoService: CarritoService) {} // Inyectar CarritoService
 
@@ -149,4 +150,6 @@ export class CatalogoComponent implements OnInit {
       childElement.style.pointerEvents = isSelected ? '' : 'none';
     });
   }
+
+
 }

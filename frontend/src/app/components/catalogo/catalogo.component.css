@@ -19,5 +19,8 @@
 .categories{
     width: 75vw;
 }
+.element{
+    pointer-events: none;
+}
 
 
