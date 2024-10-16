@@ -8,14 +8,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-admin-product-panel',
+  selector: 'app-admin-usres-panel',
   standalone: true,
-  imports: [ NavbarComponent, FooterComponent, HttpClientModule, CommonModule, FormsModule ],
-  templateUrl: './admin-product-panel.component.html',
-  styleUrl: './admin-product-panel.component.css',
+  imports: [NavbarComponent, FooterComponent, HttpClientModule, CommonModule, FormsModule],
+  templateUrl: './admin-usres-panel.component.html',
+  styleUrl: './admin-usres-panel.component.css',
   providers: [UserService, ProductoService]
 })
-export class AdminProductPanelComponent implements OnInit{
+export class AdminUsresPanelComponent implements OnInit{
 
   productos: any[] = [];
   categorias: any[] = [];
@@ -140,4 +140,20 @@ getCategorias(): void {
     }
   );
 }
+
+
+onCheckboxChange(event: Event): void {
+  const checkbox = event.target as HTMLInputElement;
+  const adminText = document.getElementById('admin-text');
+  if (adminText) {
+    if (checkbox.checked) {
+      adminText.style.color = 'rgb(20 83 45)'; // Change to desired color
+    } else {
+      adminText.style.color = ''; // Revert to original color
+    }
+  }
+}
+
+
+
 }
