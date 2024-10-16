@@ -65,7 +65,7 @@
 
       <!-- Modal Categories -->
       <div class="container-modal" id="container-modal">
-        <section class="animate__animated animate__jackInTheBox animate__faster rounded-lg flex-col justify-center categories bg-white antialiased dark:bg-gray-900 md:py-16 shadow-lg">
+        <section class="animate__animated animate__jackInTheBox animate__faster rounded-lg flex-col justify-center categories bg-white antialiased dark:bg-gray-900 md:py-10 shadow-lg">
           <div class="flex justify-end pr-8 items-center">
             <label (click)="modalClose()" for="btn-modal" class="text-black p-2 rounded-md text-gray-700 cursor-pointer">
               <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -79,7 +79,7 @@
               
               
               
-              <div *ngFor="let categoria of categorias">
+              <div class="cursor-pointer" (click)="cambiarColorOpcion($event)" *ngFor="let categoria of categorias">
                 <a (click)="buscarPorCategoria(categoria.nombre)" class="flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
                   <svg class="me-2 h-4 w-4 shrink-0 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path
@@ -93,11 +93,10 @@
                   <span class="text-sm font-medium text-gray-900 dark:text-white">{{ categoria.nombre }}</span>
                 </a>
               </div>
-
-
-
-              
             </div>
+          </div>
+          <div class="w-full flex justify-end mt-8">
+            <button class="modal-button p-2 mr-10 primary text-white rounded-md">Buscar</button>
           </div>
         </section>
       </div>
