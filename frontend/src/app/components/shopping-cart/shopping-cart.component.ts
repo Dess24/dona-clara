@@ -4,6 +4,19 @@ import { NavbarComponent } from '../home/navbar/navbar.component';
 import { CarritoService } from '../../services/carrito.service';
 import { UserService } from '../../services/user.service';
 
+interface Producto {
+  id: number;
+  nombre: string;
+  precio: number;
+  imagen: string;
+}
+
+interface ItemCarrito {
+  producto: Producto;
+  cantidad: number;
+  monto_total: number;
+}
+
 @Component({
   selector: 'app-shopping-cart',
   standalone: true,
@@ -13,7 +26,7 @@ import { UserService } from '../../services/user.service';
   providers: [CarritoService, UserService]
 })
 export class ShoppingCartComponent implements OnInit {
-  carrito: any;
+  carrito: { productosCarrito: ItemCarrito[] } = { productosCarrito: [] };
   errorMessage: string | null = null;
 
   constructor(private carritoService: CarritoService) { }
@@ -62,6 +75,7 @@ export class ShoppingCartComponent implements OnInit {
     this.carritoService.checkout().subscribe(
       data => {
         this.verCarrito(); // Actualizar el carrito después del checkout
+        window.location.reload(); // Recargar la página
       },
       error => {
         this.errorMessage = 'Error al realizar el checkout';
@@ -71,6 +85,6 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   getTotal(): number {
-    return this.carrito.monto_total;
+    return this.carrito.productosCarrito.reduce((total, item: ItemCarrito) => total + item.cantidad * item.producto.precio, 0);
   }
 }
