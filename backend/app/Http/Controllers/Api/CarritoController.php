@@ -93,52 +93,53 @@ class CarritoController extends Controller
         if (is_null($userId)) {
             return response()->json(['message' => 'Usuario no autenticado'], 401);
         }
-
+    
         $producto = Producto::find($request->producto_id);
         if (!$producto) {
             return response()->json(['message' => 'Producto no encontrado'], 404);
         }
-
+    
         $carrito = Carrito::where('user_id', $userId)->first();
         if (!$carrito) {
             return response()->json(['message' => 'El carrito está vacío'], 404);
         }
-
+    
         $carritoProducto = CarritoProducto::where('carrito_id', $carrito->id)
             ->where('producto_id', $producto->id)
             ->first();
-
+    
         if (!$carritoProducto) {
             return response()->json(['message' => 'El producto no está en el carrito'], 404);
         }
-
+    
         if ($request->cantidad <= 0) {
             return response()->json(['message' => 'La cantidad debe ser mayor que cero'], 400);
         }
-
+    
         if ($request->cantidad > $carritoProducto->cantidad) {
             return response()->json(['message' => 'La cantidad a restar es mayor que la cantidad en el carrito'], 400);
         }
-
+    
         $carritoProducto->cantidad -= $request->cantidad;
         $carritoProducto->monto_total -= $producto->precio * $request->cantidad;
-
-        if ($carritoProducto->cantidad <= 0) {
-            $carritoProducto->delete();
+    
+        if ($carritoProducto->cantidad < 1) {
+            $carritoProducto->cantidad = 1;
+            $carritoProducto->monto_total = $producto->precio; // Ajustar el monto total al precio del producto
         } else {
             $carritoProducto->save();
         }
-
+    
         // Actualizar el monto total del carrito
         $carrito->monto_total -= $producto->precio * $request->cantidad;
         if ($carrito->monto_total < 0) {
             $carrito->monto_total = 0;
         }
         $carrito->save();
-
+    
         // Ocultar created_at y updated_at
         $carritoProducto->makeHidden(['created_at', 'updated_at']);
-
+    
         return response()->json(['message' => 'Cantidad del producto actualizada', 'carritoProducto' => $carritoProducto]);
     }
 

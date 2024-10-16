@@ -120,3 +120,16 @@
 .primary{
     background-color: #1B335F;
 }
+.mas-productos-btn {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    z-index: 10;
+  }
+  
+  .precio {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    z-index: 10;
+  }

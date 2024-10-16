@@ -21,6 +21,7 @@ export class AdminProductPanelComponent implements OnInit{
   categorias: any[] = [];
   errorMessage: string | null = null;
   searchQuery: string = '';
+  baseUrl: string = 'http://localhost:8000/images/uploads/';
 
   constructor(private productoService: ProductoService) {}
 
@@ -141,6 +142,85 @@ getCategorias(): void {
   );
 }
 
+agregarProducto(producto: any): void {
+  this.productoService.agregarProducto(producto).subscribe(
+    response => {
+      console.log('Producto agregado exitosamente', response);
+    },
+    error => {
+      this.errorMessage = 'Error al agregar el producto';
+      console.error('Error al agregar el producto', error);
+    }
+  );
+}
+
+quitarProducto(id: number): void {
+  this.productoService.quitarProducto(id).subscribe(
+    response => {
+      console.log('Producto eliminado exitosamente', response);
+      // Eliminar el producto del array de productos
+      this.productos = this.productos.filter(producto => producto.id !== id);
+    },
+    error => {
+      this.errorMessage = 'Error al eliminar el producto';
+      console.error('Error al eliminar el producto', error);
+    }
+  );
+}
+
+modificarProducto(id: number, producto: any): void {
+  this.productoService.modificarProducto(id, producto).subscribe(
+    response => {
+      console.log('Producto modificado exitosamente', response);
+    },
+    error => {
+      this.errorMessage = 'Error al modificar el producto';
+      console.error('Error al modificar el producto', error);
+    }
+  );
+}
+
+actualizarStock(id: number, cantidad: number): void {
+  this.productoService.actualizarStock(id, cantidad).subscribe(
+    response => {
+      console.log('Stock actualizado exitosamente', response);
+      // Actualizar el stock en el array de productos
+      const producto = this.productos.find(p => p.id === id);
+      if (producto) {
+        producto.cantidad = cantidad;
+      }
+    },
+    error => {
+      this.errorMessage = 'Error al actualizar el stock';
+      console.error('Error al actualizar el stock', error);
+    }
+  );
+}
+
+agregarCategoria(categoria: any): void {
+  this.productoService.agregarCategoria(categoria).subscribe(
+    response => {
+      console.log('Categoría agregada exitosamente', response);
+    },
+    error => {
+      this.errorMessage = 'Error al agregar la categoría';
+      console.error('Error al agregar la categoría', error);
+    }
+  );
+}
+
+borrarCategoria(id: number): void {
+  this.productoService.borrarCategoria(id).subscribe(
+    response => {
+      console.log('Categoría borrada exitosamente', response);
+    },
+    error => {
+      this.errorMessage = 'Error al borrar la categoría';
+      console.error('Error al borrar la categoría', error);
+    }
+  );
+}
+
 modal2(){
   const modal = document.getElementById('deleteModal') as HTMLElement;
   modal.style.display = 'flex';
@@ -160,7 +240,6 @@ modalClose3() {
   const modal = document.getElementById('crud-modal') as HTMLElement;
   modal.style.display = 'none';
 }
-
 
 
 

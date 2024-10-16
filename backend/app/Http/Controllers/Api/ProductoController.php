@@ -24,7 +24,7 @@ class ProductoController extends Controller
     {
         $producto = Producto::find($id);
         if (!$producto) {
-            return response()->json(['message' => 'Producto no encontrado'], 404);
+            return response()->json(['message' => 'Producto no enconfffftrado'], 404);
         }
         return response()->json($producto);
     }
@@ -205,5 +205,14 @@ class ProductoController extends Controller
         // Retornar las categorías en formato JSON
         return response()->json($categorias, 200);
     }
+
+    public function mostrarRecientes()
+{
+    $productos = Producto::orderBy('created_at', 'desc')->take(10)->get();
+    if ($productos->isEmpty()) {
+        return response()->json(['message' => 'No hay productos disponibles'], 404);
+    }
+    return response()->json($productos);
+}
 
 }
