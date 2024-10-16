@@ -26,9 +26,9 @@ return new class extends Migration
             $table->string('nombre');
             $table->text('descripcion')->nullable();
             $table->integer('precio');
-            $table->integer('cantidad');
+            $table->integer('cantidad')->nullable();
             $table->unsignedBigInteger('categoria_id')->nullable();
-            $table->string('imagen')->default('noimage.jpeg');
+            $table->string('imagen')->default('noimage.jpg');
             $table->timestamps();
             $table->engine = 'InnoDB'; // Especificar el motor de almacenamiento
 
@@ -46,19 +46,61 @@ return new class extends Migration
             ['nombre' => 'Cervezas'],
             ['nombre' => 'Agua'],
             ['nombre' => 'Frutos Secos'],
+            ['nombre' => 'Varios'],
         ]);
 
+
         DB::table('productos')->insert([
-            ['nombre' => 'Jugo de Naranja', 'descripcion' => 'Jugo de naranja natural.', 'precio' => 150, 'cantidad' => 15, 'categoria_id' => 1],
-            ['nombre' => 'Queso Cheddar', 'descripcion' => 'Queso cheddar de alta calidad.', 'precio' => 250, 'cantidad' => 25, 'categoria_id' => 2],
-            ['nombre' => 'Jamón Serrano', 'descripcion' => 'Jamón serrano curado.', 'precio' => 350, 'cantidad' => 35, 'categoria_id' => 3],
-            ['nombre' => 'Aceitunas Verdes', 'descripcion' => 'Aceitunas verdes en salmuera.', 'precio' => 450, 'cantidad' => 45, 'categoria_id' => 4],
-            ['nombre' => 'Yerba Mate', 'descripcion' => 'Yerba mate tradicional.', 'precio' => 550, 'cantidad' => 55, 'categoria_id' => 5],
-            ['nombre' => 'Cerveza Artesanal', 'descripcion' => 'Cerveza artesanal de trigo.', 'precio' => 650, 'cantidad' => 65, 'categoria_id' => 6],
-            ['nombre' => 'Agua Mineral', 'descripcion' => 'Agua mineral natural.', 'precio' => 750, 'cantidad' => 75, 'categoria_id' => 7],
-            ['nombre' => 'Almendras', 'descripcion' => 'Frutos secos de almendra.', 'precio' => 850, 'cantidad' => 85, 'categoria_id' => 8],
-            ['nombre' => 'Pistachos', 'descripcion' => 'Frutos secos de pistacho.', 'precio' => 950, 'cantidad' => 95, 'categoria_id' => 8],
+            ['nombre' => 'Jugo de Durazno', 'descripcion' => 'jugo natural de durazno 5 litros', 'precio' => 460, 'cantidad' => null, 'categoria_id' => 1, 'imagen' => 'JugoDurazno5L.png'],
+            ['nombre' => 'Jugo de Frutilla natural', 'descripcion' => 'jugo de frutilla de 5 litros', 'precio' => 460, 'cantidad' => null, 'categoria_id' => 1, 'imagen' => 'JugoFrutillaNatural.png'],
+            ['nombre' => 'Jugo de Manzana natural sin azúcar', 'descripcion' => 'jugo de manzana sin azucar agregada pero muy dulce', 'precio' => 460, 'cantidad' => null, 'categoria_id' => 1, 'imagen' => 'JugoFrutillaNatural.png'],
+            ['nombre' => 'Jugo de Pomelo Rosado', 'descripcion' => 'jugo natural de pomelo rosado 5 litros', 'precio' => 460, 'cantidad' => null, 'categoria_id' => 1, 'imagen' => 'JugoPomeloNatural.png'],
+            ['nombre' => 'Jugo Natural de Anana', 'descripcion' => 'jugo de anana de 5 litros', 'precio' => 460, 'cantidad' => null, 'categoria_id' => 1, 'imagen' => 'JugoAnanaNatural.png'],
+            ['nombre' => 'Mix frutal', 'descripcion' => 'Mix de frutas natural de 5 litros', 'precio' => 460, 'cantidad' => null, 'categoria_id' => 1, 'imagen' => 'JugoMixFrutal.png'],
+            ['nombre' => 'Jugo de naranja natural. 3litros', 'descripcion' => 'Con o sin azúcar', 'precio' => 300, 'cantidad' => null, 'categoria_id' => 1, 'imagen' => 'JugoNaranjaNatural.png'],
+            ['nombre' => 'Jugo natural de Pera', 'descripcion' => 'jugo natural de pera 5 litros', 'precio' => 460, 'cantidad' => null, 'categoria_id' => 1, 'imagen' => 'JugoNaranjaNatural.png'],
+            ['nombre' => 'Jugo de Limón natural', 'descripcion' => 'jugo de limón natural de 5 litros', 'precio' => 460, 'cantidad' => null, 'categoria_id' => 1, 'imagen' => 'JugoNaturalLimon.png'],
+            ['nombre' => 'Jugo de Naranja exprimida al natural', 'descripcion' => 'jugo de naranja natural con y sin azúcar de 5 litros', 'precio' => 380, 'cantidad' => null, 'categoria_id' => 1, 'imagen' => 'JugoNaranjaExprimidaNatural.png'],
+            
+            ['nombre' => 'Jamón Artesanal', 'descripcion' => 'Envasado al vacío. 650 gr. Aprox', 'precio' => 380, 'cantidad' => null, 'categoria_id' => 3, 'imagen' => 'JamonArtesanal.png'],
+            ['nombre' => 'Pechuga de Pavita Ahumada', 'descripcion' => '650gr aprox envasada al vacío', 'precio' => 320, 'cantidad' => null, 'categoria_id' => 3, 'imagen' => 'PechugadePavitaAhumada.png'],
+            ['nombre' => 'Bondiola Propios', 'descripcion' => 'Trozo Envasado al Vacio de 600 gr apro', 'precio' => 300, 'cantidad' => null, 'categoria_id' => 3, 'imagen' => 'bondiolaPropios.png'],
+            ['nombre' => 'Salamines y longanizas casera Propios', 'descripcion' => 'La unidad 250gr aprox', 'precio' => 150, 'cantidad' => null, 'categoria_id' => 3, 'imagen' => 'salaminesylonganizas.png'],
+            
+            ['nombre' => 'Aceitunas Verdes sin Carozo', 'descripcion' => '1.9kg Escurridas 1Kg', 'precio' => 400, 'cantidad' => null, 'categoria_id' => 4, 'imagen' => 'aceitunasSincarozo.png'],
+            ['nombre' => 'Aceitunas Verdes con Carozo', 'descripcion' => '1.9kg Escurridas 1Kg', 'precio' => 360, 'cantidad' => null, 'categoria_id' => 4, 'imagen' => 'aceitunasConcarozo.png'],
+            
+            ['nombre' => 'Mix premium sin sal 1kg', 'descripcion' => null, 'precio' => 890, 'cantidad' => null, 'categoria_id' => 8, 'imagen' => 'mixPremiumsinSal.png'],
+            
+            ['nombre' => 'Yerba de pago en pago 1 kg', 'descripcion' => 'Yerba de dos años de estacionamiento molienda equilibrada tipo Pu-1. no provoca acides sin perder el sabor del verdadero mate.', 'precio' => 180, 'cantidad' => null, 'categoria_id' => 5, 'imagen' => 'YerbadePagoenPago.png'],
+            ['nombre' => 'Yerba De pago en Pago 1/2 kg', 'descripcion' => 'Yerba de dos años de estacionamiento , molienda equilibrada tipo Pu-1 (no genera acides pero conserva el sabor del verdadero mate.', 'precio' => 100, 'cantidad' => null, 'categoria_id' => 5, 'imagen' => 'YerbadePagoenPagomedioKG.png'],
+            
+            ['nombre' => 'Perfumador Piur. 3000 decargas', 'descripcion' => '10 Fragancias únicas. Larga duración, el mejor de plaza', 'precio' => 300, 'cantidad' => null, 'categoria_id' => 9, 'imagen' => 'aromatizante.png'],
+            
+            ['nombre' => 'Cerveza Budweiser caja de 6x 330cl', 'descripcion' => 'Oferta momentanea de cerveza', 'precio' => 400, 'cantidad' => null, 'categoria_id' => 6, 'imagen' => '6Cervezas.png'],
+            ['nombre' => 'Cerveza Artesanal cabezas beer Pack de 9 x 1litro', 'descripcion' => null, 'precio' => 1750, 'cantidad' => null, 'categoria_id' => 6, 'imagen' => 'cervezasssssss.png'],
+            
+            ['nombre' => '4 Bidones Descartables de 7 litros', 'descripcion' => '4 Bidones de agua mineral Aqua.a Con entrega a domicilio', 'precio' => 500, 'cantidad' => null, 'categoria_id' => 7, 'imagen' => '4bidones7L.png'],
+            ['nombre' => 'Bidón de 10 litros', 'descripcion' => null, 'precio' => 220, 'cantidad' => null, 'categoria_id' => 7, 'imagen' => 'bidon10L.png'],
+            ['nombre' => 'Bidón de 20 litros', 'descripcion' => null, 'precio' => 380, 'cantidad' => null, 'categoria_id' => 7, 'imagen' => 'bidon20L.png'],
         ]);
+        
+
+
+        DB::table('productos')->insert([
+            ['nombre' => 'Queso Tybo Don Santi', 'descripcion' => 'Trozo de 300gr aprox envasado al vacío', 'precio' => 220, 'cantidad' => null, 'categoria_id' => 2],
+            ['nombre' => 'Queso Magro Don Santi', 'descripcion' => '300 gr aprox envasado al vacío', 'precio' => 220, 'cantidad' => null, 'categoria_id' => 2],
+            ['nombre' => 'queso Cuartirolo hormita de 700gr aprox', 'descripcion' => null, 'precio' => 350, 'cantidad' => null, 'categoria_id' => 2],
+            ['nombre' => 'Provolone en Rodajas', 'descripcion' => '2 Rodajas envasadas al vacío.350gr aprox', 'precio' => 220, 'cantidad' => null, 'categoria_id' => 2],
+            ['nombre' => 'Queso Muzarella Don Santi', 'descripcion' => 'Trozo 700gr envasados al vacío', 'precio' => 350, 'cantidad' => null, 'categoria_id' => 2],
+            ['nombre' => 'Queso Dambo Don Santi', 'descripcion' => '300 gr aprox envasado al vacío', 'precio' => 220, 'cantidad' => null, 'categoria_id' => 2],
+            ['nombre' => 'Queso Untable Tybo', 'descripcion' => 'Pote de 200gr', 'precio' => 120, 'cantidad' => null, 'categoria_id' => 2],
+            ['nombre' => 'Queso colonia Don Santi', 'descripcion' => 'Precio del kilo. Cuña de aprox 300gr', 'precio' => 520, 'cantidad' => null, 'categoria_id' => 2],
+            ['nombre' => 'Queso Semiduro Tipo Parmesano o sabrinz', 'descripcion' => 'Trozo de 450gr aprox $260', 'precio' => 520, 'cantidad' => null, 'categoria_id' => 2],
+            ['nombre' => 'Queso rallado en hebra o fino', 'descripcion' => '1kg buena calidad y sabor', 'precio' => 360, 'cantidad' => null, 'categoria_id' => 2],
+        ]);
+        
+        
     }
 
     /**

@@ -80,7 +80,7 @@
               
               
               <div class="cursor-pointer" (click)="cambiarColorOpcion($event)" *ngFor="let categoria of categorias">
-                <a (click)="buscarPorCategoria(categoria.nombre)" class="w-full flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+                <a (click)="buscarPorCategoria(categoria.nombre)" class="flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
                   <svg class="element me-2 h-4 w-4 shrink-0 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path
                       stroke="currentColor"
@@ -91,11 +91,9 @@
                     ></path>
                   </svg>
                   <span class="element text-sm font-medium text-gray-900 dark:text-white">{{ categoria.nombre }}</span>
-                  <svg class="element absolute ml-56 me-2 h-6 w-6 shrink-0 text-white dark:text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/>
-                  </svg>
                 </a>
               </div>
+              
             </div>
           </div>
           <div class="w-full flex justify-end mt-8">
@@ -110,8 +108,8 @@
   <div *ngFor="let producto of productos" class="flex flex-col justify-around rounded-lg border border-gray-200 bg-gray-50 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
     <div class="h-56 w-full">
       <a href="#">
-        <img class="mx-auto h-full dark:hidden" [src]="producto.rutaImagen" alt="{{ producto.nombre }}" />
-        <img class="mx-auto hidden h-full dark:block" [src]="producto.rutaImagen" alt="{{ producto.nombre }}" />
+        <img class="mx-auto h-full dark:hidden" [src]="baseUrl + producto.imagen" alt="{{ producto.nombre }}" />
+        <img class="mx-auto hidden h-full dark:block" [src]="baseUrl + producto.imagen" alt="{{ producto.nombre }}" />
       </a>
     </div>
     <div class="pt-6">
