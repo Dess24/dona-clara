@@ -107,5 +107,46 @@ export class CatalogoComponent implements OnInit {
   modalClose() {
     const modal = document.getElementById('container-modal') as HTMLElement;
     modal.style.display = 'none';
+  
+    // Restaurar colores originales de las opciones seleccionadas
+    const selectedOptions = modal.querySelectorAll('.selected');
+    selectedOptions.forEach(option => {
+      const element = option as HTMLElement;
+      element.style.backgroundColor = ''; // Color de fondo original
+      element.style.color = ''; // Color de texto original
+      element.classList.remove('selected');
+  
+      // Restaurar colores originales de los elementos hijos
+      const children = element.querySelectorAll('*');
+      children.forEach(child => {
+        (child as HTMLElement).style.color = '';
+      });
+    });
+  }
+
+
+  cambiarColorOpcion(event: Event): void {
+    const target = event.target as HTMLElement;
+    const isSelected = target.classList.contains('selected');
+  
+    if (isSelected) {
+      // Restaurar colores originales
+      target.style.backgroundColor = ''; // Color de fondo original
+      target.style.color = ''; // Color de texto original
+      target.classList.remove('selected');
+    } else {
+      // Cambiar a colores seleccionados
+      target.style.backgroundColor = 'rgb(22 163 74)'; // Cambia el color de fondo
+      target.style.color = 'white'; // Cambia el color del texto
+      target.classList.add('selected');
+    }
+  
+    // Cambiar el color de todos los elementos hijos y hacerlos no clickeables
+    const children = target.querySelectorAll('*');
+    children.forEach(child => {
+      const childElement = child as HTMLElement;
+      childElement.style.color = isSelected ? '' : 'white';
+      childElement.style.pointerEvents = isSelected ? '' : 'none';
+    });
   }
 }
