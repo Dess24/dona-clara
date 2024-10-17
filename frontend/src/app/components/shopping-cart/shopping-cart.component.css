@@ -4,6 +4,10 @@
 .primary-hover:hover{
     background-color: #16294d;
 }
+.primary-hover2:hover{
+    background-color: #1B335F;
+    color: white;
+}
 .container-modal{
     position: fixed;
     height: 100vh;
