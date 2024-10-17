@@ -147,9 +147,11 @@ onCheckboxChange(event: Event): void {
   const adminText = document.getElementById('admin-text');
   if (adminText) {
     if (checkbox.checked) {
-      adminText.style.color = 'rgb(20 83 45)'; // Change to desired color
+      adminText.style.color = 'rgb(20 83 45)',
+      adminText.style.textDecoration = 'underline'; // Change to desired color
     } else {
-      adminText.style.color = ''; // Revert to original color
+      adminText.style.color = '';
+      adminText.style.textDecoration = 'none'; // Revert to original color
     }
   }
 }
