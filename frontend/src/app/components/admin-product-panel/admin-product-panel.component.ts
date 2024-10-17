@@ -212,6 +212,7 @@ guardarStock(productId: number): void {
 }
 
 
+
 agregarCategoria(categoria: any): void {
   this.productoService.agregarCategoria(categoria).subscribe(
     response => {
