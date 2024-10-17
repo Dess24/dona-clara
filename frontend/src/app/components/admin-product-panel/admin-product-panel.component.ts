@@ -22,6 +22,8 @@ export class AdminProductPanelComponent implements OnInit{
   errorMessage: string | null = null;
   searchQuery: string = '';
   baseUrl: string = 'http://localhost:8000/images/uploads/';
+  productoAEliminar: number | null = null;
+  private stock: number = 0;
 
   constructor(private productoService: ProductoService) {}
 
@@ -155,17 +157,26 @@ agregarProducto(producto: any): void {
 }
 
 quitarProducto(id: number): void {
-  this.productoService.quitarProducto(id).subscribe(
-    response => {
-      console.log('Producto eliminado exitosamente', response);
-      // Eliminar el producto del array de productos
-      this.productos = this.productos.filter(producto => producto.id !== id);
-    },
-    error => {
-      this.errorMessage = 'Error al eliminar el producto';
-      console.error('Error al eliminar el producto', error);
-    }
-  );
+  this.productoAEliminar = id;
+  // Aquí puedes abrir el modal si es necesario
+}
+
+confirmarEliminarProducto(): void {
+  if (this.productoAEliminar !== null) {
+    this.productoService.quitarProducto(this.productoAEliminar).subscribe(
+      response => {
+        console.log('Producto eliminado exitosamente', response);
+        // Eliminar el producto del array de productos
+        this.productos = this.productos.filter(producto => producto.id !== this.productoAEliminar);
+        this.productoAEliminar = null;
+        this.modalClose2(); // Cerrar el modal
+      },
+      error => {
+        this.errorMessage = 'Error al eliminar el producto';
+        console.error('Error al eliminar el producto', error);
+      }
+    );
+  }
 }
 
 modificarProducto(id: number, producto: any): void {
@@ -180,35 +191,26 @@ modificarProducto(id: number, producto: any): void {
   );
 }
 
-actualizarStock(id: number, cantidad: number): void {
-  // No hacer nada aquí, la actualización del stock se hará en guardarProducto
+actualizarStock(productId: number, cantidad: number): void {
+  this.stock = cantidad;
 }
 
-guardarProducto(producto: any): void {
-  this.productoService.modificarProducto(producto.id, producto).subscribe(
+guardarStock(productId: number): void {
+  this.productoService.actualizarStock(productId, this.stock).subscribe(
     response => {
-      console.log('Producto modificado exitosamente', response);
-      // Después de guardar el producto, actualizar el stock
-      this.productoService.actualizarStock(producto.id, producto.cantidad).subscribe(
-        stockResponse => {
-          console.log('Stock actualizado exitosamente', stockResponse);
-          const productoActualizado = this.productos.find(p => p.id === producto.id);
-          if (productoActualizado) {
-            productoActualizado.cantidad = producto.cantidad;
-          }
-        },
-        stockError => {
-          this.errorMessage = 'Error al actualizar el stock';
-          console.error('Error al actualizar el stock', stockError);
-        }
-      );
+      console.log('Stock actualizado exitosamente', response);
+      const productoActualizado = this.productos.find(p => p.id === productId);
+      if (productoActualizado) {
+        productoActualizado.cantidad = this.stock;
+      }
     },
     error => {
-      this.errorMessage = 'Error al modificar el producto';
-      console.error('Error al modificar el producto', error);
+      this.errorMessage = 'Error al actualizar el stock';
+      console.error('Error al actualizar el stock', error);
     }
   );
 }
+
 
 agregarCategoria(categoria: any): void {
   this.productoService.agregarCategoria(categoria).subscribe(
