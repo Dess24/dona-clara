@@ -120,9 +120,8 @@ class ProductoController extends Controller
         // Validar los datos de la solicitud
         $validatedData = $request->validate([
             'nombre' => 'sometimes|string|max:255',
-            'descripcion' => 'sometimes|string|max:1000',
+            'descripcion' => 'nullable|string|max:1000',
             'precio' => 'sometimes|integer|min:0',
-            'cantidad' => 'sometimes|integer|min:0',
             'categoria' => 'sometimes|string|max:255', // Cambiar a string para el nombre de la categoría
         ]);
     
