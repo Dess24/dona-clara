@@ -88,6 +88,13 @@ modalClose() {
 }
 
 
+toggleDropdown() {
+  const dropdown = document.getElementById('dropdownSort1');
+  if (dropdown) {
+    dropdown.classList.toggle('hidden');
+  }
+}
+
 
 cambiarColorOpcion(event: Event): void {
   const target = event.target as HTMLElement;

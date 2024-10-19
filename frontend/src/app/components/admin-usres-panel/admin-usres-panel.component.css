@@ -35,3 +35,27 @@
 .contenedor2:hover .imagen2{
     color: rgb(22 101 52);
 }
+.menu-vertical{
+    position: absolute;
+    display: none;
+    list-style: none;
+    background-color: #1B335F;
+    color: white;
+    margin-top: 29vh;
+    text-align: center;
+    width: 8.5em;
+}
+.sort:hover .menu-vertical{
+    display: block;
+}
+.menu-vertical li{
+    padding: 1em 0;
+    width: 100%;
+}
+.menu-vertical li:hover{
+    background-color: #16294d;
+}
+.sort:hover .button{
+    background-color: #1B335F;
+    color: white;
+}
