@@ -28,6 +28,7 @@ export class AdminProductPanelComponent implements OnInit{
   isFormValid = false;
   categoriasSeleccionadas: string[] = [];
 
+  
   constructor(private productoService: ProductoService) {}
 
   ngOnInit(): void {
