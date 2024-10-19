@@ -112,13 +112,12 @@
                   </svg>
                   <span class="element text-sm font-medium" [ngClass]="{'text-white': isCategoriaSeleccionada(categoria.nombre), 'text-gray-900 dark:text-white': !isCategoriaSeleccionada(categoria.nombre)}">{{ categoria.nombre }}</span>
                 </a>
-</div>
-</div>
-</div>
-<div class="w-full flex justify-end mt-8">
-  <button (click)="buscarPorCategoriasSeleccionadas()" class="modal-button px-4 py-2 mr-10 primary text-white rounded-md">Buscar</button>
-</div>
-            
+              </div>
+            </div>
+          </div>
+          <div class="w-full flex justify-end mt-8">
+            <button (click)="buscarPorCategoriasSeleccionadas()" class="modal-button px-4 py-2 mr-10 primary text-white rounded-md">Buscar</button>
+          </div>
         </section>
       </div>
       
