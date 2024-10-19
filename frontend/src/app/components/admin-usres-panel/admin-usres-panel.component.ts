@@ -29,7 +29,6 @@ export class AdminUsresPanelComponent implements OnInit{
 
   ngOnInit(): void {
     this.getProductos();
-    this.getCategorias();
   }
 
   // Listar todos los productos
@@ -54,19 +53,6 @@ export class AdminUsresPanelComponent implements OnInit{
       this.myText.nativeElement.style.color = 'rgb(17 24 39)';
       this.myText.nativeElement.style.textDecoration = 'none';
     }
-  }
-
-  // Buscar productos por categoría
-  buscarPorCategoria(categoria: string): void {
-    this.productoService.buscarPorCategoria(categoria).subscribe(
-      data => {
-        this.productos = data;
-      },
-      error => {
-        this.errorMessage = 'Error al buscar productos por categoría';
-        console.error('Error al buscar productos por categoría', error);
-      }
-    );
   }
 
 // Buscar productos por nombre
