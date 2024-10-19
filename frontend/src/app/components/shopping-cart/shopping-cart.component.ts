@@ -30,6 +30,7 @@ interface ItemCarrito {
 export class ShoppingCartComponent implements OnInit {
   productos: any[] = [];
   categorias: any[] = [];
+  categoriasSeleccionadas: string[] = [];
   searchQuery: string = '';
   baseUrl: string = 'http://localhost:8000/images/uploads/';
   carrito: { productosCarrito: ItemCarrito[] } = { productosCarrito: [] };
@@ -126,18 +127,33 @@ export class ShoppingCartComponent implements OnInit {
     );
   }
 
-  // Buscar productos por categoría
-  buscarPorCategoria(categoria: string): void {
-    this.productoService.buscarPorCategoria(categoria).subscribe(
+ // Manejar la selección de categorías
+ sumarCategorias(categoria: string): void {
+  const index = this.categoriasSeleccionadas.indexOf(categoria);
+  if (index === -1) {
+    this.categoriasSeleccionadas.push(categoria);
+  } else {
+    this.categoriasSeleccionadas.splice(index, 1);
+  }
+  console.log('Categorías seleccionadas:', this.categoriasSeleccionadas);
+}
+
+// Buscar productos por las categorías seleccionadas
+buscarPorCategoriasSeleccionadas(): void {
+  if (this.categoriasSeleccionadas.length > 0) {
+    this.productoService.buscarPorCategorias(this.categoriasSeleccionadas).subscribe(
       data => {
         this.productos = data;
       },
       error => {
-        this.errorMessage = 'Error al buscar productos por categoría';
-        console.error('Error al buscar productos por categoría', error);
+        this.errorMessage = 'Error al buscar productos por categorías';
+        console.error('Error al buscar productos por categorías', error);
       }
     );
+  } else {
+    this.errorMessage = 'Por favor, seleccione al menos una categoría';
   }
+}
 
   // Buscar productos por nombre
   buscarPorNombre(): void {

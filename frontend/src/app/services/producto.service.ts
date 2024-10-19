@@ -25,9 +25,10 @@ export class ProductoService {
     return this.http.get<any>(`${this.apiUrl}/productos/${id}`);
   }
 
-  // Buscar productos por categoría
-  buscarPorCategoria(categoria: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/productos/categoria/${categoria}`);
+  // Buscar productos por una o más categorías
+  buscarPorCategorias(categoriaNombres: string[]): Observable<any> {
+    const categorias = categoriaNombres.join(',');
+    return this.http.get<any>(`${this.apiUrl}/productos/categorias/${categorias}`);
   }
 
   // Buscar productos por nombre

@@ -25,8 +25,7 @@ export class AdminUsresPanelComponent implements OnInit{
   constructor(private productoService: ProductoService) {}
 
   ngOnInit(): void {
-    this.getProductos();
-    this.getCategorias();
+
   }
 
   // Listar todos los productos
@@ -38,19 +37,6 @@ export class AdminUsresPanelComponent implements OnInit{
       error => {
         this.errorMessage = 'Error al cargar los productos';
         console.error('Error al cargar los productos', error);
-      }
-    );
-  }
-
-  // Buscar productos por categoría
-  buscarPorCategoria(categoria: string): void {
-    this.productoService.buscarPorCategoria(categoria).subscribe(
-      data => {
-        this.productos = data;
-      },
-      error => {
-        this.errorMessage = 'Error al buscar productos por categoría';
-        console.error('Error al buscar productos por categoría', error);
       }
     );
   }
@@ -126,19 +112,6 @@ cambiarColorOpcion(event: Event): void {
     childElement.style.color = isSelected ? '' : 'white';
     childElement.style.pointerEvents = isSelected ? '' : 'none';
   });
-}
-
-// Listar todas las categorías
-getCategorias(): void {
-  this.productoService.getCategorias().subscribe(
-    data => {
-      this.categorias = data;
-    },
-    error => {
-      this.errorMessage = 'Error al cargar las categorías';
-      console.error('Error al cargar las categorías', error);
-    }
-  );
 }
 
 

@@ -18,15 +18,16 @@ Route::post('/logout', [UsersController::class, 'logout'])->middleware('auth:san
 Route::middleware('auth:sanctum')->get('/userinfo', [UsersController::class, 'userData']);
 Route::post('password/reset/code', [UsersController::class, 'generateResetCode']);
 Route::post('password/resetPass', [UsersController::class, 'resetPassword']);
+Route::get('/buscar-usuarios', [UsersController::class, 'buscarPorNombre']);
+Route::delete('/borrar-usuario/{id}', [UsersController::class, 'borrarUsuario']);
 
-//Testeo de conexión
-Route::get('/test-connection', [UsersController::class, 'testConnection']);
+//Bienvenida al mail
 Route::post('/welcome', [UsersController::class, 'welcome']);
 
 //Productos
 Route::get('/productos', [ProductoController::class, 'index']);
 Route::get('/productos/{id}', [ProductoController::class, 'show']);
-Route::get('/productos/categoria/{categoria}', [ProductoController::class, 'buscarPorCategoria']);
+Route::get('productos/categorias/{categoriaNombres}', [ProductoController::class, 'buscarPorCategoria']);
 Route::get('/productos/nombre/{nombre}', [ProductoController::class, 'buscarPorNombre']);
 Route::get('/recientes', [ProductoController::class, 'mostrarRecientes']);
 
@@ -35,6 +36,7 @@ Route::get('/recientes', [ProductoController::class, 'mostrarRecientes']);
 Route::post('/create-categoria', [ProductoController::class, 'agregarCategoria']);
 Route::delete('/delete-categoria/{id}', [ProductoController::class, 'borrarCategoria']);
 Route::get('/categorias', [ProductoController::class, 'mostrarCategorias']);
+
 
 // Rutas para el carrito de compras
 Route::group(['middleware' => 'auth:sanctum'], function () {

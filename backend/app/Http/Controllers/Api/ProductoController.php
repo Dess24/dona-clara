@@ -29,27 +29,29 @@ class ProductoController extends Controller
         return response()->json($producto);
     }
 
-    // Buscar productos por categoría
-    public function buscarPorCategoria($categoriaNombre)
-    {
-        // Buscar la categoría por nombre
-        $categoria = Categoria::where('nombre', $categoriaNombre)->first();
-    
-        // Verificar si la categoría existe
-        if (!$categoria) {
-            return response()->json(['message' => 'Categoría inválida o carente de productos'], 404);
-        }
-    
-        // Buscar productos por categoría_id
-        $productos = Producto::where('categoria_id', $categoria->id)->get();
-    
-        // Verificar si hay productos en la categoría
-        if ($productos->isEmpty()) {
-            return response()->json(['message' => 'Categoría carente de productos'], 404);
-        }
-    
-        return response()->json($productos);
+// Buscar productos por una o más categorías
+public function buscarPorCategoria($categoriaNombres)
+{
+    // Convertir la cadena de nombres de categorías en un array
+    $categoriaNombresArray = explode(',', $categoriaNombres);
+
+    // Buscar las categorías por nombre
+    $categorias = Categoria::whereIn('nombre', $categoriaNombresArray)->get();
+
+    // Verificar si se encontraron categorías
+    if ($categorias->isEmpty()) {
+        return response()->json(['message' => 'Categoría(s) inválida(s)'], 404);
     }
+
+    // Obtener los IDs de las categorías encontradas
+    $categoriaIds = $categorias->pluck('id');
+
+    // Buscar productos por categoría_id
+    $productos = Producto::whereIn('categoria_id', $categoriaIds)->get();
+
+    // Retornar los productos, aunque la lista esté vacía
+    return response()->json($productos);
+}
 
 
 

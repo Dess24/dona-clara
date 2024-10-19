@@ -22,10 +22,14 @@ export class CatalogoComponent implements OnInit {
   isLoggedInAdmin: boolean = false;
   productos: any[] = [];
   categorias: any[] = [];
+  categoriasSeleccionadas: string[] = [];
   errorMessage: string | null = null;
   searchQuery: string = '';
   baseUrl: string = 'http://localhost:8000/images/uploads/';
   sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente
+  showLoginMessage: boolean = false;
+  
+  
 
   constructor(private productoService: ProductoService, private carritoService: CarritoService, private router: Router, private userService: UserService) {} // Inyectar CarritoService
 
@@ -79,18 +83,54 @@ export class CatalogoComponent implements OnInit {
     );
   }
 
-  // Buscar productos por categoría
-  buscarPorCategoria(categoria: string): void {
-    this.productoService.buscarPorCategoria(categoria).subscribe(
+// Manejar la selección de categorías
+sumarCategorias(categoria: string): void {
+  const index = this.categoriasSeleccionadas.indexOf(categoria);
+  if (index === -1) {
+    this.categoriasSeleccionadas.push(categoria);
+  } else {
+    this.categoriasSeleccionadas.splice(index, 1);
+  }
+  console.log('Categorías seleccionadas:', this.categoriasSeleccionadas);
+}
+
+// Verificar si una categoría está seleccionada
+isCategoriaSeleccionada(categoria: string): boolean {
+  return this.categoriasSeleccionadas.includes(categoria);
+}
+
+// Eliminar una categoría seleccionada y recargar productos
+eliminarCategoria(categoria: string): void {
+  const index = this.categoriasSeleccionadas.indexOf(categoria);
+  if (index !== -1) {
+    this.categoriasSeleccionadas.splice(index, 1);
+    if (this.categoriasSeleccionadas.length === 0) {
+      window.location.reload(); // Recargar la página si no hay categorías seleccionadas
+    } else {
+      this.buscarPorCategoriasSeleccionadas(); // Recargar productos después de eliminar la categoría
+    }
+  }
+  console.log('Categoría eliminada:', categoria);
+  console.log('Categorías seleccionadas:', this.categoriasSeleccionadas);
+}
+
+// Buscar productos por las categorías seleccionadas
+buscarPorCategoriasSeleccionadas(): void {
+  if (this.categoriasSeleccionadas.length > 0) {
+    this.productoService.buscarPorCategorias(this.categoriasSeleccionadas).subscribe(
       data => {
         this.productos = data;
+        this.modalClose(); // Cerrar el modal después de buscar
       },
       error => {
-        this.errorMessage = 'Error al buscar productos por categoría';
-        console.error('Error al buscar productos por categoría', error);
+        this.errorMessage = 'Error al buscar productos por categorías';
+        console.error('Error al buscar productos por categorías', error);
       }
     );
+  } else {
+    this.errorMessage = 'Por favor, seleccione al menos una categoría';
   }
+}
 
   // Buscar productos por nombre
   buscarPorNombre(): void {
@@ -110,18 +150,23 @@ export class CatalogoComponent implements OnInit {
     );
   }
 
-  // Añadir producto al carrito
-  anadirProducto(productoId: number, cantidad: number): void {
-    this.carritoService.añadirProducto(productoId, cantidad).subscribe(
-      data => {
-        console.log('Producto añadido al carrito', data);
-      },
-      error => {
-        this.errorMessage = 'Error al añadir el producto al carrito';
-        console.error('Error al añadir el producto al carrito', error);
-      }
-    );
+// Añadir producto al carrito
+anadirProducto(productoId: number, cantidad: number): void {
+  if (!this.isLoggedIn) {
+    alert('Se necesita registrarse');
+    return;
   }
+
+  this.carritoService.añadirProducto(productoId, cantidad).subscribe(
+    data => {
+      console.log('Producto añadido al carrito', data);
+    },
+    error => {
+      this.errorMessage = 'Error al añadir el producto al carrito';
+      console.error('Error al añadir el producto al carrito', error);
+    }
+  );
+}
 
   modal() {
     const modal = document.getElementById('container-modal') as HTMLElement;
