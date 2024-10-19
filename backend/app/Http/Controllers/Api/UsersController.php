@@ -66,10 +66,33 @@ public function register(Request $request)
     }
 
 
-public function testConnection()
-{
-    return response()->json(['message' => 'Conexión exitosa'], 200);
-}
+
+    // Buscar usuarios por nombre
+    public function buscarPorNombre(Request $request)
+    {
+        $nombre = $request->input('name');
+        $usuarios = User::where('name', 'LIKE', '%' . $nombre . '%')->get();
+
+        if ($usuarios->isEmpty()) {
+            return response()->json(['message' => 'No se encontraron usuarios con ese nombre'], 404);
+        }
+
+        return response()->json($usuarios);
+    }
+
+     // Borrar usuario por ID
+    public function borrarUsuario($id)
+    {
+        $usuario = User::find($id);
+
+        if (!$usuario) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+
+        $usuario->delete();
+
+        return response()->json(['message' => 'Usuario borrado exitosamente'], 200);
+    }
 
 public function userData(Request $request)
 {

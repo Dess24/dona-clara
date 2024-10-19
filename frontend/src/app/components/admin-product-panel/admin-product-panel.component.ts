@@ -26,12 +26,14 @@ export class AdminProductPanelComponent implements OnInit{
   private stock: number = 0;
   selectedProduct: any = {};
   isFormValid = false;
+  categoriasSeleccionadas: string[] = [];
 
   constructor(private productoService: ProductoService) {}
 
   ngOnInit(): void {
     this.getProductos();
     this.getCategorias();
+    console.log('Valores de selectedProduct:', this.selectedProduct);
   }
 
   // Listar todos los productos
@@ -47,15 +49,15 @@ export class AdminProductPanelComponent implements OnInit{
     );
   }
 
-  // Buscar productos por categoría
-  buscarPorCategoria(categoria: string): void {
-    this.productoService.buscarPorCategoria(categoria).subscribe(
+   // Buscar productos por una o más categorías
+  buscarPorCategorias(categorias: string[]): void {
+    this.productoService.buscarPorCategorias(categorias).subscribe(
       data => {
         this.productos = data;
       },
       error => {
-        this.errorMessage = 'Error al buscar productos por categoría';
-        console.error('Error al buscar productos por categoría', error);
+        this.errorMessage = 'Error al buscar productos por categorías';
+        console.error('Error al buscar productos por categorías', error);
       }
     );
   }
@@ -255,10 +257,14 @@ export class AdminProductPanelComponent implements OnInit{
   }
 
   openModal(producto: any): void {
-    this.selectedProduct = { ...producto };
-    console.log('Producto seleccionado:', this.selectedProduct); // Imprimir en consola
+    this.selectedProduct = { ...producto, categoria: this.getCategoriaModal(producto.categoria_id) };
     const modal = document.getElementById('modify-modal') as HTMLElement;
     modal.style.display = 'flex';
+  }
+  
+  getCategoriaModal(categoria_id: number): string {
+    const categoria = this.categorias.find(cat => cat.id === categoria_id);
+    return categoria ? categoria.nombre : '';
   }
 
   modalClose4() {
@@ -284,4 +290,53 @@ export class AdminProductPanelComponent implements OnInit{
     }
     this.selectedProduct.precio = input.value;
   }
+
+// Manejar la selección de categorías
+sumarCategorias(categoria: string): void {
+  const index = this.categoriasSeleccionadas.indexOf(categoria);
+  if (index === -1) {
+    this.categoriasSeleccionadas.push(categoria);
+  } else {
+    this.categoriasSeleccionadas.splice(index, 1);
+  }
+  console.log('Categorías seleccionadas:', this.categoriasSeleccionadas);
+}
+
+// Verificar si una categoría está seleccionada
+isCategoriaSeleccionada(categoria: string): boolean {
+  return this.categoriasSeleccionadas.includes(categoria);
+}
+
+// Eliminar una categoría seleccionada y recargar productos
+eliminarCategoria(categoria: string): void {
+  const index = this.categoriasSeleccionadas.indexOf(categoria);
+  if (index !== -1) {
+    this.categoriasSeleccionadas.splice(index, 1);
+    if (this.categoriasSeleccionadas.length === 0) {
+      window.location.reload(); // Recargar la página si no hay categorías seleccionadas
+    } else {
+      this.buscarPorCategoriasSeleccionadas(); // Recargar productos después de eliminar la categoría
+    }
+  }
+  console.log('Categoría eliminada:', categoria);
+  console.log('Categorías seleccionadas:', this.categoriasSeleccionadas);
+}
+
+// Buscar productos por las categorías seleccionadas
+buscarPorCategoriasSeleccionadas(): void {
+  if (this.categoriasSeleccionadas.length > 0) {
+    this.productoService.buscarPorCategorias(this.categoriasSeleccionadas).subscribe(
+      data => {
+        this.productos = data;
+        this.modalClose(); // Cerrar el modal después de buscar
+      },
+      error => {
+        this.errorMessage = 'Error al buscar productos por categorías';
+        console.error('Error al buscar productos por categorías', error);
+      }
+    );
+  } else {
+    this.errorMessage = 'Por favor, seleccione al menos una categoría';
+  }
+}
 }

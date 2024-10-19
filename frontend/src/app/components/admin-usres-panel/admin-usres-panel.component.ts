@@ -149,19 +149,6 @@ cambiarColorOpcion(event: Event): void {
   });
 }
 
-// Listar todas las categorías
-getCategorias(): void {
-  this.productoService.getCategorias().subscribe(
-    data => {
-      this.categorias = data;
-    },
-    error => {
-      this.errorMessage = 'Error al cargar las categorías';
-      console.error('Error al cargar las categorías', error);
-    }
-  );
-}
-
 
 onCheckboxChange(event: Event): void {
   const checkbox = event.target as HTMLInputElement;
