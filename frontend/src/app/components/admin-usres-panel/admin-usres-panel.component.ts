@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { NavbarComponent } from '../home/navbar/navbar.component';
 import { FooterComponent } from '../home/footer/footer.component';
 import { ProductoService } from '../../services/producto.service';
@@ -6,6 +6,7 @@ import { UserService } from '../../services/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-admin-usres-panel',
@@ -17,6 +18,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class AdminUsresPanelComponent implements OnInit{
 
+  @ViewChild('myText') myText!: ElementRef;
+  @ViewChild('myCheckbox') myCheckbox!: ElementRef;
   productos: any[] = [];
   categorias: any[] = [];
   errorMessage: string | null = null;
@@ -40,6 +43,17 @@ export class AdminUsresPanelComponent implements OnInit{
         console.error('Error al cargar los productos', error);
       }
     );
+  }
+
+  uncheckCheckbox() {
+    this.myCheckbox.nativeElement.checked = false;
+  }
+
+  changeTextColor() {
+    if (this.myText) {
+      this.myText.nativeElement.style.color = 'rgb(17 24 39)';
+      this.myText.nativeElement.style.textDecoration = 'none';
+    }
   }
 
   // Buscar productos por categoría
@@ -161,6 +175,26 @@ onCheckboxChange(event: Event): void {
       adminText.style.textDecoration = 'none'; // Revert to original color
     }
   }
+}
+
+modal2(){
+  const modal = document.getElementById('deleteModal') as HTMLElement;
+  modal.style.display = 'flex';
+}
+
+modalClose2() {
+  const modal = document.getElementById('deleteModal') as HTMLElement;
+  modal.style.display = 'none';
+}
+
+modal3(){
+  const modal = document.getElementById('sure-modal') as HTMLElement;
+  modal.style.display = 'flex';
+}
+
+modalClose3() {
+  const modal = document.getElementById('sure-modal') as HTMLElement;
+  modal.style.display = 'none';
 }
 
 
