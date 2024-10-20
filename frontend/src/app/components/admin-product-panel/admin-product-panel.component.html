@@ -125,7 +125,7 @@
                   </div>
                   <div class="py-2 flex justify-between items-center">
                       
-                    <input type="number" [(ngModel)]="producto.cantidad" (change)="actualizarStock(producto.id, producto.cantidad)" id="counter-input-5" data-input-counter class="cursor-text border-gray-300 mx-1 w-14 shrink-0 rounded-lg bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-whiteno-arrows" min="0" />
+                    <input type="number" [(ngModel)]="producto.cantidad" (change)="actualizarStock(producto.id, producto.cantidad)" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" id="counter-input-5" data-input-counter class="cursor-text border-gray-300 mx-1 w-14 shrink-0 rounded-lg bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-whiteno-arrows" min="0" />
                     
                     </div>
                     <div>

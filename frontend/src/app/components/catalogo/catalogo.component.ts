@@ -128,7 +128,7 @@ buscarPorCategoriasSeleccionadas(): void {
       }
     );
   } else {
-    this.errorMessage = 'Por favor, seleccione al menos una categoría';
+    window.location.reload(); // Recargar la página si no hay categorías seleccionadas
   }
 }
 
