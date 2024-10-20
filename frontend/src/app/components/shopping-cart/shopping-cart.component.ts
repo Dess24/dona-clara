@@ -11,6 +11,7 @@ interface Producto {
   nombre: string;
   precio: number;
   imagen: string;
+  categoria_id: number;
 }
 
 interface ItemCarrito {
@@ -168,12 +169,28 @@ export class ShoppingCartComponent implements OnInit {
   console.log('Categorías seleccionadas:', this.categoriasSeleccionadas);
 }
 
+// Eliminar una categoría seleccionada y recargar productos
+eliminarCategoria(categoria: string): void {
+  const index = this.categoriasSeleccionadas.indexOf(categoria);
+  if (index !== -1) {
+    this.categoriasSeleccionadas.splice(index, 1);
+    if (this.categoriasSeleccionadas.length === 0) {
+      window.location.reload(); // Recargar la página si no hay categorías seleccionadas
+    } else {
+      this.buscarPorCategoriasSeleccionadas(); // Recargar productos después de eliminar la categoría
+    }
+  }
+  console.log('Categoría eliminada:', categoria);
+  console.log('Categorías seleccionadas:', this.categoriasSeleccionadas);
+}
+
 // Buscar productos por las categorías seleccionadas
 buscarPorCategoriasSeleccionadas(): void {
   if (this.categoriasSeleccionadas.length > 0) {
     this.productoService.buscarPorCategorias(this.categoriasSeleccionadas).subscribe(
       data => {
         this.productos = data;
+        this.modalClose(); // Cerrar el modal después de buscar
       },
       error => {
         this.errorMessage = 'Error al buscar productos por categorías';
@@ -181,8 +198,13 @@ buscarPorCategoriasSeleccionadas(): void {
       }
     );
   } else {
-    this.errorMessage = 'Por favor, seleccione al menos una categoría';
+    window.location.reload(); // Recargar la página si no hay categorías seleccionadas
   }
+}
+
+// Verificar si una categoría está seleccionada
+isCategoriaSeleccionada(categoria: string): boolean {
+  return this.categoriasSeleccionadas.includes(categoria);
 }
 
   // Buscar productos por nombre
