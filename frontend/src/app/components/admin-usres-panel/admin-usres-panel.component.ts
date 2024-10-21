@@ -27,6 +27,7 @@ export class AdminUsresPanelComponent implements OnInit{
   searchQuery: string = '';
   selectedUser: any = null;
   currentUser: any = null;
+  sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente
   
 
   constructor(private userService: UserService, private productoService: ProductoService) {}
@@ -263,6 +264,32 @@ confirmAction() {
 
 isCurrentUser(user: any): boolean {
   return this.currentUser && this.currentUser.email === user.email;
+}
+
+ordenarAlfabeticamente(): void {
+  if (this.sortState === 0) {
+      this.productos.sort((a, b) => a.nombre.localeCompare(b.nombre));
+      this.sortState = 1;
+  } else if (this.sortState === 1) {
+      this.productos.sort((a, b) => b.nombre.localeCompare(a.nombre));
+      this.sortState = 2;
+  } else {
+      this.getProductos();
+      this.sortState = 0;
+  }
+}
+
+ordenarPorPrecio(): void {
+  if (this.sortState === 0) {
+      this.productos.sort((a, b) => a.precio - b.precio);
+      this.sortState = 1;
+  } else if (this.sortState === 1) {
+      this.productos.sort((a, b) => b.precio - a.precio);
+      this.sortState = 2;
+  } else {
+      this.getProductos();
+      this.sortState = 0;
+  }
 }
 
 

@@ -27,6 +27,7 @@ export class AdminProductPanelComponent implements OnInit{
   selectedProduct: any = {};
   isFormValid = false;
   categoriasSeleccionadas: string[] = [];
+  sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente
 
   
   constructor(private productoService: ProductoService) {}
@@ -348,4 +349,32 @@ buscarPorCategoriasSeleccionadas(): void {
     window.location.reload(); // Recargar la página si no hay categorías seleccionadas
   }
 }
+
+ordenarAlfabeticamente(): void {
+  if (this.sortState === 0) {
+      this.productos.sort((a, b) => a.nombre.localeCompare(b.nombre));
+      this.sortState = 1;
+  } else if (this.sortState === 1) {
+      this.productos.sort((a, b) => b.nombre.localeCompare(a.nombre));
+      this.sortState = 2;
+  } else {
+      this.getProductos();
+      this.sortState = 0;
+  }
+}
+
+ordenarPorPrecio(): void {
+  if (this.sortState === 0) {
+      this.productos.sort((a, b) => a.precio - b.precio);
+      this.sortState = 1;
+  } else if (this.sortState === 1) {
+      this.productos.sort((a, b) => b.precio - a.precio);
+      this.sortState = 2;
+  } else {
+      this.getProductos();
+      this.sortState = 0;
+  }
+}
+
+
 }
