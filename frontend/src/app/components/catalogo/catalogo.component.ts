@@ -141,11 +141,17 @@ buscarPorCategoriasSeleccionadas(): void {
 
     this.productoService.buscarPorNombre(this.searchQuery).subscribe(
       data => {
-        this.productos = data;
+        this.productos = data.productos; // Asegúrate de acceder a la propiedad correcta
+        if (this.productos.length === 0) {
+          alert('No se encontraron productos');
+        }
       },
       error => {
         this.errorMessage = 'Error al buscar productos por nombre';
         console.error('Error al buscar productos por nombre', error);
+        if (error.status === 404) {
+          alert('No se encontraron productos');
+        }
       }
     );
   }
@@ -243,4 +249,6 @@ ordenarPorPrecio(): void {
         this.sortState = 0;
     }
 }
+
+
 }
