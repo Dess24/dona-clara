@@ -36,6 +36,7 @@ Route::get('/recientes', [ProductoController::class, 'mostrarRecientes']);
 
 
 
+
 //Categorias
 Route::post('/create-categoria', [ProductoController::class, 'agregarCategoria']);
 Route::delete('/delete-categoria/{id}', [ProductoController::class, 'borrarCategoria']);
