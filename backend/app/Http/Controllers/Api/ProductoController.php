@@ -30,27 +30,19 @@ class ProductoController extends Controller
     }
 
 
-    public function buscarPorNombre(Request $request)
-{
-    // Validar la entrada
-    $request->validate([
-        'nombre' => 'required|string|max:255',
-    ]);
+    public function buscarPorNombre($nombre)
+    {
+        // Buscar productos que coincidan con el nombre
+        $productos = Producto::where('nombre', 'LIKE', "%{$nombre}%")->get();
 
-    // Obtener el nombre de la solicitud
-    $nombre = $request->input('nombre');
+        // Verificar si se encontraron productos
+        if ($productos->isEmpty()) {
+            return response()->json(['message' => 'No se encontraron productos'], 404);
+        }
 
-    // Buscar productos que coincidan con el nombre
-    $productos = Producto::where('nombre', 'LIKE', "%{$nombre}%")->get();
-
-    // Verificar si se encontraron productos
-    if ($productos->isEmpty()) {
-        return response()->json(['message' => 'No se encontraron productos'], 404);
+        // Devolver los productos encontrados
+        return response()->json(['productos' => $productos], 200);
     }
-
-    // Devolver los productos encontrados
-    return response()->json(['productos' => $productos], 200);
-}
 
 // Buscar productos por una o más categorías
 public function buscarPorCategoria($categoriaNombres)
