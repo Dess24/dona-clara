@@ -33,6 +33,7 @@ Route::get('/productos/{id}', [ProductoController::class, 'show']);
 Route::get('productos/categorias/{categoriaNombres}', [ProductoController::class, 'buscarPorCategoria']);
 Route::get('/productos/nombre/{nombre}', [ProductoController::class, 'buscarPorNombre']);
 Route::get('/recientes', [ProductoController::class, 'mostrarRecientes']);
+Route::get('/productos/buscarPorNombre', [ProductoController::class, 'buscarPorNombre']);
 
 
 //Categorias
