@@ -31,10 +31,10 @@ export class ProductoService {
     return this.http.get<any>(`${this.apiUrl}/productos/categorias/${categorias}`);
   }
 
-  // Buscar productos por nombre
-  buscarPorNombre(nombre: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/productos/nombre/${nombre}`);
-  }
+// Buscar productos por nombre
+buscarPorNombre(nombre: string): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/productos/buscarPorNombre?nombre=${nombre}`);
+}
 
   // Obtener todas las categorías
   getCategorias(): Observable<any> {

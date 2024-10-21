@@ -29,6 +29,29 @@ class ProductoController extends Controller
         return response()->json($producto);
     }
 
+
+    public function buscarPorNombre(Request $request)
+{
+    // Validar la entrada
+    $request->validate([
+        'nombre' => 'required|string|max:255',
+    ]);
+
+    // Obtener el nombre de la solicitud
+    $nombre = $request->input('nombre');
+
+    // Buscar productos que coincidan con el nombre
+    $productos = Producto::where('nombre', 'LIKE', "%{$nombre}%")->get();
+
+    // Verificar si se encontraron productos
+    if ($productos->isEmpty()) {
+        return response()->json(['message' => 'No se encontraron productos'], 404);
+    }
+
+    // Devolver los productos encontrados
+    return response()->json(['productos' => $productos], 200);
+}
+
 // Buscar productos por una o más categorías
 public function buscarPorCategoria($categoriaNombres)
 {
