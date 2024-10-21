@@ -20,6 +20,9 @@ Route::post('password/reset/code', [UsersController::class, 'generateResetCode']
 Route::post('password/resetPass', [UsersController::class, 'resetPassword']);
 Route::get('/buscar-usuarios', [UsersController::class, 'buscarPorNombre']);
 Route::delete('/borrar-usuario/{id}', [UsersController::class, 'borrarUsuario']);
+Route::get('/usuarios', [UsersController::class, 'getAllUsuarios']);
+Route::post('/make-admin', [UsersController::class, 'makeAdmin'])->middleware('auth:sanctum');
+Route::post('/remove-admin', [UsersController::class, 'removeAdmin'])->middleware('auth:sanctum');
 
 //Bienvenida al mail
 Route::post('/welcome', [UsersController::class, 'welcome']);

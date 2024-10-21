@@ -148,6 +148,8 @@ export class AdminProductPanelComponent implements OnInit{
     this.productoService.agregarProducto(producto).subscribe(
       response => {
         console.log('Producto agregado exitosamente', response);
+        this.modalClose3();
+        location.reload();
       },
       error => {
         this.errorMessage = 'Error al agregar el producto';

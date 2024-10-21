@@ -22,13 +22,84 @@ export class AdminUsresPanelComponent implements OnInit{
   @ViewChild('myCheckbox') myCheckbox!: ElementRef;
   productos: any[] = [];
   categorias: any[] = [];
+  users: any[] = [];
   errorMessage: string | null = null;
   searchQuery: string = '';
+  selectedUser: any = null;
+  currentUser: any = null;
+  
 
-  constructor(private productoService: ProductoService) {}
+  constructor(private userService: UserService, private productoService: ProductoService) {}
 
   ngOnInit(): void {
-    this.getProductos();
+    this.getAllUsuarios();
+    this.getCurrentUser();
+  }
+
+  selectUser(user: any): void {
+    this.selectedUser = user;
+  }
+
+  // Buscar todos los usuarios
+  getAllUsuarios(): void {
+    this.userService.getAllUsuarios().subscribe(
+      data => {
+        this.users = data;
+      },
+      error => {
+        this.errorMessage = 'Error al cargar los usuarios';
+        console.error('Error al cargar los usuarios', error);
+      }
+    );
+  }
+
+  getCurrentUser(): void {
+    this.userService.getUserInfo().subscribe(
+      data => {
+        this.currentUser = data.user;
+      },
+      error => {
+        this.errorMessage = 'Error al obtener el usuario actual';
+        console.error('Error al obtener el usuario actual', error);
+      }
+    );
+  }
+
+  // Buscar usuarios por nombre
+  buscarPorNombre(): void {
+    if (this.searchQuery.trim() === '') {
+      this.getAllUsuarios();
+    } else {
+      this.userService.buscarPorNombre(this.searchQuery).subscribe(
+        data => {
+          this.users = data;
+        },
+        error => {
+          this.errorMessage = 'Error al buscar usuarios por nombre';
+          console.error('Error al buscar usuarios por nombre', error);
+        }
+      );
+    }
+  }
+
+  // Borrar usuario por ID
+  borrarUsuario(id: number): void {
+    this.userService.borrarUsuario(id).subscribe(
+      response => {
+        this.getAllUsuarios(); // Recargar la lista de usuarios después de borrar
+      },
+      error => {
+        this.errorMessage = 'Error al borrar el usuario';
+        console.error('Error al borrar el usuario', error);
+      }
+    );
+  }
+
+  confirmDelete() {
+    if (this.selectedUser) {
+      this.borrarUsuario(this.selectedUser.id);
+      this.modalClose2();
+    }
   }
 
   // Listar todos los productos
@@ -55,26 +126,6 @@ export class AdminUsresPanelComponent implements OnInit{
     }
   }
 
-// Buscar productos por nombre
-buscarPorNombre(): void {
-  if (this.searchQuery.trim() === '') {
-    this.getProductos();
-    return;
-  }
-
-  this.productoService.buscarPorNombre(this.searchQuery).subscribe(
-    data => {
-      this.productos = data;
-    },
-    error => {
-      this.errorMessage = 'Error al buscar productos por nombre';
-      console.error('Error al buscar productos por nombre', error);
-    }
-  );
-
-
-  
-}
 
 modal(){
   const modal = document.getElementById('container-modal') as HTMLElement;
@@ -150,26 +201,69 @@ onCheckboxChange(event: Event): void {
   }
 }
 
-modal2(){
+modal2(user: any): void {
+  this.selectedUser = user;
   const modal = document.getElementById('deleteModal') as HTMLElement;
   modal.style.display = 'flex';
 }
 
 modalClose2() {
+  this.selectedUser = null;
   const modal = document.getElementById('deleteModal') as HTMLElement;
   modal.style.display = 'none';
 }
 
-modal3(){
+modal3(user: any): void {
+  this.selectedUser = user;
   const modal = document.getElementById('sure-modal') as HTMLElement;
   modal.style.display = 'flex';
 }
 
 modalClose3() {
+  this.selectedUser = null;
   const modal = document.getElementById('sure-modal') as HTMLElement;
   modal.style.display = 'none';
 }
 
+// Método para hacer admin a un usuario
+makeAdmin(userId: number): void {
+  this.userService.makeAdmin(userId).subscribe(
+    response => {
+      console.log('Usuario ahora es admin', response);
+      this.getAllUsuarios();
+    },
+    error => {
+      this.errorMessage = 'Error al hacer admin al usuario';
+      console.error('Error al hacer admin al usuario', error);
+    }
+  );
+}
+
+removeAdmin(userId: number): void {
+  this.userService.removeAdmin(userId).subscribe(
+    response => {
+      console.log('Usuario ya no es admin', response);
+      this.getAllUsuarios(); // Recargar la lista de usuarios
+    },
+    error => {
+      this.errorMessage = 'Error al quitar admin al usuario';
+      console.error('Error al quitar admin al usuario', error);
+    }
+  );
+}
+
+confirmAction() {
+  if (this.selectedUser.admin) {
+    this.removeAdmin(this.selectedUser.id);
+  } else {
+    this.makeAdmin(this.selectedUser.id);
+  }
+  this.modalClose3();
+}
+
+isCurrentUser(user: any): boolean {
+  return this.currentUser && this.currentUser.email === user.email;
+}
 
 
 }
