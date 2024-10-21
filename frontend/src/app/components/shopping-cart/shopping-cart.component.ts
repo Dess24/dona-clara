@@ -11,6 +11,7 @@ interface Producto {
   nombre: string;
   precio: number;
   imagen: string;
+  categoria_id: number;
 }
 
 interface ItemCarrito {
@@ -80,6 +81,36 @@ export class ShoppingCartComponent implements OnInit {
     );
   }
 
+  actualizarProducto(productoId: number, nuevaCantidad: number): void {
+    // Obtener la cantidad actual del producto en el carrito
+    const item = this.carrito.productosCarrito.find(item => item.producto.id === productoId);
+    const cantidadActual = item ? item.cantidad : 0;
+  
+    if (nuevaCantidad > cantidadActual) {
+      const diferencia = nuevaCantidad - cantidadActual;
+      this.carritoService.añadirProducto(productoId, diferencia).subscribe(
+        data => {
+          this.verCarrito(); // Actualizar el carrito después de añadir un producto
+        },
+        error => {
+          this.errorMessage = 'Error al añadir el producto al carrito';
+          console.error('Error al añadir el producto al carrito', error);
+        }
+      );
+    } else if (nuevaCantidad < cantidadActual) {
+      const diferencia = cantidadActual - nuevaCantidad;
+      this.carritoService.restarProducto(productoId, diferencia).subscribe(
+        data => {
+          this.verCarrito(); // Actualizar el carrito después de restar un producto
+        },
+        error => {
+          this.errorMessage = 'Error al restar el producto del carrito';
+          console.error('Error al restar el producto del carrito', error);
+        }
+      );
+    }
+  }
+
   isRestarDisabled(cantidad: number): boolean {
     return cantidad <= 1;
   }
@@ -138,12 +169,28 @@ export class ShoppingCartComponent implements OnInit {
   console.log('Categorías seleccionadas:', this.categoriasSeleccionadas);
 }
 
+// Eliminar una categoría seleccionada y recargar productos
+eliminarCategoria(categoria: string): void {
+  const index = this.categoriasSeleccionadas.indexOf(categoria);
+  if (index !== -1) {
+    this.categoriasSeleccionadas.splice(index, 1);
+    if (this.categoriasSeleccionadas.length === 0) {
+      window.location.reload(); // Recargar la página si no hay categorías seleccionadas
+    } else {
+      this.buscarPorCategoriasSeleccionadas(); // Recargar productos después de eliminar la categoría
+    }
+  }
+  console.log('Categoría eliminada:', categoria);
+  console.log('Categorías seleccionadas:', this.categoriasSeleccionadas);
+}
+
 // Buscar productos por las categorías seleccionadas
 buscarPorCategoriasSeleccionadas(): void {
   if (this.categoriasSeleccionadas.length > 0) {
     this.productoService.buscarPorCategorias(this.categoriasSeleccionadas).subscribe(
       data => {
         this.productos = data;
+        this.modalClose(); // Cerrar el modal después de buscar
       },
       error => {
         this.errorMessage = 'Error al buscar productos por categorías';
@@ -151,8 +198,13 @@ buscarPorCategoriasSeleccionadas(): void {
       }
     );
   } else {
-    this.errorMessage = 'Por favor, seleccione al menos una categoría';
+    window.location.reload(); // Recargar la página si no hay categorías seleccionadas
   }
+}
+
+// Verificar si una categoría está seleccionada
+isCategoriaSeleccionada(categoria: string): boolean {
+  return this.categoriasSeleccionadas.includes(categoria);
 }
 
   // Buscar productos por nombre

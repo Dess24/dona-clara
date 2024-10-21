@@ -50,3 +50,19 @@
     background-color: #1B335F;
     color: white;
 }
+
+
+input[type="number"] {
+    width: 75px; /* Aumenta el tamaño del input */
+    appearance: textfield; /* Propiedad estándar */
+    -webkit-appearance: textfield; /* Compatibilidad con navegadores Webkit */
+    -moz-appearance: textfield; /* Compatibilidad con Firefox */
+    position: relative;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {  
+
+   opacity: 1;
+
+}

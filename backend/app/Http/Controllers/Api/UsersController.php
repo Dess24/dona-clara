@@ -17,6 +17,58 @@ use PHPMailer\PHPMailer\SMTP;
 class UsersController extends Controller
 {
 
+
+
+    public function makeAdmin(Request $request)
+    {
+        $adminUser = Auth::user();
+    
+        if (!$adminUser) {
+            return response()->json(['message' => 'User not authenticated'], 401);
+        }
+    
+        if (!$adminUser->admin) {
+            return response()->json(['message' => 'User is not an admin'], 403);
+        }
+    
+        $userId = $request->input('user_id');
+        $user = User::find($userId);
+    
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+    
+        $user->admin = true;
+        $user->save();
+    
+        return response()->json(['message' => 'User is now an admin'], 200);
+    }
+
+    public function removeAdmin(Request $request)
+{
+    $adminUser = Auth::user();
+
+    if (!$adminUser) {
+        return response()->json(['message' => 'User not authenticated'], 401);
+    }
+
+    if (!$adminUser->admin) {
+        return response()->json(['message' => 'User is not an admin'], 403);
+    }
+
+    $userId = $request->input('user_id');
+    $user = User::find($userId);
+
+    if (!$user) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
+    $user->admin = false;
+    $user->save();
+
+    return response()->json(['message' => 'User is no longer an admin'], 200);
+}
+
 // Registro de usuario
 public function register(Request $request)
 {
@@ -63,6 +115,13 @@ public function register(Request $request)
         $request->user()->tokens()->delete();
 
         return response()->json(['message' => 'Logged out successfully'], 200);
+    }
+
+    // Obtener todos los usuarios
+    public function getAllUsuarios()
+    {
+        $usuarios = User::all();
+        return response()->json($usuarios);
     }
 
 

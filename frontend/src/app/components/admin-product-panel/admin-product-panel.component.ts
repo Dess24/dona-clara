@@ -148,6 +148,8 @@ export class AdminProductPanelComponent implements OnInit{
     this.productoService.agregarProducto(producto).subscribe(
       response => {
         console.log('Producto agregado exitosamente', response);
+        this.modalClose3();
+        location.reload();
       },
       error => {
         this.errorMessage = 'Error al agregar el producto';
@@ -337,7 +339,7 @@ buscarPorCategoriasSeleccionadas(): void {
       }
     );
   } else {
-    this.errorMessage = 'Por favor, seleccione al menos una categoría';
+    window.location.reload(); // Recargar la página si no hay categorías seleccionadas
   }
 }
 }

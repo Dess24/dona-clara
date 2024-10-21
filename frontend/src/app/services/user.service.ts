@@ -40,4 +40,40 @@ getUserInfo(): Observable<{ user: { admin: number } }> {
       headers: { Authorization: `Bearer ${token}` }
     });
   }
+
+  // Buscar usuarios por nombre
+  buscarPorNombre(nombre: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/buscar-usuarios`, { params: { name: nombre } });
+  }
+
+  // Borrar usuario por ID
+  borrarUsuario(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/borrar-usuario/${id}`);
+  }
+
+  // Obtener todos los usuarios
+  getAllUsuarios(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/usuarios`);
+  }
+  // Hacer admin a un usuario por ID
+  makeAdmin(userId: number): Observable<any> {
+    const token = localStorage.getItem('auth_token');
+    return this.http.post(`${this.apiUrl}/make-admin`, { user_id: userId }, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      })
+    });
+  }
+
+   // Quitar admin a un usuario por ID
+  removeAdmin(userId: number): Observable<any> {
+    const token = localStorage.getItem('auth_token');
+    return this.http.post(`${this.apiUrl}/remove-admin`, { user_id: userId }, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      })
+    });
+  }
 }
