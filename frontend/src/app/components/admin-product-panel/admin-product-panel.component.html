@@ -179,9 +179,19 @@
               
             Agregar producto
           </button>
+          <br>
+          <!-- Botón para abrir el modal de "Crear categoría" -->
+          <button (click)="modal5()" class="rounded-lg p-4 bg-green-600 inline-flex items-center text-sm font-medium text-white hover:bg-green-700 dark:text-white">
+            <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+          </svg>
+            Crear categoría
+          </button>
         </div>
       </div>
     </div>
+
+    
   </section>
 
 
@@ -219,56 +229,56 @@
 
 
     <!-- Modal add -->
-      <div id="crud-modal" class="container-modal">
-          <div class="relative p-4 w-2/5">
-              <!-- Modal content -->
-              <div class="animate__animated animate__jackInTheBox animate__faster relative p-6 bg-white rounded-lg shadow dark:bg-gray-700">
-                  <!-- Modal header -->
-                  <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                      <h3 class="text-2xl font-bold text-gray-900 dark:text-white">
-                          Agregar nuevo producto
-                      </h3>
-                      <button (click)="modalClose3()" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
-                          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                          </svg>
-                          <span class="sr-only">Close modal</span>
-                      </button>
-                  </div>
-                  <!-- Modal body -->
-                  <form class="p-4 md:p-5" (ngSubmit)="agregarProducto(productoForm.value)" #productoForm="ngForm">
-                    <div class="grid gap-4 mb-4 grid-cols-2">
-                        <div class="col-span-2">
-                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-                            <input type="text" name="nombre" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nombre del producto" required ngModel>
-                        </div>
-                        <div class="col-span-2 sm:col-span-1">
-                            <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio</label>
-                            <input type="number" name="precio" id="price" (input)="limitDigits($event)" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Precio" ngModel>
-                        </div>
-                        <div class="col-span-2 sm:col-span-1">
-                            <label for="stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stock</label>
-                            <input type="number" name="cantidad" id="stock" (input)="limitDigits($event)" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Stock" ngModel>
-                        </div>
-                        <div class="col-span-2 sm:col-span-1">
-                            <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoría</label>
-                            <select id="category" name="categoria" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required ngModel>
-                              <option *ngFor="let categoria of categorias" [value]="categoria.nombre">{{ categoria.nombre }}</option>
-                            </select>
-                        </div>
-                        <div class="col-span-2">
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción del producto</label>
-                            <textarea id="description" name="descripcion" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Escriba la descripción aquí" required ngModel></textarea>                    
-                        </div>
-                    </div>
-                    <button type="submit" class="text-white inline-flex items-center bg-green-600 hover:bg-green-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                        Agregar producto
-                    </button>
-                </form>
-              </div>
+    <div id="crud-modal" class="container-modal">
+      <div class="relative p-4 w-2/5">
+        <!-- Modal content -->
+        <div class="animate__animated animate__jackInTheBox animate__faster relative p-6 bg-white rounded-lg shadow dark:bg-gray-700">
+          <!-- Modal header -->
+          <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">
+              Agregar nuevo producto
+            </h3>
+            <button (click)="modalClose3()" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+              <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+              </svg>
+              <span class="sr-only">Close modal</span>
+            </button>
           </div>
-      </div> 
+          <!-- Modal body -->
+          <form class="p-4 md:p-5" (ngSubmit)="agregarProducto(productoForm.value)" #productoForm="ngForm">
+            <div class="grid gap-4 mb-4 grid-cols-2">
+              <div class="col-span-2">
+                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+                <input type="text" name="nombre" id="name" [(ngModel)]="producto.nombre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nombre del producto" required>
+              </div>
+              <div class="col-span-2 sm:col-span-1">
+                <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio</label>
+                <input type="number" name="precio" id="price" [(ngModel)]="producto.precio" (input)="limitDigits($event)" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 7);" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Precio" required>
+              </div>
+              <div class="col-span-2 sm:col-span-1">
+                <label for="stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stock</label>
+                <input type="number" name="cantidad" id="stock" [(ngModel)]="producto.cantidad" (input)="limitDigits($event)" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 7);" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Stock" required>
+              </div>
+              <div class="col-span-2 sm:col-span-1">
+                <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoría</label>
+                <select id="category" name="categoria" [(ngModel)]="producto.categoria" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
+                  <option *ngFor="let categoria of categorias" [value]="categoria.nombre">{{ categoria.nombre }}</option>
+                </select>
+              </div>
+              <div class="col-span-2">
+                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción del producto (Opcional)</label>
+                <textarea id="description" name="descripcion" [(ngModel)]="producto.descripcion" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Escriba la descripción aquí" required></textarea>                    
+              </div>
+            </div>
+            <button type="submit" [disabled]="!isFormValidAdd()" [ngClass]="{'bg-gray-400': !isFormValidAdd(), 'bg-green-600 hover:bg-green-700': isFormValidAdd()}" class="text-white inline-flex items-center font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+              Agregar producto
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
 
 
 
@@ -290,34 +300,73 @@
           <span class="sr-only">Close modal</span>
         </button>
       </div>
-<!-- Modal body -->
-<form (ngSubmit)="onSubmit()" class="p-4 md:p-5">
-  <div *ngIf="errorMessage" class="mb-4 text-sm text-red-600 dark:text-red-400">
-    {{ errorMessage }}
+      <!-- Modal body -->
+      <form (ngSubmit)="onSubmit()" class="p-4 md:p-5">
+        <div *ngIf="errorMessage" class="mb-4 text-sm text-red-600 dark:text-red-400">
+          {{ errorMessage }}
+        </div>
+        <div class="grid gap-4 mb-4 grid-cols-2">
+          <div class="col-span-2">
+            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+            <input [(ngModel)]="selectedProduct.nombre" (input)="checkFormValidity()" [ngModelOptions]="{standalone: true}" type="text" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nombre del producto" required>
+          </div>
+          <div class="col-span-2 sm:col-span-1">
+            <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio</label>
+            <input [(ngModel)]="selectedProduct.precio" (input)="checkFormValidity(); limitDigits($event)" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" [ngModelOptions]="{standalone: true}" type="number" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Precio" required>
+          </div>
+          <div class="col-span-2 sm:col-span-1">
+            <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoría</label>
+            <select id="category" [(ngModel)]="selectedProduct.categoria" (change)="checkFormValidity()" [ngModelOptions]="{standalone: true}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+              <option style="display: none;" [value]="selectedProduct.categoria" selected>{{ selectedProduct.categoria || 'Categoría' }}</option>
+              <option *ngFor="let categoria of categorias" [value]="categoria.nombre">{{ categoria.nombre }}</option>
+            </select>
+          </div>
+          <div class="col-span-2">
+            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción del producto (Opcional)</label>
+            <textarea [(ngModel)]="selectedProduct.descripcion" [ngModelOptions]="{standalone: true}" id="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Escriba la descripción aquí"></textarea>                    
+          </div>
+        </div>
+        <button type="submit" [disabled]="!isFormValid" [ngClass]="{'bg-gray-500': !isFormValid, 'bg-amber-500 hover:bg-amber-600': isFormValid}" class="text-white inline-flex items-center focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+          Modificar producto
+        </button>
+      </form>
+    </div>
   </div>
-  <div class="grid gap-4 mb-4 grid-cols-2">
-    <div class="col-span-2">
-      <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-      <input [(ngModel)]="selectedProduct.nombre" (input)="checkFormValidity()" [ngModelOptions]="{standalone: true}" type="text" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nombre del producto" required>
-    </div>
-    <div class="col-span-2 sm:col-span-1">
-      <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio</label>
-      <input [(ngModel)]="selectedProduct.precio" (input)="limitDigits($event)" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" [ngModelOptions]="{standalone: true}" type="number" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Precio" required>
-    </div>
-    <div class="col-span-2 sm:col-span-1">
-      <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoría</label>
-      <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-        <option style="display: none;" [value]="selectedProduct.categoria" selected>{{ selectedProduct.categoria|| 'Categoría' }}</option>
-        <option *ngFor="let categoria of categorias" [value]="categoria.nombre">{{ categoria.nombre }}</option>
-      </select>
-    </div>
-    <div class="col-span-2">
-      <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción del producto</label>
-      <textarea [(ngModel)]="selectedProduct.descripcion" [ngModelOptions]="{standalone: true}" id="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Escriba la descripción aquí"></textarea>                    
+</div>
+
+
+<!-- Modal create category -->
+<div id="create-category-modal" class="container-modal">
+  <div class="relative p-4 w-2/5">
+    <!-- Modal content -->
+    <div class="animate__animated animate__jackInTheBox animate__faster relative p-6 bg-white rounded-lg shadow dark:bg-gray-700">
+      <!-- Modal header -->
+      <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">
+          Crear nueva categoría
+        </h3>
+        <button (click)="modalClose5()" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="create-category-modal">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <form (ngSubmit)="agregarCategoria({ nombre: nuevaCategoria })" class="p-4 md:p-5">
+        <div *ngIf="errorMessage" class="mb-4 text-sm text-red-600 dark:text-red-400">
+          {{ errorMessage }}
+        </div>
+        <div class="mb-4">
+          <label for="category-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre de la categoría</label>
+          <input [(ngModel)]="nuevaCategoria" [ngModelOptions]="{standalone: true}" type="text" id="category-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nombre de la categoría" required>
+        </div>
+        <button type="submit" class="text-white inline-flex items-center bg-green-600 hover:bg-green-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+          Crear categoría
+        </button>
+      </form>
     </div>
   </div>
-  <button type="submit" [disabled]="!isFormValid" [ngClass]="{'bg-gray-500': !isFormValid, 'bg-amber-500 hover:bg-amber-600': isFormValid}" class="text-white inline-flex items-center focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-    Modificar producto
-  </button>
-</form>
+</div>

@@ -24,9 +24,23 @@ export class AdminProductPanelComponent implements OnInit{
   baseUrl: string = 'http://localhost:8000/images/uploads/';
   productoAEliminar: number | null = null;
   private stock: number = 0;
-  selectedProduct: any = {};
-  isFormValid = false;
+  selectedProduct: any = {
+    nombre: '',
+    precio: '',
+    cantidad: '',
+    categoria: '',
+    descripcion: ''
+  };
+  isFormValid: boolean = false;
   categoriasSeleccionadas: string[] = [];
+  producto: any = {
+    nombre: '',
+    precio: '',
+    cantidad: '',
+    categoria: '',
+    descripcion: ''
+  };
+  nuevaCategoria: string = '';
 
   
   constructor(private productoService: ProductoService) {}
@@ -225,6 +239,7 @@ export class AdminProductPanelComponent implements OnInit{
     this.productoService.agregarCategoria(categoria).subscribe(
       response => {
         console.log('Categoría agregada exitosamente', response);
+        window.location.reload();
       },
       error => {
         this.errorMessage = 'Error al agregar la categoría';
@@ -285,11 +300,8 @@ export class AdminProductPanelComponent implements OnInit{
     this.modificarProducto(this.selectedProduct.id, this.selectedProduct);
   }
   
-  checkFormValidity() {
-    if (this.selectedProduct.precio !== null && this.selectedProduct.precio.toString().length > 7) {
-      this.selectedProduct.precio = parseInt(this.selectedProduct.precio.toString().slice(0, 7), 10);
-    }
-    this.isFormValid = this.selectedProduct.nombre.trim() !== '' && this.selectedProduct.precio !== null && this.selectedProduct.precio <= 9999999;
+  checkFormValidity(): void {
+    this.isFormValid = this.selectedProduct.nombre && this.selectedProduct.precio && this.selectedProduct.cantidad && this.selectedProduct.categoria;
   }
 
   limitDigits(event: any) {
@@ -298,6 +310,10 @@ export class AdminProductPanelComponent implements OnInit{
       input.value = input.value.slice(0, 7);
     }
     this.selectedProduct.precio = input.value;
+  }
+
+  isFormValidAdd(): boolean {
+    return this.producto.nombre && this.producto.precio && this.producto.cantidad && this.producto.categoria;
   }
 
 // Manejar la selección de categorías
@@ -346,6 +362,21 @@ buscarPorCategoriasSeleccionadas(): void {
     );
   } else {
     window.location.reload(); // Recargar la página si no hay categorías seleccionadas
+  }
+}
+
+
+modal5(): void {
+  const modal = document.getElementById('create-category-modal');
+  if (modal) {
+    modal.style.display = 'block';
+  }
+}
+
+modalClose5(): void {
+  const modal = document.getElementById('create-category-modal');
+  if (modal) {
+    modal.style.display = 'none';
   }
 }
 }

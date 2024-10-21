@@ -72,7 +72,7 @@ export class ProductoService {
   // Agregar una categoría (requiere token)
   agregarCategoria(categoria: any): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.getToken()}`);
-    return this.http.post<any>(`${this.apiUrl}/categorias`, categoria, { headers });
+    return this.http.post<any>(`${this.apiUrl}/create-categoria`, categoria, { headers });
   }
 
   // Borrar una categoría (requiere token)

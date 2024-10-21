@@ -72,43 +72,43 @@ public function buscarPorCategoria($categoriaNombres)
 
     // Función para agregar un producto
     public function agregarProducto(Request $request)
-    {
-        // Lista de campos requeridos
-        $requiredFields = ['nombre', 'descripcion', 'precio', 'cantidad', 'categoria'];
-        
-        // Verificar si todos los campos requeridos están presentes en la solicitud
-        foreach ($requiredFields as $field) {
-            if (!$request->has($field)) {
-                return response()->json(['message' => "No se ha introducido un valor para el campo: $field"], 400);
-            }
+{
+    // Lista de campos requeridos
+    $requiredFields = ['nombre', 'precio', 'cantidad', 'categoria'];
+    
+    // Verificar si todos los campos requeridos están presentes en la solicitud
+    foreach ($requiredFields as $field) {
+        if (!$request->has($field)) {
+            return response()->json(['message' => "No se ha introducido un valor para el campo: $field"], 400);
         }
-    
-        // Validar los datos de la solicitud
-        $validatedData = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'required|string|max:1000',
-            'precio' => 'required|integer|min:0',
-            'cantidad' => 'required|integer|min:0',
-            'categoria' => 'required|string|max:255',
-        ]);
-    
-        // Verificar si la categoría es válida
-        $categoria = Categoria::where('nombre', $validatedData['categoria'])->first();
-        if (!$categoria) {
-            return response()->json(['message' => 'La categoría proporcionada no es válida'], 400);
-        }
-    
-        // Crear un nuevo producto con los datos validados y la categoría válida
-        $producto = Producto::create([
-            'nombre' => $validatedData['nombre'],
-            'descripcion' => $validatedData['descripcion'],
-            'precio' => $validatedData['precio'],
-            'cantidad' => $validatedData['cantidad'],
-            'categoria_id' => $categoria->id,
-        ]);
-    
-        return response()->json(['message' => 'Producto agregado exitosamente', 'producto' => $producto], 201);
     }
+
+    // Validar los datos de la solicitud
+    $validatedData = $request->validate([
+        'nombre' => 'required|string|max:255',
+        'descripcion' => 'nullable|string|max:1000', // Descripción es opcional
+        'precio' => 'required|integer|min:0',
+        'cantidad' => 'required|integer|min:0',
+        'categoria' => 'required|string|max:255',
+    ]);
+
+    // Verificar si la categoría es válida
+    $categoria = Categoria::where('nombre', $validatedData['categoria'])->first();
+    if (!$categoria) {
+        return response()->json(['message' => 'La categoría proporcionada no es válida'], 400);
+    }
+
+    // Crear un nuevo producto con los datos validados y la categoría válida
+    $producto = Producto::create([
+        'nombre' => $validatedData['nombre'],
+        'descripcion' => $validatedData['descripcion'] ?? '', // Si no hay descripción, se guarda como cadena vacía
+        'precio' => $validatedData['precio'],
+        'cantidad' => $validatedData['cantidad'],
+        'categoria_id' => $categoria->id,
+    ]);
+
+    return response()->json(['message' => 'Producto agregado exitosamente', 'producto' => $producto], 201);
+}
 
 
 
