@@ -156,7 +156,7 @@ export class AdminProductPanelComponent implements OnInit{
       response => {
         console.log('Producto agregado exitosamente', response);
         this.modalClose3();
-        location.reload();
+        this.getProductos();
       },
       error => {
         this.errorMessage = 'Error al agregar el producto';
@@ -193,7 +193,7 @@ export class AdminProductPanelComponent implements OnInit{
       response => {
         console.log('Producto modificado exitosamente', response);
         this.modalClose4();
-        location.reload();
+        this.getProductos();
       },
       error => {
         this.errorMessage = 'Error al modificar el producto';
@@ -374,6 +374,95 @@ ordenarPorPrecio(): void {
       this.getProductos();
       this.sortState = 0;
   }
+}
+
+showAlert1() {
+  setTimeout(() => {
+    const modal = document.getElementById('alert-container1') as HTMLElement;
+    modal.style.display = 'flex';
+    modal.classList.add('fade-in');
+
+    setTimeout(() => {
+      modal.classList.remove('fade-in');
+      modal.classList.add('fade-out');
+
+      setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('fade-out');
+      }, 500); // Duration of fade-out animation
+    }, 2000);
+  }, 1000); // Wait for 1 second before executing the function
+}
+
+showAlert2() {
+  setTimeout(() => {
+    const modal = document.getElementById('alert-container2') as HTMLElement;
+    modal.style.display = 'flex';
+    modal.classList.add('fade-in');
+
+    setTimeout(() => {
+      modal.classList.remove('fade-in');
+      modal.classList.add('fade-out');
+
+      setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('fade-out');
+      }, 500); // Duration of fade-out animation
+    }, 2000);
+  }, 1000); // Wait for 1 second before executing the function
+}
+
+showAlert3() {
+  setTimeout(() => {
+    const modal = document.getElementById('alert-container3') as HTMLElement;
+    modal.style.display = 'flex';
+    modal.classList.add('fade-in');
+
+    setTimeout(() => {
+      modal.classList.remove('fade-in');
+      modal.classList.add('fade-out');
+
+      setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('fade-out');
+      }, 500); // Duration of fade-out animation
+    }, 2000);
+  }, 1000); // Wait for 1 second before executing the function
+}
+
+showAlert4() {
+  setTimeout(() => {
+    const modal = document.getElementById('alert-container4') as HTMLElement;
+    modal.style.display = 'flex';
+    modal.classList.add('fade-in');
+
+    setTimeout(() => {
+      modal.classList.remove('fade-in');
+      modal.classList.add('fade-out');
+
+      setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('fade-out');
+      }, 500); // Duration of fade-out animation
+    }, 2000);
+  }, 1000); // Wait for 1 second before executing the function
+}
+
+modalClose5() {
+  const modal = document.getElementById('alert-container1') as HTMLElement;
+  modal.style.display = 'none';
+}
+modalClose6() {
+  const modal = document.getElementById('alert-container2') as HTMLElement;
+  modal.style.display = 'none';
+}
+modalClose7() {
+  const modal = document.getElementById('alert-container3') as HTMLElement;
+  modal.style.display = 'none';
+}
+modalClose8() {
+  const modal = document.getElementById('alert-container4') as HTMLElement;
+  modal.style.display = 'none';
 }
 
 
