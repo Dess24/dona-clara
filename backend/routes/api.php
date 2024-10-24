@@ -34,7 +34,7 @@ Route::get('productos/categorias/{categoriaNombres}', [ProductoController::class
 Route::get('/productos/nombre/{nombre}', [ProductoController::class, 'buscarPorNombre']);
 Route::get('/recientes', [ProductoController::class, 'mostrarRecientes']);
 Route::post('/imagenes', [ProductoController::class, 'subirImagen']);
-
+Route::delete('carrito/producto/{productoId}', [CarritoController::class, 'eliminarProductoDelCarrito']);
 
 
 

@@ -44,4 +44,10 @@ export class CarritoService {
       'Authorization': `Bearer ${token}`
     });
   }
+
+  // Eliminar un producto del carrito
+  eliminarProducto(productoId: number, userId: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete<any>(`${this.apiUrl}/carrito/producto/${productoId}`, { headers, body: { user_id: userId } });
+  }
 }
