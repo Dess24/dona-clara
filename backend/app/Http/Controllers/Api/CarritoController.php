@@ -282,4 +282,26 @@ class CarritoController extends Controller
             ], 200);
         }
     }
+
+    public function eliminarProductoDelCarrito(Request $request, $productoId)
+    {
+        // Obtener el carrito del usuario (asumiendo que el usuario está autenticado)
+        $carrito = Carrito::where('user_id', $request->user()->id)->first();
+
+        if (!$carrito) {
+            return response()->json(['message' => 'Carrito no encontrado'], 404);
+        }
+
+        // Buscar el producto en el carrito
+        $productoEnCarrito = $carrito->productos()->where('producto_id', $productoId)->first();
+
+        if (!$productoEnCarrito) {
+            return response()->json(['message' => 'Producto no encontrado en el carrito'], 404);
+        }
+
+        // Eliminar el producto del carrito
+        $carrito->productos()->detach($productoId);
+
+        return response()->json(['message' => 'Producto eliminado del carrito'], 200);
+    }
 }

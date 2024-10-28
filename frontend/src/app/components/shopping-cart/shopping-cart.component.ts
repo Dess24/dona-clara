@@ -310,6 +310,6 @@ isCategoriaSeleccionada(categoria: string): boolean {
         this.sortState = 0;
     }
   }
-
+  
 
 }
