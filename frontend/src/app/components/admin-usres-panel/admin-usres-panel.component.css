@@ -36,15 +36,16 @@
     color: rgb(22 101 52);
 }
 .menu-vertical{
-    position: absolute;
-    display: none;
-    list-style: none;
-    background-color: #1B335F;
-    color: white;
-    margin-top: 300px;
-    text-align: center;
-    width: 8.5em;
+  position: absolute;
+  display: none;
+  list-style: none;
+  background-color: #1B335F;
+  color: white;
+  margin-top: 300px;
+  text-align: center;
+  width: 10em;
 }
+
 .sort:hover .menu-vertical{
     display: block;
 }
