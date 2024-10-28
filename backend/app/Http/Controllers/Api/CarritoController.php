@@ -9,6 +9,9 @@ use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use FPDF;
+use App\Models\User;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class CarritoController extends Controller
 {
@@ -144,7 +147,6 @@ class CarritoController extends Controller
     }
 
 
-    // Pagar el carrito
     public function checkout()
     {
         $userId = Auth::id();
@@ -154,6 +156,7 @@ class CarritoController extends Controller
     
         $user = Auth::user();
         $userName = $user->name;
+        $userEmail = $user->email; // Obtener el correo electrónico del usuario
     
         $carrito = Carrito::where('user_id', $userId)->first();
         if (!$carrito || $carrito->monto_total == 0) {
@@ -182,7 +185,7 @@ class CarritoController extends Controller
         });
     
         // Generar el PDF de la factura
-        $pdfPath = $this->facturaCompra($productosComprados, $montoTotalGastado, $userName);
+        $pdfPath = $this->facturaCompra($productosComprados, $montoTotalGastado, $userName, $userEmail);
     
         return response()->json([
             'message' => 'Compra realizada con éxito',
@@ -191,9 +194,8 @@ class CarritoController extends Controller
             'pdf_path' => $pdfPath,
         ]);
     }
-
     
-    public function facturaCompra($productosComprados, $montoTotalGastado, $userName)
+    public function facturaCompra($productosComprados, $montoTotalGastado, $userName, $userEmail)
     {
         // Crear la carpeta 'pdfs' si no existe
         if (!file_exists('pdfs')) {
@@ -228,18 +230,18 @@ class CarritoController extends Controller
     
         // Encabezado de la tabla
         $pdf->SetFont('Arial', 'B', 12);
-        $pdf->Cell(60, 10, 'Nombre del Producto', 1);
-        $pdf->Cell(40, 10, 'Cantidad', 1);
-        $pdf->Cell(60, 10, 'Precio', 1);
+        $pdf->Cell(90, 10, 'Nombre del Producto', 1); // Ancho fijo de 90
+        $pdf->Cell(30, 10, 'Cantidad', 1); // Ajustar ancho a 30
+        $pdf->Cell(70, 10, 'Precio', 1); // Ancho fijo de 70
         $pdf->Ln();
     
         // Datos de los productos comprados
         $pdf->SetFont('Arial', '', 12);
         foreach ($productosComprados as $producto) {
-            $pdf->Cell(60, 10, iconv('UTF-8', 'ISO-8859-1', $producto['nombre']), 1);
-            $pdf->Cell(40, 10, $producto['cantidad'], 1);
+            $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', $producto['nombre']), 1); // Ancho fijo de 90
+            $pdf->Cell(30, 10, $producto['cantidad'], 1); // Ajustar ancho a 30
             $precioTotal = $producto['cantidad'] * $producto['precio'];
-            $pdf->Cell(60, 10, number_format($precioTotal, 2) . ' (' . number_format($producto['precio'], 2) . '$ por unidad)', 1);
+            $pdf->Cell(70, 10, number_format($precioTotal, 2) . ' (' . number_format($producto['precio'], 2) . '$ por unidad)', 1); // Ancho fijo de 70
             $pdf->Ln();
         }
     
@@ -257,6 +259,27 @@ class CarritoController extends Controller
         $pdfPath = 'pdfs/factura_compra_' . time() . '.pdf';
         $pdf->Output('F', $pdfPath);
     
-        return $pdfPath;
+        // Enviar el PDF por correo electrónico
+        $email = $userEmail;
+        $subject = 'Factura de Compra';
+        $body = 'Adjunto encontrará la factura de su compra.';
+    
+        $phpMailer = new PHPMailerController();
+    
+        try {
+            ob_start();
+            $phpMailer->sendEmail($email, $subject, $body, $pdfPath);
+            $smtpLog = ob_get_clean();
+    
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Factura generada y enviada correctamente.',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Factura generada, pero no se pudo enviar el correo. Error: ' . $e->getMessage()
+            ], 200);
+        }
     }
 }

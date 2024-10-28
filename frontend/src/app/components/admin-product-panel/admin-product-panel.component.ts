@@ -24,10 +24,30 @@ export class AdminProductPanelComponent implements OnInit{
   baseUrl: string = 'http://localhost:8000/images/uploads/';
   productoAEliminar: number | null = null;
   private stock: number = 0;
-  selectedProduct: any = {};
-  isFormValid = false;
+  selectedProduct: any = {
+    nombre: '',
+    precio: '',
+    cantidad: '',
+    categoria: '',
+    descripcion: '',
+    imagen: ''
+  };
+  isFormValid: boolean = false;
   categoriasSeleccionadas: string[] = [];
-  sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente
+  producto: any = {
+    nombre: '',
+    precio: '',
+    cantidad: '',
+    categoria: '',
+    descripcion: '',
+    imagen: ''
+  };
+  nuevaCategoria: string = '';
+  sortState: number = 0;
+  imagen: File | null = null;
+  filtroAlfabeticoActivo: string | null = null;
+filtroPrecioActivo: string | null = null;
+fileUploaded: boolean = false;
 
   
   constructor(private productoService: ProductoService) {}
@@ -50,6 +70,101 @@ export class AdminProductPanelComponent implements OnInit{
       }
     );
   }
+
+// Manejar la selección de la imagen
+onFileSelected(event: any): void {
+  if (event.target.files.length > 0) {
+    this.imagen = event.target.files[0];
+    this.subirImagen(); // Subir la imagen inmediatamente después de seleccionarla
+  }
+}
+
+// Subir la imagen
+subirImagen(): void {
+  if (this.imagen) {
+    this.productoService.subirImagen(this.imagen).subscribe(
+      response => {
+        console.log('Imagen subida correctamente', response);
+        this.selectedProduct.imagen = `${this.baseUrl}${response.nombreArchivo}`; // Guardar la ruta de la imagen
+      },
+      error => {
+        console.error('Error al subir la imagen', error);
+      }
+    );
+  } else {
+    console.error('No se ha seleccionado ninguna imagen');
+  }
+}
+
+// Agregar un producto
+agregarProducto(): void {
+  if (this.imagen) {
+    this.productoService.subirImagen(this.imagen).subscribe(
+      response => {
+        console.log('Imagen subida correctamente', response);
+        this.producto.imagen = response.nombreArchivo; // Guardar solo el nombre de la imagen
+        this.productoService.agregarProducto(this.producto).subscribe(
+          response => {
+            console.log('Producto agregado correctamente', response);
+            this.getProductos(); // Actualizar la lista de productos
+            this.modalClose3(); // Cerrar el modal de agregar producto
+          },
+          error => {
+            console.error('Error al agregar el producto', error);
+          }
+        );
+      },
+      error => {
+        console.error('Error al subir la imagen', error);
+      }
+    );
+  } else {
+    console.error('No se ha seleccionado ninguna imagen');
+  }
+}
+
+// Modificar un producto
+modificarProducto(id: number, producto: any): void {
+  this.productoService.modificarProducto(id, producto).subscribe(
+    response => {
+      console.log('Producto modificado correctamente', response);
+      this.getProductos();
+      this.modalClose4() // Actualizar la lista de productos
+    },
+    error => {
+      console.error('Error al modificar el producto', error);
+    }
+  );
+}
+
+// Subir la imagen y luego modificar el producto
+subirImagenYModificarProducto(): void {
+  if (this.imagen) {
+    this.productoService.subirImagen(this.imagen).subscribe(
+      response => {
+        console.log('Imagen subida correctamente', response);
+        this.selectedProduct.imagen = response.nombreArchivo; // Guardar solo el nombre de la imagen
+        this.modificarProducto(this.selectedProduct.id, this.selectedProduct); // Modificar el producto con el nuevo nombre de la imagen
+        this.modalClose4(); // Cerrar el modal de modificar producto
+      },
+      error => {
+        console.error('Error al subir la imagen', error);
+      }
+    );
+  } else {
+    this.modificarProducto(this.selectedProduct.id, this.selectedProduct);
+    this.modalClose4(); // Cerrar el modal de modificar producto
+  }
+}
+
+// Manejar el envío del formulario
+onSubmit(): void {
+  if (this.imagen) {
+    this.subirImagenYModificarProducto();
+  } else {
+    this.modificarProducto(this.selectedProduct.id, this.selectedProduct);
+  }
+}
 
    // Buscar productos por una o más categorías
   buscarPorCategorias(categorias: string[]): void {
@@ -151,19 +266,6 @@ export class AdminProductPanelComponent implements OnInit{
     );
   }
 
-  agregarProducto(producto: any): void {
-    this.productoService.agregarProducto(producto).subscribe(
-      response => {
-        console.log('Producto agregado exitosamente', response);
-        this.modalClose3();
-        this.getProductos();
-      },
-      error => {
-        this.errorMessage = 'Error al agregar el producto';
-        console.error('Error al agregar el producto', error);
-      }
-    );
-  }
 
   quitarProducto(id: number): void {
     this.productoAEliminar = id;
@@ -188,19 +290,7 @@ export class AdminProductPanelComponent implements OnInit{
     }
   }
 
-  modificarProducto(id: number, producto: any): void {
-    this.productoService.modificarProducto(id, producto).subscribe(
-      response => {
-        console.log('Producto modificado exitosamente', response);
-        this.modalClose4();
-        this.getProductos();
-      },
-      error => {
-        this.errorMessage = 'Error al modificar el producto';
-        console.error('Error al modificar el producto', error);
-      }
-    );
-  }
+
 
   actualizarStock(productId: number, cantidad: number): void {
     this.stock = cantidad;
@@ -226,6 +316,7 @@ export class AdminProductPanelComponent implements OnInit{
     this.productoService.agregarCategoria(categoria).subscribe(
       response => {
         console.log('Categoría agregada exitosamente', response);
+        window.location.reload();
       },
       error => {
         this.errorMessage = 'Error al agregar la categoría';
@@ -282,15 +373,9 @@ export class AdminProductPanelComponent implements OnInit{
     modal.style.display = 'none';
   }
 
-  onSubmit(): void {
-    this.modificarProducto(this.selectedProduct.id, this.selectedProduct);
-  }
   
-  checkFormValidity() {
-    if (this.selectedProduct.precio !== null && this.selectedProduct.precio.toString().length > 7) {
-      this.selectedProduct.precio = parseInt(this.selectedProduct.precio.toString().slice(0, 7), 10);
-    }
-    this.isFormValid = this.selectedProduct.nombre.trim() !== '' && this.selectedProduct.precio !== null && this.selectedProduct.precio <= 9999999;
+  checkFormValidity(): void {
+    this.isFormValid = this.selectedProduct.nombre && this.selectedProduct.precio && this.selectedProduct.cantidad && this.selectedProduct.categoria;
   }
 
   limitDigits(event: any) {
@@ -299,6 +384,10 @@ export class AdminProductPanelComponent implements OnInit{
       input.value = input.value.slice(0, 7);
     }
     this.selectedProduct.precio = input.value;
+  }
+
+  isFormValidAdd(): boolean {
+    return this.producto.nombre && this.producto.precio && this.producto.cantidad && this.producto.categoria;
   }
 
 // Manejar la selección de categorías
@@ -317,20 +406,7 @@ isCategoriaSeleccionada(categoria: string): boolean {
   return this.categoriasSeleccionadas.includes(categoria);
 }
 
-// Eliminar una categoría seleccionada y recargar productos
-eliminarCategoria(categoria: string): void {
-  const index = this.categoriasSeleccionadas.indexOf(categoria);
-  if (index !== -1) {
-    this.categoriasSeleccionadas.splice(index, 1);
-    if (this.categoriasSeleccionadas.length === 0) {
-      window.location.reload(); // Recargar la página si no hay categorías seleccionadas
-    } else {
-      this.buscarPorCategoriasSeleccionadas(); // Recargar productos después de eliminar la categoría
-    }
-  }
-  console.log('Categoría eliminada:', categoria);
-  console.log('Categorías seleccionadas:', this.categoriasSeleccionadas);
-}
+
 
 // Buscar productos por las categorías seleccionadas
 buscarPorCategoriasSeleccionadas(): void {
@@ -350,29 +426,18 @@ buscarPorCategoriasSeleccionadas(): void {
   }
 }
 
-ordenarAlfabeticamente(): void {
-  if (this.sortState === 0) {
-      this.productos.sort((a, b) => a.nombre.localeCompare(b.nombre));
-      this.sortState = 1;
-  } else if (this.sortState === 1) {
-      this.productos.sort((a, b) => b.nombre.localeCompare(a.nombre));
-      this.sortState = 2;
-  } else {
-      this.getProductos();
-      this.sortState = 0;
+
+modal5(): void {
+  const modal = document.getElementById('create-category-modal');
+  if (modal) {
+    modal.style.display = 'block';
   }
 }
 
-ordenarPorPrecio(): void {
-  if (this.sortState === 0) {
-      this.productos.sort((a, b) => a.precio - b.precio);
-      this.sortState = 1;
-  } else if (this.sortState === 1) {
-      this.productos.sort((a, b) => b.precio - a.precio);
-      this.sortState = 2;
-  } else {
-      this.getProductos();
-      this.sortState = 0;
+modalClose5(): void {
+  const modal = document.getElementById('create-category-modal');
+  if (modal) {
+    modal.style.display = 'none';
   }
 }
 
@@ -448,22 +513,118 @@ showAlert4() {
   }, 1000); // Wait for 1 second before executing the function
 }
 
-modalClose5() {
+modalClose6() {
   const modal = document.getElementById('alert-container1') as HTMLElement;
   modal.style.display = 'none';
 }
-modalClose6() {
+modalClose7() {
   const modal = document.getElementById('alert-container2') as HTMLElement;
   modal.style.display = 'none';
 }
-modalClose7() {
+modalClose8() {
   const modal = document.getElementById('alert-container3') as HTMLElement;
   modal.style.display = 'none';
 }
-modalClose8() {
+modalClose9() {
   const modal = document.getElementById('alert-container4') as HTMLElement;
   modal.style.display = 'none';
 }
+
+
+
+// Aplicar filtros
+aplicarFiltros(): void {
+  if (this.filtroAlfabeticoActivo) {
+  const orden = this.filtroAlfabeticoActivo.endsWith('asc') ? 'asc' : 'desc';
+  this.ordenarAlfabeticamente(orden, false); // No restablecer productos
+  }
+  if (this.filtroPrecioActivo) {
+  const orden = this.filtroPrecioActivo.endsWith('asc') ? 'asc' : 'desc';
+  this.ordenarPorPrecio(orden, false); // No restablecer productos
+  }
+  }
+  
+  ordenarAlfabeticamente(orden: string, restablecer: boolean = true): void {
+  const filtro = orden === 'asc' ? 'alfabetico-asc' : 'alfabetico-desc';
+  
+  if (this.filtroAlfabeticoActivo === filtro) {
+  if (restablecer) {
+  this.getProductos();
+  }
+  this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('alfabetico'));
+  this.filtroAlfabeticoActivo = null;
+  return;
+  }
+  
+  this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('alfabetico'));
+  
+  if (orden === 'asc') {
+  this.productos.sort((a, b) => a.nombre.localeCompare(b.nombre));
+  } else {
+  this.productos.sort((a, b) => b.nombre.localeCompare(a.nombre));
+  }
+  
+  this.sortState = 1;
+  this.categoriasSeleccionadas.push(filtro);
+  this.filtroAlfabeticoActivo = filtro;
+  
+  if (restablecer) {
+  this.aplicarFiltros();
+  }
+  }
+  
+  ordenarPorPrecio(orden: string, restablecer: boolean = true): void {
+  const filtro = orden === 'asc' ? 'precio-asc' : 'precio-desc';
+  
+  if (this.filtroPrecioActivo === filtro) {
+  if (restablecer) {
+  this.getProductos();
+  }
+  this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('precio'));
+  this.filtroPrecioActivo = null;
+  return;
+  }
+  
+  this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('precio'));
+  
+  if (orden === 'asc') {
+  this.productos.sort((a, b) => a.precio - b.precio);
+  } else {
+  this.productos.sort((a, b) => b.precio - a.precio);
+  }
+  
+  this.sortState = 1;
+  this.categoriasSeleccionadas.push(filtro);
+  this.filtroPrecioActivo = filtro;
+  
+  if (restablecer) {
+  this.aplicarFiltros();
+  }
+  }
+  
+  eliminarCategoria(categoria: string): void {
+  this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => c !== categoria);
+  
+  if (this.categoriasSeleccionadas.length === 0) {
+  this.getProductos();
+  this.filtroAlfabeticoActivo = null;
+  this.filtroPrecioActivo = null;
+  } else {
+  if (categoria.startsWith('alfabetico')) {
+  this.filtroAlfabeticoActivo = null;
+  } else if (categoria.startsWith('precio')) {
+  this.filtroPrecioActivo = null;
+  }
+  this.aplicarFiltros();
+  }
+  }
+
+  onFileSelectedImg(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.fileUploaded = true;
+    }
+  }
 
 
 }

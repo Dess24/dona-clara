@@ -45,23 +45,12 @@ export class ProductoService {
     return this.http.get<any>(`${this.apiUrl}/recientes`);
   }
 
-  // Agregar un producto (requiere token)
-  agregarProducto(producto: any): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.getToken()}`);
-    return this.http.post<any>(`${this.apiUrl}/agregar`, producto, { headers });
-  }
-
   // Quitar un producto (requiere token)
   quitarProducto(id: number): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.getToken()}`);
     return this.http.delete<any>(`${this.apiUrl}/quitar/${id}`, { headers });
   }
 
-  // Modificar un producto (requiere token)
-  modificarProducto(id: number, producto: any): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.getToken()}`);
-    return this.http.put<any>(`${this.apiUrl}/modificar/${id}`, producto, { headers });
-  }
 
   // Actualizar el stock de un producto (requiere token)
   actualizarStock(id: number, cantidad: number): Observable<any> {
@@ -72,7 +61,7 @@ export class ProductoService {
   // Agregar una categoría (requiere token)
   agregarCategoria(categoria: any): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.getToken()}`);
-    return this.http.post<any>(`${this.apiUrl}/categorias`, categoria, { headers });
+    return this.http.post<any>(`${this.apiUrl}/create-categoria`, categoria, { headers });
   }
 
   // Borrar una categoría (requiere token)
@@ -80,4 +69,24 @@ export class ProductoService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.getToken()}`);
     return this.http.delete<any>(`${this.apiUrl}/categorias/${id}`, { headers });
   }
+
+// Agregar un producto (requiere token)
+agregarProducto(producto: any): Observable<any> {
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${this.getToken()}`);
+  return this.http.post<any>(`${this.apiUrl}/agregar`, producto, { headers });
+}
+
+// Modificar un producto (requiere token)
+modificarProducto(id: number, producto: any): Observable<any> {
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${this.getToken()}`);
+  return this.http.put<any>(`${this.apiUrl}/modificar/${id}`, producto, { headers });
+}
+
+// Subir una imagen (requiere token)
+subirImagen(imagen: File): Observable<any> {
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${this.getToken()}`);
+  const formData: FormData = new FormData();
+  formData.append('imagen', imagen, imagen.name);
+  return this.http.post<any>(`${this.apiUrl}/imagenes`, formData, { headers });
+}
 }
