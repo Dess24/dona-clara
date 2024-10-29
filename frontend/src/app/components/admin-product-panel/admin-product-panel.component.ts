@@ -406,7 +406,20 @@ isCategoriaSeleccionada(categoria: string): boolean {
   return this.categoriasSeleccionadas.includes(categoria);
 }
 
-
+// Eliminar una categoría seleccionada y recargar productos
+eliminarCategoria(categoria: string): void {
+  const index = this.categoriasSeleccionadas.indexOf(categoria);
+  if (index !== -1) {
+    this.categoriasSeleccionadas.splice(index, 1);
+    if (this.categoriasSeleccionadas.length === 0) {
+      window.location.reload(); // Recargar la página si no hay categorías seleccionadas
+    } else {
+      this.buscarPorCategoriasSeleccionadas(); // Recargar productos después de eliminar la categoría
+    }
+  }
+  console.log('Categoría eliminada:', categoria);
+  console.log('Categorías seleccionadas:', this.categoriasSeleccionadas);
+}
 
 // Buscar productos por las categorías seleccionadas
 buscarPorCategoriasSeleccionadas(): void {
@@ -598,23 +611,6 @@ aplicarFiltros(): void {
   this.filtroPrecioActivo = filtro;
   
   if (restablecer) {
-  this.aplicarFiltros();
-  }
-  }
-  
-  eliminarCategoria(categoria: string): void {
-  this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => c !== categoria);
-  
-  if (this.categoriasSeleccionadas.length === 0) {
-  this.getProductos();
-  this.filtroAlfabeticoActivo = null;
-  this.filtroPrecioActivo = null;
-  } else {
-  if (categoria.startsWith('alfabetico')) {
-  this.filtroAlfabeticoActivo = null;
-  } else if (categoria.startsWith('precio')) {
-  this.filtroPrecioActivo = null;
-  }
   this.aplicarFiltros();
   }
   }
