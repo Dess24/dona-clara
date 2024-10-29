@@ -3,3 +3,69 @@
 .primary-text{
     color: #060c16;
 }
+
+.hidden {
+    display: none;
+  }
+  
+  .slide-in-left {
+    animation: slideInLeft 0.7s ease-in-out forwards;
+  }
+  
+  .slide-in-right {
+    animation: slideInRight 0.7s ease-in-out forwards;
+  }
+  
+  .slide-out-left {
+    animation: slideOutLeft 0.7s ease-in-out forwards;
+  }
+  
+  .slide-out-right {
+    animation: slideOutRight 0.7s ease-in-out forwards;
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideOutLeft {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+  
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+  
+  
