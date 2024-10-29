@@ -5,67 +5,66 @@
 }
 
 .hidden {
-    display: none;
+  display: none;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.7s forwards;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.7s forwards;
+}
+
+.slide-out-left {
+  animation: slideOutLeft 0.7s forwards;
+}
+
+.slide-out-right {
+  animation: slideOutRight 0.7s forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
   }
-  
-  .slide-in-left {
-    animation: slideInLeft 0.7s ease-in-out forwards;
+  to {
+    transform: translateX(0);
   }
-  
-  .slide-in-right {
-    animation: slideInRight 0.7s ease-in-out forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
   }
-  
-  .slide-out-left {
-    animation: slideOutLeft 0.7s ease-in-out forwards;
+  to {
+    transform: translateX(0);
   }
-  
-  .slide-out-right {
-    animation: slideOutRight 0.7s ease-in-out forwards;
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
   }
-  
-  @keyframes slideInLeft {
-    from {
-      transform: translateX(-100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
+  to {
+    transform: translateX(-100%);
   }
-  
-  @keyframes slideInRight {
-    from {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
   }
-  
-  @keyframes slideOutLeft {
-    from {
-      transform: translateX(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateX(-100%);
-      opacity: 0;
-    }
+  to {
+    transform: translateX(100%);
   }
-  
-  @keyframes slideOutRight {
-    from {
-      transform: translateX(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-  }
-  
-  
+}
+
+.carousel-item {
+  height: 100%; /* Ajusta la altura según tus necesidades */
+}
+
+.carousel-item img {
+  height: 100%;
+  object-fit: contain; /* Asegura que la imagen se ajuste dentro del contenedor sin recortarse */
+}
