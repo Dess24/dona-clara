@@ -29,6 +29,9 @@ export class CatalogoComponent implements OnInit {
   baseUrl: string = 'http://localhost:8000/images/uploads/';
   sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente
   showLoginMessage: boolean = false;
+  filtroAlfabeticoActivo: string | null = null;
+  filtroPrecioActivo: string | null = null;
+  fileUploaded: boolean = false;
   
   
 
@@ -225,31 +228,75 @@ anadirProducto(productoId: number, cantidad: number): void {
     });
   }
   
-  ordenarAlfabeticamente(): void {
-    if (this.sortState === 0) {
-        this.productos.sort((a, b) => a.nombre.localeCompare(b.nombre));
-        this.sortState = 1;
-    } else if (this.sortState === 1) {
-        this.productos.sort((a, b) => b.nombre.localeCompare(a.nombre));
-        this.sortState = 2;
-    } else {
-        this.getProductos();
-        this.sortState = 0;
-    }
-}
-
-ordenarPorPrecio(): void {
-    if (this.sortState === 0) {
-        this.productos.sort((a, b) => a.precio - b.precio);
-        this.sortState = 1;
-    } else if (this.sortState === 1) {
-        this.productos.sort((a, b) => b.precio - a.precio);
-        this.sortState = 2;
-    } else {
-        this.getProductos();
-        this.sortState = 0;
-    }
-}
+// Aplicar filtros
+aplicarFiltros(): void {
+  if (this.filtroAlfabeticoActivo) {
+  const orden = this.filtroAlfabeticoActivo.endsWith('asc') ? 'asc' : 'desc';
+  this.ordenarAlfabeticamente(orden, false); // No restablecer productos
+  }
+  if (this.filtroPrecioActivo) {
+  const orden = this.filtroPrecioActivo.endsWith('asc') ? 'asc' : 'desc';
+  this.ordenarPorPrecio(orden, false); // No restablecer productos
+  }
+  }
+  
+  ordenarAlfabeticamente(orden: string, restablecer: boolean = true): void {
+  const filtro = orden === 'asc' ? 'alfabetico-asc' : 'alfabetico-desc';
+  
+  if (this.filtroAlfabeticoActivo === filtro) {
+  if (restablecer) {
+  this.getProductos();
+  }
+  this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('alfabetico'));
+  this.filtroAlfabeticoActivo = null;
+  return;
+  }
+  
+  this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('alfabetico'));
+  
+  if (orden === 'asc') {
+  this.productos.sort((a, b) => a.nombre.localeCompare(b.nombre));
+  } else {
+  this.productos.sort((a, b) => b.nombre.localeCompare(a.nombre));
+  }
+  
+  this.sortState = 1;
+  this.categoriasSeleccionadas.push(filtro);
+  this.filtroAlfabeticoActivo = filtro;
+  
+  if (restablecer) {
+  this.aplicarFiltros();
+  }
+  }
+  
+  ordenarPorPrecio(orden: string, restablecer: boolean = true): void {
+  const filtro = orden === 'asc' ? 'precio-asc' : 'precio-desc';
+  
+  if (this.filtroPrecioActivo === filtro) {
+  if (restablecer) {
+  this.getProductos();
+  }
+  this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('precio'));
+  this.filtroPrecioActivo = null;
+  return;
+  }
+  
+  this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('precio'));
+  
+  if (orden === 'asc') {
+  this.productos.sort((a, b) => a.precio - b.precio);
+  } else {
+  this.productos.sort((a, b) => b.precio - a.precio);
+  }
+  
+  this.sortState = 1;
+  this.categoriasSeleccionadas.push(filtro);
+  this.filtroPrecioActivo = filtro;
+  
+  if (restablecer) {
+  this.aplicarFiltros();
+  }
+  }
 
 showAlert() {
   const modal = document.getElementById('alert-container') as HTMLElement;
