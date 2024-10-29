@@ -144,7 +144,7 @@ buscarPorCategoriasSeleccionadas(): void {
       data => {
         this.productos = data.productos; // Asegúrate de acceder a la propiedad correcta
         if (this.productos.length === 0) {
-          alert('No se encontraron productos');
+          
         }
       },
       error => {
