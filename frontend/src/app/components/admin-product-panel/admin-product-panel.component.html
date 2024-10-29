@@ -5,18 +5,18 @@
       <h2 class="primary-text text-center text-xl font-bold text-gray-900 dark:text-white sm:text-4xl">Administración de productos</h2>
   
           <!-- Heading & Filters -->
-          <div class="w-full px-10 h-20 flex items-center justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
-            <div class="w-1/3 h-full flex items-center justify-start">
-              <a class="text-gray-900 font-semibold text-lg" href="">Etiquetas:</a>
-              <div class="flex flex-row flex-wrap">
-                <div *ngFor="let categoria of categoriasSeleccionadas" class="mt-1 flex flex-row ml-2 border border-gray-300 rounded-md bg-gray-50">
-                  <a class="cursor-default font-medium text-gray-600 p-1 pl-4">{{ categoria }}</a>
-                  <svg (click)="eliminarCategoria(categoria)" class="cursor-pointer w-[14px] h-[14px] m-1 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                  </svg>
-                </div>
-              </div>
+      <div class="w-full px-10 h-20 flex items-center justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
+        <div class="w-1/3 h-full flex items-center justify-start">
+          <a class="text-gray-900 font-semibold text-lg" href="">Etiquetas:</a>
+          <div class="flex flex-row flex-wrap">
+            <div *ngFor="let categoria of categoriasSeleccionadas" class="mt-1 flex flex-row ml-2 border border-gray-300 rounded-md bg-gray-50">
+              <a class="cursor-default font-medium text-gray-600 p-1 pl-4">{{ categoria }}</a>
+              <svg (click)="eliminarCategoria(categoria)" class="cursor-pointer w-[14px] h-[14px] m-1 text-gray-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
             </div>
+          </div>
+        </div>
 
             <div class="w-1/3">
               <form (ngSubmit)="buscarPorNombre()" class="flex items-center max-w-sm mx-auto">   
