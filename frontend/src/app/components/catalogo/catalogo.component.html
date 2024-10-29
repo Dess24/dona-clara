@@ -71,36 +71,37 @@
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M7 4l3 3M7 4 4 7m9-3h6l-6 6h6m-6.5 10 3.5-7 3.5 7M14 18h4" />
                 </svg>
                 <a>Ordenar</a>
-                <svg class="-me-0.5 ms-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
-                </svg>
+                    <svg class="-me-0.5 ms-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <ul class="slide-down menu-vertical rounded-lg border border-gray-700 shadow-lg">
+                    <li class="hover:rounded-t-lg flex flex-row items-center justify-center" (click)="ordenarAlfabeticamente('asc')">Alfabéticamente
+                      <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 14-4-4m4 4 4-4"/>
+                      </svg>
+                    </li>
+                    <li class="flex flex-row items-center justify-center" (click)="ordenarAlfabeticamente('desc')">Alfabéticamente
+                      <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/>
+                      </svg> 
+                    </li>
+                    <li class="flex flex-row items-center justify-center" (click)="ordenarPorPrecio('asc')">Precio
+                      <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 14-4-4m4 4 4-4"/>
+                      </svg>                    
+                    </li>
+                    <li class="hover:rounded-b-lg flex flex-row items-center justify-center" (click)="ordenarPorPrecio('desc')">Precio
+                      <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/>
+                      </svg>                                         
+                    </li>
+                  </ul>
+                </label>
               </div>
-              <ul class="slide-down menu-vertical rounded-lg border border-gray-700 shadow-lg">
-                <li class="hover:rounded-t-lg flex flex-row items-center justify-center" >Alfabéticamente
-                  <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 14-4-4m4 4 4-4"/>
-                  </svg>
-                </li>
-                <li class="flex flex-row items-center justify-center" >Alfabéticamente
-                  <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/>
-                  </svg> 
-                </li>
-                <li class="flex flex-row items-center justify-center" >Precio
-                  <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 14-4-4m4 4 4-4"/>
-                  </svg>                    
-                </li>
-                <li class="hover:rounded-b-lg flex flex-row items-center justify-center" >Precio
-                  <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4"/>
-                  </svg>                                         
-                </li>
-              </ul>
-            </label>
-          </div>
-        </div>
-        </div>
+            </div>
+            </div>
+
 
       <!-- Modal Categories -->
       <div class="container-modal" id="container-modal">
@@ -187,7 +188,7 @@
 
 
       <!-- Alert -->
-        <div ngIf="isLoggedIn" id="alert-container" class="alert-container">
+        <div *ngIf="isLoggedIn" id="alert-container" class="alert-container">
           <div class="flex shadow-lg mb-4 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
             <div class="pointer-events-none flex items-center p-4 text-green-800 text-md">
               <svg class="flex-shrink-0 inline w-5 h-5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -209,7 +210,7 @@
         </div>
 
         <!-- Alert2 -->
-        <div *ngIf="isLoggedIn" id="alert-container" class="alert-container">
+        <div *ngIf="!isLoggedIn" id="alert-container" class="alert-container">
           <div class="flex shadow-lg mb-4 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
             <div class="pointer-events-none flex items-center p-4 text-red-500 text-md">
               <svg class="flex-shrink-0 inline w-5 h-5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">

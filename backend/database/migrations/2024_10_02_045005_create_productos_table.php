@@ -99,17 +99,18 @@ return new class extends Migration
         
 
 
+        // Insertar datos
         DB::table('productos')->insert([
-            ['nombre' => 'Queso Tybo Don Santi', 'descripcion' => 'Trozo de 300gr aprox envasado al vacío', 'precio' => 220, 'cantidad' => null, 'categoria_id' => 2],
-            ['nombre' => 'Queso Magro Don Santi', 'descripcion' => '300 gr aprox envasado al vacío', 'precio' => 220, 'cantidad' => null, 'categoria_id' => 2],
-            ['nombre' => 'queso Cuartirolo hormita de 700gr aprox', 'descripcion' => null, 'precio' => 350, 'cantidad' => null, 'categoria_id' => 2],
-            ['nombre' => 'Provolone en Rodajas', 'descripcion' => '2 Rodajas envasadas al vacío.350gr aprox', 'precio' => 220, 'cantidad' => null, 'categoria_id' => 2],
-            ['nombre' => 'Queso Muzarella Don Santi', 'descripcion' => 'Trozo 700gr envasados al vacío', 'precio' => 350, 'cantidad' => null, 'categoria_id' => 2],
-            ['nombre' => 'Queso Dambo Don Santi', 'descripcion' => '300 gr aprox envasado al vacío', 'precio' => 220, 'cantidad' => null, 'categoria_id' => 2],
-            ['nombre' => 'Queso Untable Tybo', 'descripcion' => 'Pote de 200gr', 'precio' => 120, 'cantidad' => null, 'categoria_id' => 2],
-            ['nombre' => 'Queso colonia Don Santi', 'descripcion' => 'Precio del kilo. Cuña de aprox 300gr', 'precio' => 520, 'cantidad' => null, 'categoria_id' => 2],
-            ['nombre' => 'Queso Semiduro Tipo Parmesano o sabrinz', 'descripcion' => 'Trozo de 450gr aprox $260', 'precio' => 520, 'cantidad' => null, 'categoria_id' => 2],
-            ['nombre' => 'Queso rallado en hebra o fino', 'descripcion' => '1kg buena calidad y sabor', 'precio' => 360, 'cantidad' => null, 'categoria_id' => 2],
+            ['nombre' => 'Queso Tybo Don Santi', 'descripcion' => 'Trozo de 300gr aprox envasado al vacío', 'precio' => 220, 'cantidad' => null, 'categoria_id' => 2, 'imagen' => 'tybo.png'],
+            ['nombre' => 'Queso Magro Don Santi', 'descripcion' => '300 gr aprox envasado al vacío', 'precio' => 220, 'cantidad' => null, 'categoria_id' => 2, 'imagen' => 'quesomagro.png'],
+            ['nombre' => 'Queso Cuartirolo hormita de 700gr aprox', 'descripcion' => null, 'precio' => 350, 'cantidad' => null, 'categoria_id' => 2, 'imagen' => 'quesocuarti.png'],
+            ['nombre' => 'Provolone en Rodajas', 'descripcion' => '2 Rodajas envasadas al vacío.350gr aprox', 'precio' => 220, 'cantidad' => null, 'categoria_id' => 2, 'imagen' => 'provolone.png'],
+            ['nombre' => 'Queso Muzarella Don Santi', 'descripcion' => 'Trozo 700gr envasados al vacío', 'precio' => 350, 'cantidad' => null, 'categoria_id' => 2, 'imagen' => 'muzza.png'],
+            ['nombre' => 'Queso Dambo Don Santi', 'descripcion' => '300 gr aprox envasado al vacío', 'precio' => 220, 'cantidad' => null, 'categoria_id' => 2, 'imagen' => 'dambo.png'],
+            ['nombre' => 'Queso Untable Tybo', 'descripcion' => 'Pote de 200gr', 'precio' => 120, 'cantidad' => null, 'categoria_id' => 2, 'imagen' => 'tybo.png'],
+            ['nombre' => 'Queso colonia Don Santi', 'descripcion' => 'Precio del kilo. Cuña de aprox 300gr', 'precio' => 520, 'cantidad' => null, 'categoria_id' => 2, 'imagen' => 'colonia.png'],
+            ['nombre' => 'Queso Semiduro Tipo Parmesano o sabrinz', 'descripcion' => 'Trozo de 450gr aprox $260', 'precio' => 520, 'cantidad' => null, 'categoria_id' => 2, 'imagen' => 'sbrinz.png'],
+            ['nombre' => 'Queso rallado en hebra o fino', 'descripcion' => '1kg buena calidad y sabor', 'precio' => 360, 'cantidad' => null, 'categoria_id' => 2, 'imagen' => 'rallado.png'],
         ]);
         
         
