@@ -163,7 +163,6 @@ buscarPorCategoriasSeleccionadas(): void {
 // Añadir producto al carrito
 anadirProducto(productoId: number, cantidad: number): void {
   if (!this.isLoggedIn) {
-    alert('Se necesita registrarse');
     return;
   }
 
