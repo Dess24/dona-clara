@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, ElementRef } from '@angular/core';
 import { NavbarComponent } from '../home/navbar/navbar.component';
 import { FooterComponent } from '../home/footer/footer.component';
 import { ProductoService } from '../../services/producto.service';
@@ -18,6 +18,7 @@ import { Router, RouterOutlet, RouterModule} from '@angular/router';
   providers: [ProductoService, UserService, CarritoService] // Añadir CarritoService a los proveedores
 })
 export class CatalogoComponent implements OnInit {
+  @ViewChild('alertContainer') alertContainer!: ElementRef;
   isLoggedIn: boolean = false;
   isLoggedInAdmin: boolean = false;
   productos: any[] = [];
@@ -249,6 +250,28 @@ ordenarPorPrecio(): void {
         this.sortState = 0;
     }
 }
+
+showAlert() {
+  const modal = document.getElementById('alert-container') as HTMLElement;
+  modal.style.display = 'flex';
+  modal.classList.add('fade-in');
+
+  setTimeout(() => {
+    modal.classList.remove('fade-in');
+    modal.classList.add('fade-out');
+
+    setTimeout(() => {
+      modal.style.display = 'none';
+      modal.classList.remove('fade-out');
+    }, 500); // Duration of fade-out animation
+  }, 2000);
+}
+
+modalClose2() {
+  const modal = document.getElementById('alert-container') as HTMLElement;
+  modal.style.display = 'none';
+}
+
 
 
 }

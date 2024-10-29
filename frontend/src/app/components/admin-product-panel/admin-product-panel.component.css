@@ -43,7 +43,7 @@
     color: white;
     margin-top: 300px;
     text-align: center;
-    width: 8.5em;
+    width: 10em;
 }
 .sort:hover .menu-vertical{
     display: block;
@@ -76,4 +76,76 @@ appearance: textfield;
 
 .bg-gray-500 {
     background-color: #6b7280; /* Tailwind CSS gray-500 color */
+}
+
+
+@keyframes slideDown {
+    from {
+      transform: translateY(-5%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+.slide-down {
+    animation: slideDown 0.3s forwards;
+}
+
+.alert-container{
+    position: fixed;
+    width: 28vw;
+    display: none;
+    justify-content: center;
+    align-items: start;
+    z-index: 100;
+    top: 5px;
+    left: 0;
+    margin-inline: 36%;
+  }
+  .alert-container2{
+    position: fixed;
+    width: 28.5vw;
+    display: none;
+    justify-content: center;
+    align-items: start;
+    z-index: 100;
+    top: 5px;
+    left: 0;
+    margin-inline: 36%;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.5s forwards;
+  }
+  
+  .fade-out {
+    animation: fadeOut 0.5s forwards;
+  }
+  .cross{
+    margin-left: -8px;
+  }
+  .container-modal2{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-color: #000000c2;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    top: 0;
+    left: 0;
 }
