@@ -312,4 +312,20 @@ isCategoriaSeleccionada(categoria: string): boolean {
   }
   
 
+  eliminarProducto(productoId: number): void {
+    this.carritoService.eliminarProducto(productoId).subscribe(response => {
+      this.verCarrito();
+      console.log(response);
+    }, error => {
+      console.error(error);
+    });
+  }
+
+  limitarCantidad(item: any): void {
+    if (item.cantidad > item.producto.stock) {
+      item.cantidad = item.producto.stock;
+    }
+  }
+
+
 }

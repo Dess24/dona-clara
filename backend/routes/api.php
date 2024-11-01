@@ -23,6 +23,7 @@ Route::delete('/borrar-usuario/{id}', [UsersController::class, 'borrarUsuario'])
 Route::get('/usuarios', [UsersController::class, 'getAllUsuarios']);
 Route::post('/make-admin', [UsersController::class, 'makeAdmin'])->middleware('auth:sanctum');
 Route::post('/remove-admin', [UsersController::class, 'removeAdmin'])->middleware('auth:sanctum');
+Route::post('/contactanos', [UsersController::class, 'contactanos']);
 
 //Bienvenida al mail
 Route::post('/welcome', [UsersController::class, 'welcome']);
@@ -34,8 +35,6 @@ Route::get('productos/categorias/{categoriaNombres}', [ProductoController::class
 Route::get('/productos/nombre/{nombre}', [ProductoController::class, 'buscarPorNombre']);
 Route::get('/recientes', [ProductoController::class, 'mostrarRecientes']);
 Route::post('/imagenes', [ProductoController::class, 'subirImagen']);
-Route::delete('carrito/producto/{productoId}', [CarritoController::class, 'eliminarProductoDelCarrito']);
-
 
 
 //Categorias
@@ -50,6 +49,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/carrito/view', [CarritoController::class, 'verCarrito']);
     Route::post('/carrito/checkout', [CarritoController::class, 'checkout']);
     Route::post('/restar-producto', [CarritoController::class, 'restarProducto']);
+    Route::delete('/carrito/eliminar', [CarritoController::class, 'eliminarProducto']);
 });
 
 // Rutas para administradores

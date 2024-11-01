@@ -10,3 +10,8 @@
     right: 20px;
     z-index: 1000;
 }
+/* Estilos para el botón deshabilitado */
+button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
