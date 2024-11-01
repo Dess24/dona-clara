@@ -93,6 +93,17 @@
   left: 0;
   margin-inline: 36%;
 }
+.alert-container2{
+  position: fixed;
+  width: 28vw;
+  display: none;
+  justify-content: center;
+  align-items: start;
+  z-index: 100;
+  top: 5px;
+  left: 0;
+  margin-inline: 36%;
+}
 
 @keyframes fadeIn {
   from { opacity: 0; }
