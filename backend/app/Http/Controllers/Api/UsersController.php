@@ -75,7 +75,9 @@ public function register(Request $request)
     $validator = Validator::make($request->all(), [
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:8|confirmed',
+        'password' => 'required|string|min:6|confirmed',
+        'telefono' => 'required|string|max:20',
+        'domicilio' => 'required|string|max:255',
     ]);
 
     if ($validator->fails()) {
@@ -86,15 +88,108 @@ public function register(Request $request)
         'name' => $request->name,
         'email' => $request->email,
         'password' => Hash::make($request->password),
+        'telefono' => $request->telefono,
+        'domicilio' => $request->domicilio,
     ]);
 
     $token = $user->createToken('auth_token')->plainTextToken;
 
     // Llamar a la función welcome
-    $this->welcome($user);
+    $welcomeResult = $this->welcome($user);
+
+    if ($welcomeResult !== true) {
+        // Eliminar el usuario si el correo no se pudo enviar
+        $user->delete();
+        return response()->json(['status' => 'error', 'message' => 'No se pudo enviar el correo de bienvenida. El usuario ha sido eliminado.'], 500);
+    }
 
     return response()->json(['token' => $token, 'user' => $user], 201);
 }
+
+    // Función welcome
+    public function welcome(User $user)
+    {
+        $email = $user->email;
+        $subject = 'Doña Clara - Bienvenido';
+        $body = 'Usted se registró correctamente en la tienda Doña Clara';
+
+        $phpMailer = new PHPMailer(true);
+
+        try {
+            /* Email SMTP Settings */
+            $phpMailer->SMTPDebug = SMTP::DEBUG_OFF; // Desactivar la salida de depuración
+            $phpMailer->isSMTP();
+            $phpMailer->Host       = 'smtp.gmail.com';
+            $phpMailer->SMTPAuth   = true;
+            $phpMailer->Username   = 'damdess24@gmail.com';
+            $phpMailer->Password   = 'neix rkfb ufjw fiwd';
+            $phpMailer->SMTPSecure = 'ssl';
+            $phpMailer->Port       = 465;
+
+            //UTF-8
+            $phpMailer->CharSet = 'UTF-8';
+            $phpMailer->Encoding = 'base64';
+
+            //Recipients
+            $phpMailer->setFrom('damdess24@gmail.com', 'Tienda Doña Clara');
+            $phpMailer->addAddress($email);
+
+            //Content
+            $phpMailer->isHTML(true);
+            $phpMailer->Subject = $subject;
+            $phpMailer->Body    = $body;
+
+            // Enviar el correo
+            $phpMailer->send();
+            return true;
+        } catch (Exception $e) {
+            // Manejar el error si el correo no se pudo enviar
+            return false;
+        }
+    }
+    
+
+    public function contactanos(Request $request)
+{
+    $email = $request->input('email');
+    $subject = $request->input('asunto');
+    $body = $request->input('descripcion');
+
+    $phpMailer = new PHPMailer(true);
+
+    try {
+        /* Email SMTP Settings */
+        $phpMailer->SMTPDebug = SMTP::DEBUG_OFF; // Desactivar la salida de depuración
+        $phpMailer->isSMTP();
+        $phpMailer->Host       = 'smtp.gmail.com';
+        $phpMailer->SMTPAuth   = true;
+        $phpMailer->Username   = 'damdess24@gmail.com';
+        $phpMailer->Password   = 'neix rkfb ufjw fiwd';
+        $phpMailer->SMTPSecure = 'ssl';
+        $phpMailer->Port       = 465;
+
+        //UTF-8
+        $phpMailer->CharSet = 'UTF-8';
+        $phpMailer->Encoding = 'base64';
+
+        //Recipients
+        $phpMailer->setFrom($email, 'Contacto Tienda Doña Clara');
+        $phpMailer->addAddress('adamianperez224@gmail.com');
+
+        //Content
+        $phpMailer->isHTML(true);
+        $phpMailer->Subject = $subject;
+        $phpMailer->Body    = $body;
+
+        // Enviar el correo
+        $phpMailer->send();
+        return response()->json(['message' => 'Correo enviado correctamente'], 200);
+    } catch (Exception $e) {
+        // Manejar el error si el correo no se pudo enviar
+        return response()->json(['message' => 'No se pudo enviar el correo', 'error' => $e->getMessage()], 500);
+    }
+}
+
 
     // Login de usuario
     public function login(Request $request)
@@ -162,33 +257,6 @@ public function userData(Request $request)
     }
 
     return response()->json(['user' => $user], 200);
-}
-
-
-public function welcome(User $user)
-{
-    $email = $user->email;
-    $subject = 'Doña Clara - Bienvenido';
-    $body = 'Usted se registró correctamente en la tienda Doña Clara';
-
-    $phpMailer = new PhpMailerController();
-
-    try {
-        ob_start();
-        $phpMailer->sendEmail($email, $subject, $body);
-        $smtpLog = ob_get_clean();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Correo enviado correctamente',
-            'smtpLog' => $smtpLog
-        ], 200);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'No se pudo enviar el correo. Error: ' . $e->getMessage()
-        ], 500);
-    }
 }
 
 

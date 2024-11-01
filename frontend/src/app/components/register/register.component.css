@@ -1,3 +1,8 @@
 .primary{
     background-color: #1B335F;
 }
+
+.disabled-button {
+    background-color: #d3d3d3; /* Gris claro */
+    cursor: not-allowed;
+  }

@@ -37,17 +37,20 @@ export class CarritoService {
     return this.http.post<any>(`${this.apiUrl}/restar-producto`, body, { headers });
   }
 
+  eliminarProducto(productoId: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const options = {
+      headers: headers,
+      body: { producto_id: productoId }
+    };
+    return this.http.delete(`${this.apiUrl}/carrito/eliminar`, options);
+  }
+  
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('auth_token'); // Obtén el token de autenticación desde el almacenamiento local
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-  }
-
-  // Eliminar un producto del carrito
-  eliminarProducto(productoId: number, userId: number): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.delete<any>(`${this.apiUrl}/carrito/producto/${productoId}`, { headers, body: { user_id: userId } });
   }
 }

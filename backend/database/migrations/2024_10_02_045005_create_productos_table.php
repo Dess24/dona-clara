@@ -20,21 +20,22 @@ return new class extends Migration
             $table->engine = 'InnoDB';
         });
 
-       // Crear la tabla productos después
+        // Crear la tabla productos después
         Schema::create('productos', function (Blueprint $table) {
-        $table->id();
-        $table->string('nombre');
-        $table->text('descripcion')->nullable();
-        $table->integer('precio');
-        $table->integer('cantidad')->nullable();
-        $table->unsignedBigInteger('categoria_id')->nullable();
-        $table->string('imagen')->default('noimage.jpg');
-        $table->timestamps();
-        $table->engine = 'InnoDB'; // Especificar el motor de almacenamiento
+            $table->id();
+            $table->string('nombre');
+            $table->text('descripcion')->nullable();
+            $table->integer('precio');
+            $table->integer('cantidad')->nullable();
+            $table->unsignedBigInteger('categoria_id')->nullable();
+            $table->string('imagen')->default('noimage.jpg');
+            $table->boolean('habilitado')->default(true); // Agregar el atributo habilitado
+            $table->timestamps();
+            $table->engine = 'InnoDB'; // Especificar el motor de almacenamiento
 
-        // Definir la clave foránea
-        $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('set null');
-    });
+            // Definir la clave foránea
+            $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('set null');
+        });
 
     // Crear la tabla imagenes
     Schema::create('imagenes', function (Blueprint $table) {

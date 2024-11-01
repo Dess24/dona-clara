@@ -10,7 +10,7 @@ use PHPMailer\PHPMailer\SMTP;
 
 class PHPMailerController extends Controller
 {
-    public function sendEmail($email, $subject, $body, $attachmentPath = null)
+    public function sendEmail($email, $subject, $body, $attachment = null)
     {
         $mail = new PHPMailer(true);
 
@@ -20,7 +20,7 @@ class PHPMailerController extends Controller
             $mail->isSMTP();                                            //Send using SMTP
             $mail->Host       = 'smtp.gmail.com';                       //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = 'damdess24@gmail.com';                  //SMTP username
+            $mail->Username   = 'damdess24@gmail.com';                 //SMTP username
             $mail->Password   = 'neix rkfb ufjw fiwd';                  //SMTP password
             $mail->SMTPSecure = 'ssl';                                  //Enable implicit TLS encryption
             $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
@@ -38,12 +38,11 @@ class PHPMailerController extends Controller
             $mail->Subject = $subject;
             $mail->Body    = $body;
 
-            // Adjuntar el archivo PDF si se proporciona
-            if ($attachmentPath) {
-                $mail->addAttachment($attachmentPath);
+            // Adjuntar el archivo si se proporciona
+            if ($attachment) {
+                $mail->addAttachment($attachment);
             }
 
-            // Enviar el correo
             if (!$mail->send()) {
                 return false;
             } else {

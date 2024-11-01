@@ -76,4 +76,13 @@ getUserInfo(): Observable<{ user: { admin: number } }> {
       })
     });
   }
+  
+  enviarMensaje(email: string, asunto: string, descripcion: string): Observable<any> {
+    const body = { email: email, asunto: asunto, descripcion: descripcion };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(`${this.apiUrl}/contactanos`, body, { headers });
+  }
+  
 }
