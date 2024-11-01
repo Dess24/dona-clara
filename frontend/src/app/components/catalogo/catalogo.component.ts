@@ -318,6 +318,16 @@ modalClose2() {
   modal.style.display = 'none';
 }
 
+modalProduct() {
+  const modal = document.getElementById('container-modal3') as HTMLElement;
+  modal.style.display = 'flex';
+}
+
+modalCloseProduct() {
+  const modal = document.getElementById('container-modal3') as HTMLElement;
+  modal.style.display = 'none';
+}
+
 
 
 }

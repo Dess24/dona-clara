@@ -327,5 +327,14 @@ isCategoriaSeleccionada(categoria: string): boolean {
     }
   }
 
+  modalProduct() {
+    const modal = document.getElementById('container-modal3') as HTMLElement;
+    modal.style.display = 'flex';
+  }
+  
+  modalCloseProduct() {
+    const modal = document.getElementById('container-modal3') as HTMLElement;
+    modal.style.display = 'none';
+  }
 
 }
