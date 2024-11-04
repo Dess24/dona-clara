@@ -2,12 +2,12 @@
 
 <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
     <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
-      <h2 class="primary-text text-center text-xl font-bold text-gray-900 dark:text-white sm:text-4xl">Administración de productos</h2>
+      <h2 class="cursor-default primary-text text-center text-xl font-bold text-gray-900 dark:text-white sm:text-4xl">Administración de productos</h2>
   
           <!-- Heading & Filters -->
       <div class="w-full px-10 h-20 flex items-center justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
         <div class="w-1/3 h-full flex items-center justify-start">
-          <a class="text-gray-900 font-semibold text-lg" href="">Etiquetas:</a>
+          <a class="cursor-default font-semibold text-lg">Etiquetas:</a>
           <div class="flex flex-row flex-wrap">
             <div *ngFor="let categoria of categoriasSeleccionadas" class="mt-1 flex flex-row ml-2 border border-gray-300 rounded-md bg-gray-50">
               <a class="cursor-default font-medium text-gray-600 p-1 pl-4">{{ categoria }}</a>
@@ -86,7 +86,7 @@
 
       <!-- Modal Categories -->
       <div class="container-modal" id="container-modal">
-        <section class="animate__animated animate__jackInTheBox animate__faster rounded-lg flex-col justify-center categories bg-white antialiased dark:bg-gray-900 md:py-10 shadow-lg">
+        <section class="max-w-4xl animate__animated animate__jackInTheBox animate__faster rounded-lg flex-col justify-center categories bg-white antialiased dark:bg-gray-900 md:py-10 shadow-lg">
           <div class="flex justify-end pr-8 items-center">
             <label (click)="modalClose()" for="btn-modal" class="text-black p-2 rounded-md text-gray-700 cursor-pointer">
               <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -94,7 +94,7 @@
               </svg>              
             </label>
           </div>
-          <div class="max-w-screen-xl px-16 2xl:px-0">
+          <div class="max-w-screen-lg px-16">
             <h2 class="text-xl font-bold text-black dark:text-white sm:text-4xl text-center">Categorías</h2>
             <div class="mt-8 grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
               <div class="cursor-pointer"  *ngFor="let categoria of categorias">
@@ -129,16 +129,16 @@
 
       <div class="hfull rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6">
         <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-          <a href="#" class="w-20 shrink-0 md:order-1">
-            <img class="h-20 w-20 dark:hidden" [src]="baseUrl + producto.imagen" alt="{{ producto.nombre }}" alt="imac image" />
-            <img class="hidden h-20 w-20 dark:block" [src]="baseUrl + producto.imagen" alt="{{ producto.nombre }}" alt="imac image" />
+          <a (click)="modalProduct()" class="cursor-pointer w-20 shrink-0 md:order-1">
+            <img  class="h-20 w-20 dark:hidden" [src]="baseUrl + producto.imagen" alt="{{ producto.nombre }}" alt="imac image" />
+            <img  class="hidden h-20 w-20 dark:block" [src]="baseUrl + producto.imagen" alt="{{ producto.nombre }}" alt="imac image" />
           </a>
 
           <label for="counter-input" class="sr-only">Choose quantity:</label>
           <div class="h-full flex items-center justify-between md:order-3 md:justify-end">
               <div class="h-full flex flex-col justify-between items-center">
                   <div>
-                      <p class="text-sm font-medium">Modificar Stock</p>
+                      <p class="cursor-default text-sm font-medium">Modificar Stock</p>
                   </div>
                   <div class="py-2 flex justify-between items-center">
                       
@@ -155,12 +155,12 @@
                     </div>
               </div>
             <div class="text-end md:order-4 md:w-32">
-              <p class="text-base font-bold text-gray-900 dark:text-white">{{ producto.precio | currency }}</p>
+              <p class="cursor-default text-base font-bold text-gray-900 dark:text-white">{{ producto.precio | currency }}</p>
             </div>
           </div>
 
           <div class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
-            <a href="#" class="text-base font-medium text-gray-900 hover:underline dark:text-white">{{ producto.nombre }}</a>
+            <a (click)="modalProduct()" class="cursor-pointer text-base font-medium text-gray-900 hover:underline dark:text-white">{{ producto.nombre }}</a>
 
             <div class="flex items-center gap-4">
 
@@ -219,6 +219,10 @@
 
     
   </section>
+
+
+
+  
 
 
   <!-- Alert1 -->
@@ -517,3 +521,64 @@
     </div>
   </div>
 </div>
+
+<!-- Product view -->
+<div class="container-modal3" id="container-modal3">
+  <div class="shadow-lg rounded-xl">
+    <section class="animate__animated animate__jackInTheBox animate__faster flex flex-row-reverse py-6 bg-white dark:bg-gray-900 antialiased rounded-xl">
+      <div>
+        <div class="flex justify-end pr-6 items-center">
+          <label (click)="modalCloseProduct()" for="btn-modal" class="text-black p-2 rounded-md text-gray-700 cursor-pointer">
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+            </svg>              
+          </label>
+        </div>
+      </div>
+      <div class="py-12 max-w-screen-md px-4 mx-auto 2xl:px-0">
+        <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
+          <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
+            <img class="mx-auto dark:hidden max-h-96" src="../../../assets/img/8bc66b98-dda0-4b47-b7c3-3c0e12bf0067.jpg" alt="" />
+          </div>
+  
+          <div class="mt-6 sm:mt-8 lg:mt-0">
+            <h1
+              class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
+            >
+            Yerba De pago en Pago 1/2 kg
+            </h1>
+            <div class="mt-4 items-center sm:gap-4 flex">
+              <p
+                class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
+              >
+                $100
+              </p>
+  
+              <div class="flex items-center mt-2 sm:mt-0">
+                
+                
+                <a
+                  href="#"
+                  class="text-md font-medium leading-none text-gray-900 dark:text-white flex flex-row"
+                >
+                <svg class="mr-1 h-4 w-4 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                </svg>
+                  En stock: 20
+                </a>
+              </div>
+            </div>
+  
+            <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
+  
+            <p class="mb-6 text-gray-500 dark:text-gray-400">
+              Studio quality three mic array for crystal clear calls and voice
+              recordings. Six-speaker sound system for a remarkably robust and
+              high-quality audio experience. Up to 256GB of ultrafast SSD storage.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+ </div>

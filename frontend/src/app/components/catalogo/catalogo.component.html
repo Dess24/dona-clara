@@ -10,12 +10,12 @@
       <a class="w-full flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
         <img class="animate__animated animate__fadeInDown animate__faster mx-auto w-96 w-48" src="../../../assets/img/logo2.png" alt="logo">    
       </a> 
-      <a class="inline-flex justify-between items-center px-1 pr-4 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700" role="alert">
+      <a href="/catalogo" class="inline-flex justify-between items-center px-1 pr-4 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700" role="alert">
         <span class="text-xs bg-primary-600 rounded-full text-black px-4 py-1.5 mr-3">New</span> <span class="text-sm text-blue-950 font-medium">Nuevas ofertas! No te lo pierdas!</span> 
         <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
       </a>
       <!-- Title -->
-      <h1 class="title mt-16 my-4 text-5xl tracking-tight font-medium text-center primary-text dark:text-white">Productos</h1>
+      <h1 class="cursor-default title mt-16 my-4 text-5xl tracking-tight font-medium text-center primary-text dark:text-white">Productos</h1>
     </div>
      
     <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -26,7 +26,7 @@
       <!-- Heading & Filters -->
       <div class="w-full px-10 h-20 flex items-center justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
         <div class="w-1/3 h-full flex items-center justify-start">
-          <a class="text-gray-900 font-semibold text-lg" href="">Etiquetas:</a>
+          <a class="cursor-default text-gray-900 font-semibold text-lg">Etiquetas:</a>
           <div class="flex flex-row flex-wrap">
             <div *ngFor="let categoria of categoriasSeleccionadas" class="mt-1 flex flex-row ml-2 border border-gray-300 rounded-md bg-gray-50">
               <a class="cursor-default font-medium text-gray-600 p-1 pl-4">{{ categoria }}</a>
@@ -113,7 +113,7 @@
               </svg>              
             </label>
           </div>
-          <div class="max-w-screen-xl px-16 2xl:px-0">
+          <div class="max-w-screen-lg px-16">
             <h2 class="text-xl font-bold text-black dark:text-white sm:text-4xl text-center">Categorías</h2>
             <div class="mt-8 grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
               <div class="cursor-pointer"  *ngFor="let categoria of categorias">
@@ -129,12 +129,13 @@
                   </svg>
                   <span class="element text-sm font-medium" [ngClass]="{'text-white': isCategoriaSeleccionada(categoria.nombre), 'text-gray-900 dark:text-white': !isCategoriaSeleccionada(categoria.nombre)}">{{ categoria.nombre }}</span>
                 </a>
-              </div>
             </div>
-          </div>
-          <div class="w-full flex justify-end mt-8">
-            <button (click)="buscarPorCategoriasSeleccionadas()" class="modal-button px-4 py-2 mr-10 primary text-white rounded-md">Buscar</button>
-          </div>
+            </div>
+            </div>
+            <div class="w-full flex justify-end mt-8">
+              <button (click)="buscarPorCategoriasSeleccionadas()" class="modal-button px-4 py-2 mr-10 primary text-white rounded-md">Buscar</button>
+            </div>
+            
         </section>
       </div>
       
@@ -146,18 +147,18 @@
         <div *ngFor="let producto of productos" class="flex flex-col justify-around rounded-lg border-primary bg-gray-50 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
           <div class="h-56 w-full">
             <a>
-              <img class="mx-auto h-full dark:hidden" [src]="baseUrl + producto.imagen" alt="{{ producto.nombre }}" />
-              <img class="mx-auto hidden h-full dark:block" [src]="baseUrl + producto.imagen" alt="{{ producto.nombre }}" />
+              <img (click)="modalProduct()" class="cursor-pointer mx-auto h-full dark:hidden" [src]="baseUrl + producto.imagen" alt="{{ producto.nombre }}" />
+              <img (click)="modalProduct()" class="cursor-pointer mx-auto hidden h-full dark:block" [src]="baseUrl + producto.imagen" alt="{{ producto.nombre }}" />
             </a>
           </div>
           <div class="pt-6">
-            <a class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">{{ producto.nombre }}</a>
+            <a (click)="modalProduct()" class="cursor-pointer text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">{{ producto.nombre }}</a>
             <ul class="mt-2 flex items-center gap-4">
               <li class="flex items-center gap-2">
                 <svg class="h-4 w-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
                 </svg>
-                <p *ngIf="producto.cantidad > 0; else noStock" class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                <p *ngIf="producto.cantidad > 0; else noStock" class="cursor-default text-sm font-medium text-gray-500 dark:text-gray-400">
                   En stock: {{ producto.cantidad }}
                 </p>
                 <ng-template #noStock>
@@ -170,11 +171,11 @@
                 <svg class="h-4 w-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 7V6c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1h-1M3 18v-7c0-.6.4-1 1-1h11c.6 0 1 .4 1 1v7c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
                 </svg>
-                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Mejor precio</p>
+                <p class="cursor-default text-sm font-medium text-gray-500 dark:text-gray-400">Mejor precio</p>
               </li>
             </ul>
             <div class="mt-4 flex items-center justify-between gap-4">
-              <p class="text-2xl font-bold leading-tight text-gray-900 dark:text-white">{{ producto.precio | currency }}</p>
+              <p class="cursor-default text-2xl font-bold leading-tight text-gray-900 dark:text-white">{{ producto.precio | currency }}</p>
               <button (click)="showAlert()" type="button" (click)="anadirProducto(producto.id, 1)" class="inline-flex items-center rounded-lg primary text-white px-5 py-2.5 text-sm font-medium primary-hover focus:outline-none focus:ring-2 focus:ring-gray-100 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                 <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
@@ -210,7 +211,7 @@
         </div>
 
         <!-- Alert2 -->
-        <div *ngIf="!isLoggedIn" id="alert-container" class="alert-container">
+        <div *ngIf="!isLoggedIn" id="alert-container" class="alert-container2">
           <div class="flex shadow-lg mb-4 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
             <div class="pointer-events-none flex items-center p-4 text-red-500 text-md">
               <svg class="flex-shrink-0 inline w-5 h-5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -230,6 +231,114 @@
             </div>
           </div>
         </div>
+
+
+
+
+        <!-- Product view -->
+         <div class="container-modal3" id="container-modal3">
+          <div class="shadow-lg rounded-xl">
+            <section class="animate__animated animate__jackInTheBox animate__faster flex flex-row-reverse py-6 bg-white dark:bg-gray-900 antialiased rounded-xl">
+              <div>
+                <div class="flex justify-end pr-6 items-center">
+                  <label (click)="modalCloseProduct()" for="btn-modal" class="text-black p-2 rounded-md text-gray-700 cursor-pointer">
+                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                    </svg>              
+                  </label>
+                </div>
+              </div>
+              <div class="py-12 max-w-screen-md px-4 mx-auto 2xl:px-0">
+                <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
+                  <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
+                    <img class="mx-auto dark:hidden max-h-96" src="../../../assets/img/8bc66b98-dda0-4b47-b7c3-3c0e12bf0067.jpg" alt="" />
+                  </div>
+          
+                  <div class="mt-6 sm:mt-8 lg:mt-0">
+                    <h1
+                      class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
+                    >
+                    Yerba De pago en Pago 1/2 kg
+                    </h1>
+                    <div class="mt-4 items-center sm:gap-4 flex">
+                      <p
+                        class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
+                      >
+                        $100
+                      </p>
+          
+                      <div class="flex items-center mt-2 sm:mt-0">
+                        
+                        
+                        <a
+                          href="#"
+                          class="text-md font-medium leading-none text-gray-900 dark:text-white flex flex-row"
+                        >
+                        <svg class="mr-1 h-4 w-4 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                        </svg>
+                          En stock: 20
+                        </a>
+                      </div>
+                    </div>
+          
+                    <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
+                      <a (click)="showAlert()"
+                        href="#"
+                        title=""
+                        class="flex items-center justify-center py-2.5 px-5 text-md font-medium text-white focus:outline-none primary rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                        role="button"
+                      >
+                      <svg class="w-6 h-6 text-white dark:text-white -ms-2 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
+                      </svg>
+                        
+                        
+                        Añadir al carrito
+                      </a>
+          
+                      <a
+                        href="#"
+                        title=""
+                        class="text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
+                        role="button"
+                      >
+                        <svg
+                          class="w-5 h-5 -ms-2 me-2"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
+                          />
+                        </svg>
+          
+                        Add to cart
+                      </a>
+                    </div>
+          
+                    <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
+          
+                    <p class="mb-6 text-gray-500 dark:text-gray-400">
+                      Studio quality three mic array for crystal clear calls and voice
+                      recordings. Six-speaker sound system for a remarkably robust and
+                      high-quality audio experience. Up to 256GB of ultrafast SSD storage.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+         </div>
+        
       
         
 
