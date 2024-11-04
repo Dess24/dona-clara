@@ -23,6 +23,7 @@ export class AdminProductPanelComponent implements OnInit{
   searchQuery: string = '';
   baseUrl: string = 'http://localhost:8000/images/uploads/';
   productoAEliminar: number | null = null;
+  productoAHabilitar: number | null = null;
   private stock: number = 0;
   selectedProduct: any = {
     nombre: '',
@@ -40,14 +41,18 @@ export class AdminProductPanelComponent implements OnInit{
     cantidad: '',
     categoria: '',
     descripcion: '',
-    imagen: ''
+    imagen: '',
+    habilitado: ''
   };
   nuevaCategoria: string = '';
   sortState: number = 0;
   imagen: File | null = null;
   filtroAlfabeticoActivo: string | null = null;
-filtroPrecioActivo: string | null = null;
-fileUploaded: boolean = false;
+  filtroPrecioActivo: string | null = null;
+  fileUploaded: boolean = false;
+  modalText: string = '';
+  modalAction: string = '';
+  
 
   
   constructor(private productoService: ProductoService) {}
@@ -55,7 +60,6 @@ fileUploaded: boolean = false;
   ngOnInit(): void {
     this.getProductos();
     this.getCategorias();
-    console.log('Valores de selectedProduct:', this.selectedProduct);
   }
 
   // Listar todos los productos
@@ -272,15 +276,20 @@ onSubmit(): void {
     // Aquí puedes abrir el modal si es necesario
   }
 
+  habilitarProducto(id: number): void {
+    this.productoAHabilitar = id;
+    // Aquí puedes abrir el modal si es necesario
+  }
+
   confirmarEliminarProducto(): void {
     if (this.productoAEliminar !== null) {
       this.productoService.quitarProducto(this.productoAEliminar).subscribe(
         response => {
           console.log('Producto eliminado exitosamente', response);
-          // Eliminar el producto del array de productos
           this.productos = this.productos.filter(producto => producto.id !== this.productoAEliminar);
           this.productoAEliminar = null;
-          this.modalClose2(); // Cerrar el modal
+          this.modalClose2();
+          this.getProductos();
         },
         error => {
           this.errorMessage = 'Error al eliminar el producto';
@@ -288,6 +297,39 @@ onSubmit(): void {
         }
       );
     }
+  }
+
+  confirmarHabilitarProducto(): void {
+    if (this.productoAHabilitar !== null) {
+      this.productoService.habilitarProducto(this.productoAHabilitar).subscribe(
+        response => {
+          console.log('Producto habilitado exitosamente', response);
+          const producto = this.productos.find(producto => producto.id === this.productoAHabilitar);
+          if (producto) {
+            producto.habilitado = true;
+          }
+          this.productoAHabilitar = null;
+          this.modalClose2();
+          this.getProductos();
+        },
+        error => {
+          this.errorMessage = 'Error al habilitar el producto';
+          console.error('Error al habilitar el producto', error);
+        }
+      );
+    }
+  }
+
+  actualizarDestacado(id: number, destacado: boolean): void {
+    this.productoService.actualizarDestacado(id, destacado).subscribe(
+      response => {
+        console.log('Estado de destacado actualizado exitosamente', response);
+      },
+      error => {
+        this.errorMessage = 'Error al actualizar el estado de destacado';
+        console.error('Error al actualizar el estado de destacado', error);
+      }
+    );
   }
 
 
@@ -337,9 +379,17 @@ onSubmit(): void {
     );
   }
 
-  modal2(){
+  modal2(action?: string) {
     const modal = document.getElementById('deleteModal') as HTMLElement;
     modal.style.display = 'flex';
+
+  if (action === 'habilitar') {
+      this.modalText = 'Seguro quieres habilitar este producto?';
+      this.modalAction = 'habilitar';
+    } else {
+      this.modalText = 'Seguro quieres deshabilitar este producto?';
+      this.modalAction = 'eliminar';
+    }
   }
 
   modalClose2() {

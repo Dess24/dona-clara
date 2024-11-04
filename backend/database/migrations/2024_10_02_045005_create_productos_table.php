@@ -20,22 +20,23 @@ return new class extends Migration
             $table->engine = 'InnoDB';
         });
 
-        // Crear la tabla productos después
-        Schema::create('productos', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre');
-            $table->text('descripcion')->nullable();
-            $table->integer('precio');
-            $table->integer('cantidad')->nullable();
-            $table->unsignedBigInteger('categoria_id')->nullable();
-            $table->string('imagen')->default('noimage.jpg');
-            $table->boolean('habilitado')->default(true); // Agregar el atributo habilitado
-            $table->timestamps();
-            $table->engine = 'InnoDB'; // Especificar el motor de almacenamiento
+// Crear la tabla productos después
+Schema::create('productos', function (Blueprint $table) {
+    $table->id();
+    $table->string('nombre');
+    $table->text('descripcion')->nullable();
+    $table->integer('precio');
+    $table->integer('cantidad')->nullable();
+    $table->unsignedBigInteger('categoria_id')->nullable();
+    $table->string('imagen')->default('noimage.jpg');
+    $table->boolean('habilitado')->default(true); // Agregar el atributo habilitado
+    $table->boolean('destacado')->default(false); // Agregar el atributo destacado
+    $table->timestamps();
+    $table->engine = 'InnoDB'; // Especificar el motor de almacenamiento
 
-            // Definir la clave foránea
-            $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('set null');
-        });
+    // Definir la clave foránea
+    $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('set null');
+});
 
     // Crear la tabla imagenes
     Schema::create('imagenes', function (Blueprint $table) {
@@ -62,13 +63,16 @@ return new class extends Migration
             ['nombre' => 'Varios'],
         ]);
 
+        DB::table('productos')->insert([
+            ['nombre' => 'Jugo de Durazno', 'descripcion' => 'jugo natural de durazno 5 litros', 'precio' => 460, 'categoria_id' => 1, 'imagen' => 'JugoDurazno5L.png', 'cantidad' => 20, 'destacado' => true],
+            ['nombre' => 'Jugo de Frutilla natural', 'descripcion' => 'jugo de frutilla de 5 litros', 'precio' => 460, 'categoria_id' => 1, 'imagen' => 'JugoFrutillaNatural.png', 'cantidad' => 20, 'destacado' => true],
+            ['nombre' => 'Jugo de Manzana natural sin azúcar', 'descripcion' => 'jugo de manzana sin azucar agregada pero muy dulce', 'precio' => 460, 'categoria_id' => 1, 'imagen' => 'JugoFrutillaNatural.png', 'cantidad' => 20, 'destacado' => true],
+            ['nombre' => 'Jugo de Pomelo Rosado', 'descripcion' => 'jugo natural de pomelo rosado 5 litros', 'precio' => 460,  'categoria_id' => 1, 'imagen' => 'JugoPomeloNatural.png', 'cantidad' => 20, 'destacado' => true],
+            ['nombre' => 'Jugo Natural de Anana', 'descripcion' => 'jugo de anana de 5 litros', 'precio' => 460,  'categoria_id' => 1, 'imagen' => 'JugoAnanaNatural.png', 'cantidad' => 20, 'destacado' => true],
+        ]);
+
 
         DB::table('productos')->insert([
-            ['nombre' => 'Jugo de Durazno', 'descripcion' => 'jugo natural de durazno 5 litros', 'precio' => 460, 'categoria_id' => 1, 'imagen' => 'JugoDurazno5L.png', 'cantidad' => 20],
-            ['nombre' => 'Jugo de Frutilla natural', 'descripcion' => 'jugo de frutilla de 5 litros', 'precio' => 460, 'categoria_id' => 1, 'imagen' => 'JugoFrutillaNatural.png', 'cantidad' => 20],
-            ['nombre' => 'Jugo de Manzana natural sin azúcar', 'descripcion' => 'jugo de manzana sin azucar agregada pero muy dulce', 'precio' => 460, 'categoria_id' => 1, 'imagen' => 'JugoFrutillaNatural.png', 'cantidad' => 20],
-            ['nombre' => 'Jugo de Pomelo Rosado', 'descripcion' => 'jugo natural de pomelo rosado 5 litros', 'precio' => 460,  'categoria_id' => 1, 'imagen' => 'JugoPomeloNatural.png', 'cantidad' => 20],
-            ['nombre' => 'Jugo Natural de Anana', 'descripcion' => 'jugo de anana de 5 litros', 'precio' => 460,  'categoria_id' => 1, 'imagen' => 'JugoAnanaNatural.png', 'cantidad' => 20],
             ['nombre' => 'Mix frutal', 'descripcion' => 'Mix de frutas natural de 5 litros', 'precio' => 460,  'categoria_id' => 1, 'imagen' => 'JugoMixFrutal.png', 'cantidad' => 20],
             ['nombre' => 'Jugo de naranja natural. 3litros', 'descripcion' => 'Con o sin azúcar', 'precio' => 300, 'categoria_id' => 1, 'imagen' => 'JugoNaranjaNatural.png', 'cantidad' => 20],
             ['nombre' => 'Jugo natural de Pera', 'descripcion' => 'jugo natural de pera 5 litros', 'precio' => 460, 'categoria_id' => 1, 'imagen' => 'JugoNaranjaNatural.png', 'cantidad' => 20],
