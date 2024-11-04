@@ -51,6 +51,17 @@ export class ProductoService {
     return this.http.delete<any>(`${this.apiUrl}/quitar/${id}`, { headers });
   }
 
+  // Habilitar un producto (requiere token)
+  habilitarProducto(id: number): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.getToken()}`);
+    return this.http.put<any>(`${this.apiUrl}/habilitar/${id}`, {}, { headers });
+  }
+
+  actualizarDestacado(id: number, destacado: boolean): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.getToken()}`);
+    return this.http.put<any>(`${this.apiUrl}/actualizar-destacado/${id}`, { destacado }, { headers });
+  }
+
 
   // Actualizar el stock de un producto (requiere token)
   actualizarStock(id: number, cantidad: number): Observable<any> {

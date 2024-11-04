@@ -9,6 +9,18 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterOutlet, RouterModule} from '@angular/router';
 
+interface Producto {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  cantidad: number;
+  categoria_id: number;
+  imagen: string;
+  habilitado: boolean;
+  destacado: boolean;
+}
+
 @Component({
   selector: 'app-catalogo',
   standalone: true,
@@ -61,18 +73,18 @@ export class CatalogoComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  // Listar todos los productos
-  getProductos(): void {
-    this.productoService.getProductos().subscribe(
-      data => {
-        this.productos = data;
-      },
-      error => {
-        this.errorMessage = 'Error al cargar los productos';
-        console.error('Error al cargar los productos', error);
-      }
-    );
-  }
+// Listar todos los productos
+getProductos(): void {
+  this.productoService.getProductos().subscribe(
+    data => {
+      this.productos = data.filter((producto: Producto) => producto.habilitado); // Filtrar productos habilitados
+    },
+    error => {
+      this.errorMessage = 'Error al cargar los productos';
+      console.error('Error al cargar los productos', error);
+    }
+  );
+}
 
   // Listar todas las categorías
   getCategorias(): void {
@@ -122,8 +134,8 @@ eliminarCategoria(categoria: string): void {
 buscarPorCategoriasSeleccionadas(): void {
   if (this.categoriasSeleccionadas.length > 0) {
     this.productoService.buscarPorCategorias(this.categoriasSeleccionadas).subscribe(
-      data => {
-        this.productos = data;
+      (data: Producto[]) => {
+        this.productos = data.filter((producto: Producto) => producto.habilitado);
         this.modalClose(); // Cerrar el modal después de buscar
       },
       error => {
@@ -136,29 +148,29 @@ buscarPorCategoriasSeleccionadas(): void {
   }
 }
 
-  // Buscar productos por nombre
-  buscarPorNombre(): void {
-    if (this.searchQuery.trim() === '') {
-      this.getProductos();
-      return;
-    }
-
-    this.productoService.buscarPorNombre(this.searchQuery).subscribe(
-      data => {
-        this.productos = data.productos; // Asegúrate de acceder a la propiedad correcta
-        if (this.productos.length === 0) {
-          
-        }
-      },
-      error => {
-        this.errorMessage = 'Error al buscar productos por nombre';
-        console.error('Error al buscar productos por nombre', error);
-        if (error.status === 404) {
-          alert('No se encontraron productos');
-        }
-      }
-    );
+// Buscar productos por nombre
+buscarPorNombre(): void {
+  if (this.searchQuery.trim() === '') {
+    this.getProductos();
+    return;
   }
+
+  this.productoService.buscarPorNombre(this.searchQuery).subscribe(
+    data => {
+      this.productos = data.productos.filter((producto: Producto) => producto.habilitado); // Filtrar productos habilitados
+      if (this.productos.length === 0) {
+        alert('No se encontraron productos habilitados');
+      }
+    },
+    error => {
+      this.errorMessage = 'Error al buscar productos por nombre';
+      console.error('Error al buscar productos por nombre', error);
+      if (error.status === 404) {
+        alert('No se encontraron productos');
+      }
+    }
+  );
+}
 
 // Añadir producto al carrito
 anadirProducto(productoId: number, cantidad: number): void {

@@ -25,7 +25,7 @@ class ProductoController extends Controller
     {
         $producto = Producto::find($id);
         if (!$producto) {
-            return response()->json(['message' => 'Producto no enconfffftrado'], 404);
+            return response()->json(['message' => 'Producto no encontrado'], 404);
         }
         return response()->json($producto);
     }
@@ -137,17 +137,47 @@ public function buscarPorCategoria($categoriaNombres)
 
 
 
-    // Función para quitar un producto
-    public function quitarProducto($id)
-    {
-        $producto = Producto::find($id);
-        if (!$producto) {
-            return response()->json(['message' => 'Producto no encontrado'], 404);
-        }
-
-        $producto->delete();
-        return response()->json(['message' => 'Producto eliminado exitosamente'], 200);
+// Función para quitar un producto
+public function quitarProducto($id)
+{
+    $producto = Producto::find($id);
+    if (!$producto) {
+        return response()->json(['message' => 'Producto no encontrado'], 404);
     }
+
+    $producto->habilitado = false;
+    $producto->save();
+
+    return response()->json(['message' => 'Producto deshabilitado exitosamente'], 200);
+}
+
+// Función para habilitar un producto
+public function habilitarProducto($id)
+{
+    $producto = Producto::find($id);
+    if (!$producto) {
+        return response()->json(['message' => 'Producto no encontrado'], 404);
+    }
+
+    $producto->habilitado = true;
+    $producto->save();
+
+    return response()->json(['message' => 'Producto habilitado exitosamente'], 200);
+}
+
+// Función para actualizar el estado de destacado de un producto
+public function actualizarDestacado(Request $request, $id)
+{
+    $producto = Producto::find($id);
+    if (!$producto) {
+        return response()->json(['message' => 'Producto no encontrado'], 404);
+    }
+
+    $producto->destacado = $request->input('destacado');
+    $producto->save();
+
+    return response()->json(['message' => 'Estado de destacado actualizado exitosamente'], 200);
+}
 
 
 

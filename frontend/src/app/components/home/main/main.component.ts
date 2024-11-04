@@ -3,6 +3,18 @@ import { ProductoService } from '../../../services/producto.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
+interface Producto {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  cantidad: number;
+  categoria_id: number;
+  imagen: string;
+  habilitado: boolean;
+  destacado: boolean;
+}
+
 @Component({
   selector: 'app-main',
   standalone: true,
@@ -14,25 +26,27 @@ import { CommonModule } from '@angular/common';
 export class MainComponent implements OnInit {
   @ViewChild('carousel', { static: false }) carousel: ElementRef | undefined;
   @ViewChildren('card') cards: QueryList<ElementRef> | undefined;
-  productosRecientes: any[] = [];
+  productos: any[] = [];
   baseUrl: string = 'http://localhost:8000/images/uploads/';
+  errorMessage: string = '';
 
   constructor(private productoService: ProductoService) {}
 
   ngOnInit(): void {
-    this.getProductosRecientes();
+    this.getProductos();
   }
 
   ngAfterViewInit() {
   }
 
-  getProductosRecientes(): void {
-    this.productoService.getProductosRecientes().subscribe(
+  getProductos(): void {
+    this.productoService.getProductos().subscribe(
       data => {
-        this.productosRecientes = data;
+        this.productos = data.filter((producto: Producto) => producto.destacado); // Filtrar productos destacados
       },
       error => {
-        console.error('Error al obtener los productos recientes', error);
+        this.errorMessage = 'Error al cargar los productos';
+        console.error('Error al cargar los productos', error);
       }
     );
   }

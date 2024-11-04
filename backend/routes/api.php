@@ -56,7 +56,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('agregar', [ProductoController::class, 'agregarProducto']);
     Route::delete('quitar/{id}', [ProductoController::class, 'quitarProducto']);
+    Route::put('habilitar/{id}', [ProductoController::class, 'habilitarProducto']);
     Route::put('modificar/{id}', [ProductoController::class, 'modificarProducto']);
     Route::put('actualizar-stock/{id}', [ProductoController::class, 'actualizarStock']);
+    Route::put('actualizar-destacado/{id}', [ProductoController::class, 'actualizarDestacado']);
 
 });

@@ -143,7 +143,7 @@
                   (change)="actualizarProducto(item.producto.id, item.cantidad)" 
                   min="0" 
                   max="9999" 
-                  oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" 
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4); if (parseInt(this.value) < 1 || this.value === '') this.value = '1';"
                   data-input-counter 
                   class="custom-number-input cursor-text border-gray-300 mx-1 w-20 shrink-0 rounded-lg bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white contador-stock" />
                 </div>
