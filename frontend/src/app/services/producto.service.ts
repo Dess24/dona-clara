@@ -78,7 +78,7 @@ export class ProductoService {
   // Borrar una categoría (requiere token)
   borrarCategoria(id: number): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.getToken()}`);
-    return this.http.delete<any>(`${this.apiUrl}/categorias/${id}`, { headers });
+    return this.http.delete<any>(`${this.apiUrl}/delete-categoria/${id}`, { headers });
   }
 
 // Agregar un producto (requiere token)

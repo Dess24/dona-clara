@@ -42,7 +42,8 @@ export class MainComponent implements OnInit {
   getProductos(): void {
     this.productoService.getProductos().subscribe(
       data => {
-        this.productos = data.filter((producto: Producto) => producto.destacado); // Filtrar productos destacados
+        // Filtrar productos que están destacados y habilitados
+        this.productos = data.filter((producto: Producto) => producto.destacado && producto.habilitado);
       },
       error => {
         this.errorMessage = 'Error al cargar los productos';

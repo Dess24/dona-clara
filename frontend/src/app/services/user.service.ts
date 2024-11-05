@@ -84,5 +84,13 @@ getUserInfo(): Observable<{ user: { admin: number } }> {
     });
     return this.http.post(`${this.apiUrl}/contactanos`, body, { headers });
   }
+
+  generateResetCode(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/generate-reset-code`, { email });
+  }
+
+  resetPassword(email: string, token: string, password: string, password_confirmation: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password`, { email, token, password, password_confirmation });
+  }
   
 }
