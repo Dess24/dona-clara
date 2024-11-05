@@ -68,6 +68,8 @@ export class AdminProductPanelComponent implements OnInit{
   selectedCategoriaId: number | null = null;
   
   
+  
+  
 
   
   constructor(private productoService: ProductoService) {}
@@ -773,7 +775,13 @@ aplicarFiltros(): void {
     modal.style.display = 'flex';
   }
   
-  modalCloseProduct() {
+  openProductModal(product: Producto): void {
+    this.selectedProduct = product;
+    const modal = document.getElementById('container-modal3') as HTMLElement;
+    modal.style.display = 'flex';
+  }
+  
+  modalCloseProduct(): void {
     const modal = document.getElementById('container-modal3') as HTMLElement;
     modal.style.display = 'none';
   }
@@ -800,6 +808,22 @@ aplicarFiltros(): void {
   alertCloseD() {
     const modal = document.getElementById('alert-containerD') as HTMLElement;
     modal.style.display = 'none';
+  }
+
+  showAlert() {
+    const modal = document.getElementById('alert-container') as HTMLElement;
+    modal.style.display = 'flex';
+    modal.classList.add('fade-in');
+  
+    setTimeout(() => {
+      modal.classList.remove('fade-in');
+      modal.classList.add('fade-out');
+  
+      setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('fade-out');
+      }, 500); // Duration of fade-out animation
+    }, 2000);
   }
 
 }
