@@ -36,6 +36,7 @@ export class CatalogoComponent implements OnInit {
   productos: any[] = [];
   categorias: any[] = [];
   categoriasSeleccionadas: string[] = [];
+  categoriasSeleccionadas2: string[] = [];
   errorMessage: string | null = null;
   searchQuery: string = '';
   baseUrl: string = 'http://localhost:8000/images/uploads/';
@@ -44,6 +45,7 @@ export class CatalogoComponent implements OnInit {
   filtroAlfabeticoActivo: string | null = null;
   filtroPrecioActivo: string | null = null;
   fileUploaded: boolean = false;
+  selectedProduct: Producto | null = null;
   
   
 
@@ -99,11 +101,15 @@ getProductos(): void {
     );
   }
 
-// Manejar la selección de categorías
+// Manejar la selección de categorías (máximo 4)
 sumarCategorias(categoria: string): void {
   const index = this.categoriasSeleccionadas.indexOf(categoria);
   if (index === -1) {
-    this.categoriasSeleccionadas.push(categoria);
+    if (this.categoriasSeleccionadas.length < 4) {
+      this.categoriasSeleccionadas.push(categoria);
+    } else {
+      console.log('No se pueden seleccionar más de 4 categorías.');
+    }
   } else {
     this.categoriasSeleccionadas.splice(index, 1);
   }
@@ -121,7 +127,7 @@ eliminarCategoria(categoria: string): void {
   if (index !== -1) {
     this.categoriasSeleccionadas.splice(index, 1);
     if (this.categoriasSeleccionadas.length === 0) {
-      window.location.reload(); // Recargar la página si no hay categorías seleccionadas
+      this.getProductos();
     } else {
       this.buscarPorCategoriasSeleccionadas(); // Recargar productos después de eliminar la categoría
     }
@@ -132,10 +138,11 @@ eliminarCategoria(categoria: string): void {
 
 // Buscar productos por las categorías seleccionadas
 buscarPorCategoriasSeleccionadas(): void {
-  if (this.categoriasSeleccionadas.length > 0) {
-    this.productoService.buscarPorCategorias(this.categoriasSeleccionadas).subscribe(
-      (data: Producto[]) => {
-        this.productos = data.filter((producto: Producto) => producto.habilitado);
+  this.categoriasSeleccionadas2 = this.categoriasSeleccionadas;
+  if (this.categoriasSeleccionadas2.length > 0) {
+    this.productoService.buscarPorCategorias(this.categoriasSeleccionadas2).subscribe(
+      data => {
+        this.productos = data;
         this.modalClose(); // Cerrar el modal después de buscar
       },
       error => {
@@ -330,15 +337,17 @@ modalClose2() {
   modal.style.display = 'none';
 }
 
-modalProduct() {
+openProductModal(product: Producto): void {
+  this.selectedProduct = product;
   const modal = document.getElementById('container-modal3') as HTMLElement;
   modal.style.display = 'flex';
 }
 
-modalCloseProduct() {
+modalCloseProduct(): void {
   const modal = document.getElementById('container-modal3') as HTMLElement;
   modal.style.display = 'none';
 }
+
 
 
 
