@@ -429,19 +429,33 @@ onSubmit(): void {
 
   modal2(action?: string) {
     const modal = document.getElementById('deleteModal') as HTMLElement;
+    const imageContainer = document.getElementById('modalImageContainer') as HTMLElement;
     modal.style.display = 'flex';
-
-  if (action === 'habilitar') {
+  
+    if (action === 'habilitar') {
       this.modalText = 'Seguro quieres habilitar este producto?';
       this.modalAction = 'habilitar';
+      imageContainer.innerHTML = `
+        <svg class="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" d="M4 4a2 2 0 1 0 0 4h16a2 2 0 1 0 0-4H4Zm0 6h16v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8Zm10.707 5.707a1 1 0 0 0-1.414-1.414l-.293.293V12a1 1 0 1 0-2 0v2.586l-.293-.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l2-2Z" clip-rule="evenodd"/>
+        </svg>`;
     } else {
       this.modalText = 'Seguro quieres deshabilitar este producto?';
       this.modalAction = 'eliminar';
+      imageContainer.innerHTML = `
+        <svg id="tachitoDeBasura" class="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+        </svg>`;
     }
   }
 
   modalClose2() {
     const modal = document.getElementById('deleteModal') as HTMLElement;
+    modal.style.display = 'none';
+  }
+
+  modalClose15() {
+    const modal = document.getElementById('alert-container1.5') as HTMLElement;
     modal.style.display = 'none';
   }
 
@@ -582,6 +596,24 @@ showAlert1() {
   }, 1000); // Wait for 1 second before executing the function
 }
 
+showAlert9() {
+  setTimeout(() => {
+    const modal = document.getElementById('alert-container1.5') as HTMLElement;
+    modal.style.display = 'flex';
+    modal.classList.add('fade-in');
+
+    setTimeout(() => {
+      modal.classList.remove('fade-in');
+      modal.classList.add('fade-out');
+
+      setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('fade-out');
+      }, 500); // Duration of fade-out animation
+    }, 2000);
+  }, 1000); // Wait for 1 second before executing the function
+}
+
 showAlert2() {
   setTimeout(() => {
     const modal = document.getElementById('alert-container2') as HTMLElement;
@@ -650,6 +682,10 @@ modalClose8() {
 }
 modalClose9() {
   const modal = document.getElementById('alert-container4') as HTMLElement;
+  modal.style.display = 'none';
+}
+alertClose1() {
+  const modal = document.getElementById('alert-container1.5') as HTMLElement;
   modal.style.display = 'none';
 }
 
@@ -742,5 +778,28 @@ aplicarFiltros(): void {
     modal.style.display = 'none';
   }
 
+  showAlertD() {
+    setTimeout(() => {
+      const modal = document.getElementById('alert-containerD') as HTMLElement;
+      modal.style.display = 'flex';
+      modal.classList.add('fade-in');
+  
+      setTimeout(() => {
+        modal.classList.remove('fade-in');
+        modal.classList.add('fade-out');
+  
+        setTimeout(() => {
+          modal.style.display = 'none';
+          modal.classList.remove('fade-out');
+        }, 500); // Duration of fade-out animation
+      }, 2000);
+    }, 1000); // Wait for 1 second before executing the function
+  }
+
+
+  alertCloseD() {
+    const modal = document.getElementById('alert-containerD') as HTMLElement;
+    modal.style.display = 'none';
+  }
 
 }

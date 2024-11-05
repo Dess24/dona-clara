@@ -105,6 +105,17 @@ appearance: textfield;
     left: 0;
     margin-inline: 36%;
   }
+  .alert-container1{
+    position: fixed;
+    width: 30vw;
+    display: none;
+    justify-content: center;
+    align-items: start;
+    z-index: 100;
+    top: 5px;
+    left: 0;
+    margin-inline: 36%;
+  }
   .alert-container2{
     position: fixed;
     width: 28.5vw;
