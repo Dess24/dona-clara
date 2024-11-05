@@ -7,6 +7,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+export interface Producto {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  cantidad: number;
+  categoria_id: number;
+  imagen: string;
+  habilitado: boolean;
+  destacado: boolean;
+}
+
 @Component({
   selector: 'app-admin-product-panel',
   standalone: true,
@@ -35,6 +47,7 @@ export class AdminProductPanelComponent implements OnInit{
   };
   isFormValid: boolean = false;
   categoriasSeleccionadas: string[] = [];
+  categoriasSeleccionadas2: string[] = [];
   producto: any = {
     nombre: '',
     precio: '',
@@ -52,6 +65,8 @@ export class AdminProductPanelComponent implements OnInit{
   fileUploaded: boolean = false;
   modalText: string = '';
   modalAction: string = '';
+  selectedCategoriaId: number | null = null;
+  
   
 
   
@@ -62,24 +77,32 @@ export class AdminProductPanelComponent implements OnInit{
     this.getCategorias();
   }
 
-  // Listar todos los productos
-  getProductos(): void {
-    this.productoService.getProductos().subscribe(
-      data => {
-        this.productos = data;
-      },
-      error => {
-        this.errorMessage = 'Error al cargar los productos';
-        console.error('Error al cargar los productos', error);
-      }
-    );
-  }
+// Listar todos los productos
+getProductos(): void {
+  this.productoService.getProductos().subscribe(
+    data => {
+      // Filtrar productos habilitados y deshabilitados
+      this.productos = data.sort((a: Producto, b: Producto) => {
+        if (a.habilitado === b.habilitado) {
+          return 0;
+        } else if (a.habilitado) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+    },
+    error => {
+      this.errorMessage = 'Error al cargar los productos';
+      console.error('Error al cargar los productos', error);
+    }
+  );
+}
 
 // Manejar la selección de la imagen
 onFileSelected(event: any): void {
   if (event.target.files.length > 0) {
     this.imagen = event.target.files[0];
-    this.subirImagen(); // Subir la imagen inmediatamente después de seleccionarla
   }
 }
 
@@ -213,6 +236,7 @@ onSubmit(): void {
   }
 
   modalClose() {
+
     const modal = document.getElementById('container-modal') as HTMLElement;
     modal.style.display = 'none';
 
@@ -231,6 +255,8 @@ onSubmit(): void {
       });
     });
   }
+
+  
 
   cambiarColorOpcion(event: Event): void {
     const target = event.target as HTMLElement;
@@ -367,16 +393,38 @@ onSubmit(): void {
     );
   }
 
-  borrarCategoria(id: number): void {
-    this.productoService.borrarCategoria(id).subscribe(
-      response => {
-        console.log('Categoría borrada exitosamente', response);
-      },
-      error => {
-        this.errorMessage = 'Error al borrar la categoría';
-        console.error('Error al borrar la categoría', error);
+  borrarCategoria(id: number | null): void {
+    if (id !== null) {
+      // Buscar la categoría por su ID para verificar su nombre
+      const categoria = this.categorias.find(categoria => categoria.id === id);
+  
+      if (categoria && categoria.nombre === 'Varios') {
+        this.errorMessage = 'No se puede eliminar la categoría "Varios"';
+        return;
       }
-    );
+  
+      this.productoService.borrarCategoria(id).subscribe(
+        response => {
+          console.log('Categoría borrada exitosamente', response);
+          window.location.reload();
+        },
+        error => {
+          if (error.status === 400 && error.error.message === 'No se puede eliminar la categoría "Varios"') {
+            this.errorMessage = 'No se puede eliminar la categoría "Varios"';
+          } else {
+            this.errorMessage = 'Error al borrar la categoría';
+          }
+          console.error('Error al borrar la categoría', error);
+        }
+      );
+    } else {
+      this.errorMessage = 'Error al borrar la categoría';
+    }
+  }
+
+  modalClose11(): void {
+    const modal = document.getElementById('delete-category-modal') as HTMLElement;
+    modal.style.display = 'none';
   }
 
   modal2(action?: string) {
@@ -454,11 +502,15 @@ onSubmit(): void {
     return this.producto.nombre && this.producto.precio && this.producto.cantidad && this.producto.categoria;
   }
 
-// Manejar la selección de categorías
+// Manejar la selección de categorías (máximo 4)
 sumarCategorias(categoria: string): void {
   const index = this.categoriasSeleccionadas.indexOf(categoria);
   if (index === -1) {
-    this.categoriasSeleccionadas.push(categoria);
+    if (this.categoriasSeleccionadas.length < 4) {
+      this.categoriasSeleccionadas.push(categoria);
+    } else {
+      console.log('No se pueden seleccionar más de 4 categorías.');
+    }
   } else {
     this.categoriasSeleccionadas.splice(index, 1);
   }
@@ -476,7 +528,7 @@ eliminarCategoria(categoria: string): void {
   if (index !== -1) {
     this.categoriasSeleccionadas.splice(index, 1);
     if (this.categoriasSeleccionadas.length === 0) {
-      window.location.reload(); // Recargar la página si no hay categorías seleccionadas
+      this.getProductos();
     } else {
       this.buscarPorCategoriasSeleccionadas(); // Recargar productos después de eliminar la categoría
     }
@@ -487,8 +539,9 @@ eliminarCategoria(categoria: string): void {
 
 // Buscar productos por las categorías seleccionadas
 buscarPorCategoriasSeleccionadas(): void {
-  if (this.categoriasSeleccionadas.length > 0) {
-    this.productoService.buscarPorCategorias(this.categoriasSeleccionadas).subscribe(
+  this.categoriasSeleccionadas2 = this.categoriasSeleccionadas;
+  if (this.categoriasSeleccionadas2.length > 0) {
+    this.productoService.buscarPorCategorias(this.categoriasSeleccionadas2).subscribe(
       data => {
         this.productos = data;
         this.modalClose(); // Cerrar el modal después de buscar
@@ -515,6 +568,13 @@ modalClose5(): void {
   const modal = document.getElementById('create-category-modal');
   if (modal) {
     modal.style.display = 'none';
+  }
+}
+
+modal11(): void {
+  const modal = document.getElementById('delete-category-modal');
+  if (modal) {
+    modal.style.display = 'block';
   }
 }
 

@@ -36,6 +36,9 @@ Route::get('/productos/nombre/{nombre}', [ProductoController::class, 'buscarPorN
 Route::get('/recientes', [ProductoController::class, 'mostrarRecientes']);
 Route::post('/imagenes', [ProductoController::class, 'subirImagen']);
 
+//Cambiar Contraseña
+Route::post('/generate-reset-code', [UsersController::class, 'generateResetCode']);
+Route::post('/reset-password', [UsersController::class, 'resetPassword']);
 
 //Categorias
 Route::post('/create-categoria', [ProductoController::class, 'agregarCategoria']);
@@ -60,5 +63,4 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('modificar/{id}', [ProductoController::class, 'modificarProducto']);
     Route::put('actualizar-stock/{id}', [ProductoController::class, 'actualizarStock']);
     Route::put('actualizar-destacado/{id}', [ProductoController::class, 'actualizarDestacado']);
-
 });

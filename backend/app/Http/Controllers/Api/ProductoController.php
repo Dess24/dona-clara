@@ -208,11 +208,25 @@ public function modificarProducto(Request $request, $id)
         unset($validatedData['categoria']); // Eliminar el campo 'categoria' ya que no existe en la tabla 'productos'
     }
 
+    // Eliminar la imagen anterior si se proporciona una nueva imagen
+    if (isset($validatedData['imagen']) && $producto->imagen !== $validatedData['imagen']) {
+        $rutaCompleta = public_path('images/uploads/' . $producto->imagen);
+        if (file_exists($rutaCompleta)) {
+            if (unlink($rutaCompleta)) {
+                // Imagen eliminada correctamente
+                $producto->imagen = $validatedData['imagen'];
+            } else {
+                return response()->json(['message' => 'No se pudo eliminar la imagen anterior'], 500);
+            }
+        } else {
+            return response()->json(['message' => 'La imagen anterior no existe en el sistema de archivos'], 404);
+        }
+    }
+
     // Actualizar solo los campos presentes en la solicitud
     $producto->update($validatedData);
     return response()->json(['message' => 'Producto modificado exitosamente', 'producto' => $producto], 200);
 }
-
 
 
     // Función para actualizar el stock de un producto
@@ -253,6 +267,7 @@ public function modificarProducto(Request $request, $id)
         return response()->json(['message' => 'Categoría agregada exitosamente', 'categoria' => $categoria], 201);
     }
 
+
     // Función para borrar una categoría
     public function borrarCategoria($id)
     {
@@ -263,10 +278,21 @@ public function modificarProducto(Request $request, $id)
             return response()->json(['message' => 'Categoría no encontrada'], 404);
         }
 
+        // Buscar la categoría "Varios" o crearla si no existe
+        $categoriaVarios = Categoria::firstOrCreate(['nombre' => 'Varios']);
+
+        // Verificar si la categoría a eliminar es "Varios"
+        if ($categoria->id === $categoriaVarios->id) {
+            return response()->json(['message' => 'No se puede eliminar la categoría "Varios"'], 400);
+        }
+
+        // Actualizar los productos que pertenecen a la categoría eliminada
+        Producto::where('categoria_id', $id)->update(['categoria_id' => $categoriaVarios->id]);
+
         // Eliminar la categoría
         $categoria->delete();
 
-        return response()->json(['message' => 'Categoría borrada exitosamente'], 200);
+        return response()->json(['message' => 'Categoría borrada exitosamente y productos actualizados a la categoría "Varios"'], 200);
     }
 
         public function mostrarCategorias()
