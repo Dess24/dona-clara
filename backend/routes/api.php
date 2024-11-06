@@ -24,6 +24,8 @@ Route::get('/usuarios', [UsersController::class, 'getAllUsuarios']);
 Route::post('/make-admin', [UsersController::class, 'makeAdmin'])->middleware('auth:sanctum');
 Route::post('/remove-admin', [UsersController::class, 'removeAdmin'])->middleware('auth:sanctum');
 Route::post('/contactanos', [UsersController::class, 'contactanos']);
+Route::get('/usuarios/ordenar', [UsersController::class, 'ordenarUsuarios']);
+
 
 //Bienvenida al mail
 Route::post('/welcome', [UsersController::class, 'welcome']);
