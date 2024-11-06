@@ -92,7 +92,7 @@ export class ShoppingCartComponent implements OnInit {
     // Obtener la cantidad actual del producto en el carrito
     const item = this.carrito.productosCarrito.find(item => item.producto.id === productoId);
     const cantidadActual = item ? item.cantidad : 0;
-  
+
     if (nuevaCantidad > cantidadActual) {
       const diferencia = nuevaCantidad - cantidadActual;
       this.carritoService.añadirProducto(productoId, diferencia).subscribe(
@@ -122,6 +122,7 @@ export class ShoppingCartComponent implements OnInit {
     return cantidad <= 1;
   }
 
+  
   checkout(): void {
     this.carritoService.checkout().subscribe(
       data => {
@@ -361,4 +362,5 @@ isCategoriaSeleccionada(categoria: string): boolean {
     }, 2000);
   }
 
+  
 }
