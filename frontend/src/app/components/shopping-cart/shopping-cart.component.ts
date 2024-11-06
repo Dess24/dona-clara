@@ -9,9 +9,13 @@ import { FormsModule } from '@angular/forms';
 interface Producto {
   id: number;
   nombre: string;
+  descripcion: string;
   precio: number;
-  imagen: string;
+  cantidad: number;
   categoria_id: number;
+  imagen: string;
+  habilitado: boolean;
+  destacado: boolean;
 }
 
 interface ItemCarrito {
@@ -37,6 +41,8 @@ export class ShoppingCartComponent implements OnInit {
   carrito: { productosCarrito: ItemCarrito[] } = { productosCarrito: [] };
   errorMessage: string | null = null;
   sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente
+  selectedProduct: Producto | null = null;
+
 
   constructor(private carritoService: CarritoService, private productoService: ProductoService) { }
 
@@ -327,7 +333,7 @@ isCategoriaSeleccionada(categoria: string): boolean {
     }
   }
 
-  /*
+  
   openProductModal(product: Producto): void {
     this.selectedProduct = product;
     const modal = document.getElementById('container-modal3') as HTMLElement;
@@ -338,6 +344,21 @@ isCategoriaSeleccionada(categoria: string): boolean {
     const modal = document.getElementById('container-modal3') as HTMLElement;
     modal.style.display = 'none';
   }
-  */
+
+  showAlert() {
+    const modal = document.getElementById('alert-container') as HTMLElement;
+    modal.style.display = 'flex';
+    modal.classList.add('fade-in');
+  
+    setTimeout(() => {
+      modal.classList.remove('fade-in');
+      modal.classList.add('fade-out');
+  
+      setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('fade-out');
+      }, 500); // Duration of fade-out animation
+    }, 2000);
+  }
 
 }

@@ -124,28 +124,29 @@
     
     
     <!-- Product list -->
-    <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
+    <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8" >
       <div class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
         <div class="space-y-6" *ngIf="carrito && carrito.productosCarrito.length > 0; else emptyCart">
 
           <div *ngFor="let item of carrito.productosCarrito" class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6">
             <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
               <a class="cursor-pointer w-20 shrink-0 md:order-1">
-                <img class="h-20 w-20 dark:hidden" [src]="baseUrl + item.producto.imagen" alt="{{ item.producto.nombre }}" />
-                <img class="hidden h-20 w-20 dark:block" [src]="baseUrl + item.producto.imagen" alt="{{ item.producto.nombre }}" />
+                <img class="h-20 w-20 dark:hidden" (click)="openProductModal(item.producto)" [src]="baseUrl + item.producto.imagen" alt="{{ item.producto.nombre }}" />
+                <img class="hidden h-20 w-20 dark:block" (click)="openProductModal(item.producto)" [src]="baseUrl + item.producto.imagen" alt="{{ item.producto.nombre }}" />
               </a>
+              
               
               <label for="counter-input" class="sr-only">Choose quantity:</label>
               <div class="flex items-center justify-between md:order-3 md:justify-end">
                 <div class="flex items-center">
                   <input type="number" 
-                  [(ngModel)]="item.cantidad" 
-                  (change)="actualizarProducto(item.producto.id, item.cantidad)" 
-                  min="0" 
-                  max="9999" 
-                  oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4); if (parseInt(this.value) < 1 || this.value === '') this.value = '1';"
-                  data-input-counter 
-                  class="custom-number-input cursor-text border-gray-300 mx-1 w-20 shrink-0 rounded-lg bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white contador-stock" />
+                    [(ngModel)]="item.cantidad" 
+                    (ngModelChange)="actualizarProducto(item.producto.id, item.cantidad)" 
+                    min="0" 
+                    max="9999" 
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4); if (parseInt(this.value) < 1 || this.value === '') this.value = '1';"
+                    data-input-counter 
+                    class="custom-number-input cursor-text border-gray-300 mx-1 w-20 shrink-0 rounded-lg bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white contador-stock" />
                 </div>
                 <div class="text-end md:order-4 md:w-32">
                   <p class="cursor-default text-base font-bold text-gray-900 dark:text-white">{{ item.monto_total | currency }}</p>
@@ -153,8 +154,13 @@
               </div>
               
               <div class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
-                <a class="cursor-pointer text-base font-medium text-gray-900 hover:underline dark:text-white">{{ item.producto.nombre }}</a>
-                
+                <a (click)="openProductModal(item.producto)" class="cursor-pointer text-base font-medium text-gray-900 hover:underline dark:text-white">{{ item.producto.nombre }}</a>
+                <a *ngIf="item.producto" href="#" class="text-md font-medium leading-none text-gray-900 dark:text-white flex flex-row">
+                  <svg class="mr-1 h-4 w-4 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                  </svg>
+                  En stock: {{ item.producto.cantidad }}
+                </a>
                 <div class="flex items-center gap-4">
                   <button type="button" class="contenedor py-2 px-4 rounded-md inline-flex items-center text-sm font-medium text-red-600 hover:bg-red-600 hover:text-white dark:text-red-500" (click)="eliminarProducto(item.producto.id)">
                     <svg class="imagen me-1.5 h-5 w-5 text-red-600 dark:text-red-600 hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -162,6 +168,8 @@
                     </svg>                      
                     Eliminar
                   </button>
+
+                  
                 </div>
               </div>
             </div>
@@ -217,7 +225,7 @@
 </section>
 
 
- <!-- Product view 
+<!-- Product view -->
 <div class="container-modal3" id="container-modal3">
   <div class="shadow-lg rounded-xl">
     <section class="animate__animated animate__jackInTheBox animate__faster flex flex-row-reverse py-6 bg-white dark:bg-gray-900 antialiased rounded-xl">
@@ -255,13 +263,7 @@
               </div>
             </div>
   
-            <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
-              <a (click)="showAlert()" href="#" title="" class="flex items-center justify-center py-2.5 px-5 text-md font-medium text-white focus:outline-none primary rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" role="button">
-                <svg class="w-6 h-6 text-white dark:text-white -ms-2 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
-                </svg>
-                Añadir al carrito
-              </a>
+            
   
               <a href="#" title="" class="text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center" role="button">
                 <svg class="w-5 h-5 -ms-2 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -269,7 +271,7 @@
                 </svg>
                 Add to cart
               </a>
-            </div>
+  
   
             <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
   
@@ -282,4 +284,3 @@
     </section>
   </div>
 </div>
--->

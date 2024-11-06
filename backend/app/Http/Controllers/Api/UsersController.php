@@ -380,4 +380,18 @@ public function resetPassword(Request $request)
     }
 }
 
+public function ordenarUsuarios(Request $request)
+{
+    $orden = $request->input('orden', 'asc'); // Obtener el orden de la solicitud, por defecto 'asc'
+
+    // Validar el orden
+    if (!in_array($orden, ['asc', 'desc'])) {
+        return response()->json(['error' => 'Orden no válido'], 400);
+    }
+
+    // Obtener los usuarios ordenados por 'name'
+    $usuarios = User::orderBy('name', $orden)->get();
+
+    return response()->json($usuarios);
+}
 }

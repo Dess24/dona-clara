@@ -92,5 +92,10 @@ getUserInfo(): Observable<{ user: { admin: number } }> {
   resetPassword(email: string, token: string, password: string, password_confirmation: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/reset-password`, { email, token, password, password_confirmation });
   }
+
+// Ordenar usuarios
+ordenarUsuarios(campo: string, orden: string): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/usuarios/ordenar`, { params: { campo, orden } });
+}
   
 }
