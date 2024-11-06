@@ -226,10 +226,31 @@ onSubmit(): void {
         this.errorMessage = 'Error al buscar productos por nombre';
         console.error('Error al buscar productos por nombre', error);
         if (error.status === 404) {
-          alert('No se encontraron productos');
+          this.alertBuscar();
         }
       }
     );
+  }
+
+  alertBuscar(){
+    const modal = document.getElementById('alert-buscar') as HTMLElement;
+    modal.style.display = 'flex';
+    modal.classList.add('fade-in');
+  
+    setTimeout(() => {
+      modal.classList.remove('fade-in');
+      modal.classList.add('fade-out');
+  
+      setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('fade-out');
+      }, 500); // Duration of fade-out animation
+    }, 2000);
+  }
+
+  alertCloseBuscar() {
+    const modal = document.getElementById('alert-buscar') as HTMLElement;
+    modal.style.display = 'none';
   }
 
   modal(){

@@ -130,7 +130,7 @@
 
           <div *ngFor="let item of carrito.productosCarrito" class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6">
             <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-              <a (click)="modalProduct()" class="cursor-pointer w-20 shrink-0 md:order-1">
+              <a class="cursor-pointer w-20 shrink-0 md:order-1">
                 <img class="h-20 w-20 dark:hidden" [src]="baseUrl + item.producto.imagen" alt="{{ item.producto.nombre }}" />
                 <img class="hidden h-20 w-20 dark:block" [src]="baseUrl + item.producto.imagen" alt="{{ item.producto.nombre }}" />
               </a>
@@ -153,7 +153,7 @@
               </div>
               
               <div class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
-                <a (click)="modalProduct()" class="cursor-pointer text-base font-medium text-gray-900 hover:underline dark:text-white">{{ item.producto.nombre }}</a>
+                <a class="cursor-pointer text-base font-medium text-gray-900 hover:underline dark:text-white">{{ item.producto.nombre }}</a>
                 
                 <div class="flex items-center gap-4">
                   <button type="button" class="contenedor py-2 px-4 rounded-md inline-flex items-center text-sm font-medium text-red-600 hover:bg-red-600 hover:text-white dark:text-red-500" (click)="eliminarProducto(item.producto.id)">
@@ -215,7 +215,9 @@
     </div>
   </div>
 </section>
-<!-- Product view -->
+
+
+ <!-- Product view 
 <div class="container-modal3" id="container-modal3">
   <div class="shadow-lg rounded-xl">
     <section class="animate__animated animate__jackInTheBox animate__faster flex flex-row-reverse py-6 bg-white dark:bg-gray-900 antialiased rounded-xl">
@@ -228,50 +230,56 @@
           </label>
         </div>
       </div>
-      <div class="py-12 max-w-screen-md px-4 mx-auto 2xl:px-0">
+      <div class="py-12 max-w-screen-md px-4 mx-auto ">
         <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
           <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
-            <img class="mx-auto dark:hidden max-h-96" src="../../../assets/img/8bc66b98-dda0-4b47-b7c3-3c0e12bf0067.jpg" alt="" />
+            <img *ngIf="selectedProduct" class="mx-auto dark:hidden max-h-96" [src]="baseUrl + selectedProduct.imagen" alt="" />
           </div>
   
           <div class="mt-6 sm:mt-8 lg:mt-0">
-            <h1
-              class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
-            >
-            Yerba De pago en Pago 1/2 kg
+            <h1 *ngIf="selectedProduct" class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
+              {{ selectedProduct.nombre }}
             </h1>
             <div class="mt-4 items-center sm:gap-4 flex">
-              <p
-                class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white"
-              >
-                $100
+              <p *ngIf="selectedProduct" class="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">
+                ${{ selectedProduct.precio }}
               </p>
   
               <div class="flex items-center mt-2 sm:mt-0">
-                
-                
-                <a
-                  href="#"
-                  class="text-md font-medium leading-none text-gray-900 dark:text-white flex flex-row"
-                >
-                <svg class="mr-1 h-4 w-4 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                </svg>
-                  En stock: 20
+                <a *ngIf="selectedProduct" href="#" class="text-md font-medium leading-none text-gray-900 dark:text-white flex flex-row">
+                  <svg class="mr-1 h-4 w-4 text-gray-900 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                  </svg>
+                  En stock: {{ selectedProduct.cantidad }}
                 </a>
               </div>
             </div>
   
+            <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
+              <a (click)="showAlert()" href="#" title="" class="flex items-center justify-center py-2.5 px-5 text-md font-medium text-white focus:outline-none primary rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" role="button">
+                <svg class="w-6 h-6 text-white dark:text-white -ms-2 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
+                </svg>
+                Añadir al carrito
+              </a>
+  
+              <a href="#" title="" class="text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center" role="button">
+                <svg class="w-5 h-5 -ms-2 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"/>
+                </svg>
+                Add to cart
+              </a>
+            </div>
+  
             <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
   
-            <p class="mb-6 text-gray-500 dark:text-gray-400">
-              Studio quality three mic array for crystal clear calls and voice
-              recordings. Six-speaker sound system for a remarkably robust and
-              high-quality audio experience. Up to 256GB of ultrafast SSD storage.
+            <p *ngIf="selectedProduct" class="mb-6 text-gray-500 dark:text-gray-400">
+              {{ selectedProduct.descripcion }}
             </p>
           </div>
         </div>
       </div>
     </section>
   </div>
- </div>
+</div>
+-->

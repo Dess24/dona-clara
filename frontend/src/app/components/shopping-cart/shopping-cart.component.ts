@@ -327,14 +327,17 @@ isCategoriaSeleccionada(categoria: string): boolean {
     }
   }
 
-  modalProduct() {
+  /*
+  openProductModal(product: Producto): void {
+    this.selectedProduct = product;
     const modal = document.getElementById('container-modal3') as HTMLElement;
     modal.style.display = 'flex';
   }
   
-  modalCloseProduct() {
+  modalCloseProduct(): void {
     const modal = document.getElementById('container-modal3') as HTMLElement;
     modal.style.display = 'none';
   }
+  */
 
 }

@@ -122,6 +122,9 @@
 .primary{
     background-color: #1B335F;
 }
+.primary:hover {
+    background-color: #182c51;
+  }
 .mas-productos-btn {
     position: absolute;
     bottom: 16px;

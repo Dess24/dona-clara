@@ -15,3 +15,8 @@ button:disabled {
     background-color: gray;
     cursor: not-allowed;
 }
+.footer{
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
