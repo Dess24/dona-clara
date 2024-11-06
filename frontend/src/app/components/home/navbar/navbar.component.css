@@ -54,3 +54,9 @@ ul li:hover ul.dropdown{
 .carrito:hover svg{
     color: rgb(44, 51, 63);
 }
+.wpp{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}

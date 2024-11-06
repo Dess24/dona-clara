@@ -29,7 +29,6 @@ export class MainComponent implements OnInit {
   productos: any[] = [];
   baseUrl: string = 'http://localhost:8000/images/uploads/';
   errorMessage: string = '';
-
   constructor(private productoService: ProductoService) {}
 
   ngOnInit(): void {
@@ -78,3 +77,16 @@ export class MainComponent implements OnInit {
     }
   }
 }
+
+/*
+openProductModal(product: Producto): void {
+  this.selectedProduct = product;
+  const modal = document.getElementById('container-modal3') as HTMLElement;
+  modal.style.display = 'flex';
+}
+
+modalCloseProduct(): void {
+  const modal = document.getElementById('container-modal3') as HTMLElement;
+  modal.style.display = 'none';
+} 
+*/
