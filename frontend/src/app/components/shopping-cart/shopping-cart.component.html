@@ -140,18 +140,15 @@
               <div class="flex items-center justify-between md:order-3 md:justify-end">
                 <div class="flex items-center">
                   <input type="number" 
-                    [(ngModel)]="item.cantidad" 
-                    (ngModelChange)="actualizarProducto(item.producto.id, item.cantidad)" 
-                    min="0" 
-                    max="9999" 
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4); if (parseInt(this.value) < 1 || this.value === '') this.value = '1';"
-                    data-input-counter 
-                    class="custom-number-input cursor-text border-gray-300 mx-1 w-20 shrink-0 rounded-lg bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white contador-stock" />
+                  [(ngModel)]="item.cantidad" 
+                  (change)="actualizarProducto(item.producto.id, item.cantidad)" 
+                  min="0" 
+                  max="9999" 
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" 
+                  data-input-counter 
+                  class="custom-number-input cursor-text border-gray-300 mx-1 w-20 shrink-0 rounded-lg bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white contador-stock" />
                 </div>
-                <div class="text-end md:order-4 md:w-32">
-                  <p class="cursor-default text-base font-bold text-gray-900 dark:text-white">{{ item.monto_total | currency }}</p>
-                </div>
-              </div>
+</div>
               
               <div class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
                 <a (click)="openProductModal(item.producto)" class="cursor-pointer text-base font-medium text-gray-900 hover:underline dark:text-white">{{ item.producto.nombre }}</a>
