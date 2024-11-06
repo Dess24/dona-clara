@@ -20,12 +20,12 @@
   
   
           <div *ngFor="let producto of productos" class="card my-3.5 max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
-            <a href="#">
-              <img class="rounded-t-lg size" [src]="baseUrl + producto.imagen" alt="{{ producto.nombre }}" draggable="false" />
+            <a>
+              <img class="cursor-pointer rounded-t-lg size" [src]="baseUrl + producto.imagen" alt="{{ producto.nombre }}" draggable="false" />
             </a>
             <div class="p-5">
-              <a href="#">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-black dark:text-white">{{ producto.nombre }}</h5>
+              <a>
+                <h5 class="cursor-pointer mb-2 text-2xl font-bold tracking-tight text-black dark:text-white">{{ producto.nombre }}</h5>
               </a>
 
               <br><br>
@@ -41,9 +41,7 @@
             </div>
           </div>
   
-  
-  
-            
+
   
         </section>
         <i id="right" class="right fa-solid fa-angle-right" (click)="onArrowRightClick($event)"></i>

@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet, RouterModule} from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { HttpClientModule } from '@angular/common/http';
+import { MainComponent } from '../main/main.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [ CommonModule, RouterModule, RouterOutlet, HttpClientModule],
+  imports: [ CommonModule, RouterModule, RouterOutlet, HttpClientModule, MainComponent],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
