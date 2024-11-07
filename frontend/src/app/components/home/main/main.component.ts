@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef, QueryList, ViewChildre
 import { ProductoService } from '../../../services/producto.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 interface Producto {
   id: number;
@@ -29,13 +30,70 @@ export class MainComponent implements OnInit {
   productos: any[] = [];
   baseUrl: string = 'http://localhost:8000/images/uploads/';
   errorMessage: string = '';
-  constructor(private productoService: ProductoService) {}
+  selectedProduct: Producto | null = null;
+  categorias: any[] = [];
+  categoriasSeleccionadas: string[] = [];
+
+
+  constructor(private productoService: ProductoService, private router: Router) {}
 
   ngOnInit(): void {
     this.getProductos();
+    this.getCategorias();
+  }
+
+  getCategorias(): void {
+    this.productoService.getCategorias().subscribe(
+      data => {
+        this.categorias = data;
+      },
+      error => {
+        this.errorMessage = 'Error al cargar las categorías';
+        console.error('Error al cargar las categorías', error);
+      }
+    );
+  }
+
+  seleccionarCategoria(categoria: string): void {
+    this.categoriasSeleccionadas = [categoria];
+    localStorage.setItem('categoriasSeleccionadas', JSON.stringify(this.categoriasSeleccionadas));
+    this.router.navigate(['/catalogo']);
+  }
+
+  // Buscar productos por las categorías seleccionadas
+  buscarPorCategoriasSeleccionadas(): void {
+    if (this.categoriasSeleccionadas.length > 0) {
+      this.productoService.buscarPorCategorias(this.categoriasSeleccionadas).subscribe(
+        data => {
+          this.productos = data;
+        },
+        error => {
+          this.errorMessage = 'Error al buscar productos por categorías';
+          console.error('Error al buscar productos por categorías', error);
+        }
+      );
+    } else {
+      window.location.reload(); // Recargar la página si no hay categorías seleccionadas
+    }
   }
 
   ngAfterViewInit() {
+  }
+
+  showAlert() {
+    const modal = document.getElementById('alert-container') as HTMLElement;
+    modal.style.display = 'flex';
+    modal.classList.add('fade-in');
+  
+    setTimeout(() => {
+      modal.classList.remove('fade-in');
+      modal.classList.add('fade-out');
+  
+      setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('fade-out');
+      }, 500); // Duration of fade-out animation
+    }, 2000);
   }
 
   getProductos(): void {
@@ -76,17 +134,24 @@ export class MainComponent implements OnInit {
       carousel.scrollLeft += cardWidth;
     }
   }
-}
 
-/*
-openProductModal(product: Producto): void {
-  this.selectedProduct = product;
-  const modal = document.getElementById('container-modal3') as HTMLElement;
-  modal.style.display = 'flex';
-}
+  modalClose2() {
+    const modal = document.getElementById('alert-container') as HTMLElement;
+    modal.style.display = 'none';
+  }
 
-modalCloseProduct(): void {
-  const modal = document.getElementById('container-modal3') as HTMLElement;
-  modal.style.display = 'none';
-} 
-*/
+  openProductModal(product: any): void {
+    this.selectedProduct = product;
+    const modal = document.getElementById('container-modal3') as HTMLElement;
+    if (modal) {
+      modal.style.display = 'flex';
+    }
+  }
+
+  modalCloseProduct(): void {
+    const modal = document.getElementById('container-modal3') as HTMLElement;
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+}

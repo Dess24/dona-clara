@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/carrito/checkout', [CarritoController::class, 'checkout']);
     Route::post('/restar-producto', [CarritoController::class, 'restarProducto']);
     Route::delete('/carrito/eliminar', [CarritoController::class, 'eliminarProducto']);
+    Route::post('/carrito/actualizar-producto/{productoId}', [CarritoController::class, 'actualizarProducto']);
 });
 
 // Rutas para administradores

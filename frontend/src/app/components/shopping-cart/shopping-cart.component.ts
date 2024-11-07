@@ -88,35 +88,6 @@ export class ShoppingCartComponent implements OnInit {
     );
   }
 
-  actualizarProducto(productoId: number, nuevaCantidad: number): void {
-    // Obtener la cantidad actual del producto en el carrito
-    const item = this.carrito.productosCarrito.find(item => item.producto.id === productoId);
-    const cantidadActual = item ? item.cantidad : 0;
-
-    if (nuevaCantidad > cantidadActual) {
-      const diferencia = nuevaCantidad - cantidadActual;
-      this.carritoService.añadirProducto(productoId, diferencia).subscribe(
-        data => {
-          this.verCarrito(); // Actualizar el carrito después de añadir un producto
-        },
-        error => {
-          this.errorMessage = 'Error al añadir el producto al carrito';
-          console.error('Error al añadir el producto al carrito', error);
-        }
-      );
-    } else if (nuevaCantidad < cantidadActual) {
-      const diferencia = cantidadActual - nuevaCantidad;
-      this.carritoService.restarProducto(productoId, diferencia).subscribe(
-        data => {
-          this.verCarrito(); // Actualizar el carrito después de restar un producto
-        },
-        error => {
-          this.errorMessage = 'Error al restar el producto del carrito';
-          console.error('Error al restar el producto del carrito', error);
-        }
-      );
-    }
-  }
 
   isRestarDisabled(cantidad: number): boolean {
     return cantidad <= 1;
@@ -328,12 +299,6 @@ isCategoriaSeleccionada(categoria: string): boolean {
     });
   }
 
-  limitarCantidad(item: any): void {
-    if (item.cantidad > item.producto.stock) {
-      item.cantidad = item.producto.stock;
-    }
-  }
-
   
   openProductModal(product: Producto): void {
     this.selectedProduct = product;
@@ -361,6 +326,23 @@ isCategoriaSeleccionada(categoria: string): boolean {
       }, 500); // Duration of fade-out animation
     }, 2000);
   }
+  
+  actualizarProducto(productoId: number, nuevaCantidad: number): void {
+    this.carritoService.actualizarProducto(productoId, nuevaCantidad).subscribe(
+      data => {
+        this.verCarrito(); // Actualizar el carrito después de actualizar un producto
+      },
+      error => {
+        this.errorMessage = 'Error al actualizar el producto en el carrito';
+        console.error('Error al actualizar el producto en el carrito', error);
+      }
+    );
+  }
 
+  limitarCantidad(item: any): void {
+    if (item.cantidad > item.producto.cantidad) {
+      item.cantidad = item.producto.cantidad;
+    }
+  }
   
 }
