@@ -17,6 +17,8 @@ import { NavbarComponent } from '../home/navbar/navbar.component';
 export class RegisterComponent {
   registerForm: FormGroup;
   errorMessage: string = '';
+  isLoggedIn: boolean = false;
+  isLoggedInAdmin: boolean = false;
 
   constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
     this.registerForm = this.fb.group({
@@ -83,5 +85,42 @@ export class RegisterComponent {
         }
       );
     }
+  }
+
+
+  ngOnInit(): void {
+    this.isLoggedIn = !!localStorage.getItem('auth_token');
+    if (this.isLoggedIn) {
+      this.userService.getUserInfo().subscribe(response => {
+        this.isLoggedInAdmin = !!response.user.admin;
+      });
+    }
+    if (this.isLoggedIn) {
+      this.userService.getUserInfo().subscribe(response => {
+        this.isLoggedInAdmin = !!response.user.admin;
+      });
+    }
+  }
+
+  onLogout(): void {
+    localStorage.removeItem('auth_token');
+    this.isLoggedIn = false;
+    this.isLoggedInAdmin = false;
+    this.isLoggedInAdmin = false;
+    this.router.navigate(['/login']);
+  }
+
+  modal(){
+    const modal = document.getElementById('modal-container') as HTMLElement;
+    const hide = document.getElementById('wpp') as HTMLElement;
+    modal.style.display = 'flex';
+    hide.style.display = 'none';
+  }
+
+  modalClose(){
+    const modal = document.getElementById('modal-container') as HTMLElement;
+    const hide = document.getElementById('wpp') as HTMLElement;
+    modal.style.display = 'none';
+    hide.style.display = 'flex';
   }
 }

@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, ElementRef } from '@angular/core';
-import { NavbarComponent } from '../home/navbar/navbar.component';
+import { Navbar2Component } from '../home/navbar2/navbar2.component';
 import { FooterComponent } from '../home/footer/footer.component';
 import { ProductoService } from '../../services/producto.service';
 import { UserService } from '../../services/user.service';
@@ -24,7 +24,7 @@ interface Producto {
 @Component({
   selector: 'app-catalogo',
   standalone: true,
-  imports: [NavbarComponent, FooterComponent, HttpClientModule, CommonModule, FormsModule, RouterModule, RouterOutlet],
+  imports: [Navbar2Component, FooterComponent, HttpClientModule, CommonModule, FormsModule, RouterModule, RouterOutlet],
   templateUrl: './catalogo.component.html',
   styleUrl: './catalogo.component.css',
   providers: [ProductoService, UserService, CarritoService] // Añadir CarritoService a los proveedores

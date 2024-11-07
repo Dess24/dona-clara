@@ -5,4 +5,65 @@
 .disabled-button {
     background-color: #d3d3d3; /* Gris claro */
     cursor: not-allowed;
-  }
+}
+header{
+    z-index: 1000;
+}
+.primary-text{
+    color: #0b172f;
+}
+ul.dropdown li{
+    display: block;
+}
+ul.dropdown{
+    width: 100%;
+    position: absolute;
+    z-index: 999;
+    display: none;
+}
+ul li ul.dropdown li{
+    display: block;
+    padding-top: 1em;
+}
+ul li ul.dropdown{
+    width: 10vw;
+    position: absolute;
+    z-index: 10;
+    display: none;
+    text-align: center;
+}
+ul li:hover ul.dropdown{
+    display: block;
+    background-color: #1B335F;
+}
+.modal-container{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-color: #000000c2;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 900;
+    top: 0;
+    left: 0;
+}
+.modal-content{
+    width: 65vw;
+    height: 45vh;
+    background-color: white;
+}
+.exit{
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}
+.carrito:hover svg{
+    color: rgb(44, 51, 63);
+}
+.wpp{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
