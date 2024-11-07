@@ -53,4 +53,9 @@ export class CarritoService {
       'Authorization': `Bearer ${token}`
     });
   }
+
+  actualizarProducto(productoId: number, nuevaCantidad: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.post<any>(`${this.apiUrl}/carrito/actualizar-producto/${productoId}`, { cantidad: nuevaCantidad }, { headers });
+  }
 }

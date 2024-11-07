@@ -88,6 +88,58 @@ class CarritoController extends Controller
         return response()->json(['carrito' => $carrito, 'productosCarrito' => $productosCarrito]);
     }
 
+    public function actualizarProducto(Request $request, $productoId)
+    {
+        $userId = Auth::id();
+        if (is_null($userId)) {
+            return response()->json(['message' => 'Usuario no autenticado'], 401);
+        }
+
+        $nuevaCantidad = $request->input('cantidad');
+        if ($nuevaCantidad <= 0) {
+            return response()->json(['message' => 'La cantidad debe ser mayor que cero'], 400);
+        }
+
+        $carrito = Carrito::where('user_id', $userId)->first();
+        if (!$carrito) {
+            return response()->json(['message' => 'Carrito no encontrado'], 404);
+        }
+
+        $item = CarritoProducto::where('carrito_id', $carrito->id)
+            ->where('producto_id', $productoId)
+            ->first();
+        if (!$item) {
+            return response()->json(['message' => 'Producto no encontrado en el carrito'], 404);
+        }
+
+        $producto = Producto::find($productoId);
+        if (!$producto) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
+
+        if ($nuevaCantidad > $producto->cantidad) {
+            return response()->json(['message' => 'La cantidad no puede superar el stock disponible'], 400);
+        }
+
+        // Calcular la diferencia de cantidad y ajustar el monto total
+        $diferenciaCantidad = $nuevaCantidad - $item->cantidad;
+        $diferenciaMonto = $diferenciaCantidad * $producto->precio;
+
+        // Actualizar la cantidad del producto en el carrito
+        $item->cantidad = $nuevaCantidad;
+        $item->monto_total = $nuevaCantidad * $producto->precio;
+        $item->save();
+
+        // Actualizar el monto total del carrito
+        $carrito->monto_total += $diferenciaMonto;
+        $carrito->save();
+
+        // Ocultar created_at y updated_at
+        $item->makeHidden(['created_at', 'updated_at']);
+
+        return response()->json(['message' => 'Producto actualizado en el carrito', 'carritoProducto' => $item]);
+    }
+
 
     // Restar cantidad de un producto en el carrito
     public function restarProducto(Request $request)

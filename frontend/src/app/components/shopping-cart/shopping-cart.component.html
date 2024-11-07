@@ -140,15 +140,15 @@
               <div class="flex items-center justify-between md:order-3 md:justify-end">
                 <div class="flex items-center">
                   <input type="number" 
-                  [(ngModel)]="item.cantidad" 
-                  (change)="actualizarProducto(item.producto.id, item.cantidad)" 
-                  min="0" 
-                  max="9999" 
-                  oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" 
-                  data-input-counter 
-                  class="custom-number-input cursor-text border-gray-300 mx-1 w-20 shrink-0 rounded-lg bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white contador-stock" />
+                    [(ngModel)]="item.cantidad" 
+                    (change)="actualizarProducto(item.producto.id, item.cantidad)" 
+                    (input)="limitarCantidad(item)"
+                    min="0" 
+                    max="9999" 
+                    data-input-counter 
+                    class="custom-number-input cursor-text border-gray-300 mx-1 w-20 shrink-0 rounded-lg bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white contador-stock" />
                 </div>
-</div>
+              </div>
               
               <div class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
                 <a (click)="openProductModal(item.producto)" class="cursor-pointer text-base font-medium text-gray-900 hover:underline dark:text-white">{{ item.producto.nombre }}</a>
@@ -176,47 +176,56 @@
         <ng-template #emptyCart>
           <p class="text-center text-gray-500 dark:text-gray-400">Tu carrito está vacío.</p>
         </ng-template>
-      </div>
-      
-      <div class="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full" *ngIf="carrito && carrito.productosCarrito.length > 0">
-        <div class="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
-          <p class="text-xl font-semibold text-gray-900 dark:text-white">Resúmen del pedido</p>
-      
-          <div class="space-y-4">
-            <div class="space-y-2">
-              <!-- Encabezados -->
-              <dl class="flex items-center justify-between gap-4">
-                <dt class="text-base font-bold text-gray-900 dark:text-white">Producto</dt>
-                <dd class="text-base font-bold text-gray-900 dark:text-white">Cantidad</dd>
-              </dl>
-              <!-- Lista de productos -->
-              <div *ngFor="let item of carrito.productosCarrito">
+        </div>
+        
+        <div class="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full" *ngIf="carrito && carrito.productosCarrito.length > 0">
+          <div class="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
+            <p class="text-xl font-semibold text-gray-900 dark:text-white">Resúmen del pedido</p>
+        
+            <div class="space-y-4">
+              <div class="space-y-2">
+                <!-- Encabezados -->
                 <dl class="flex items-center justify-between gap-4">
-                  <dt class="text-base font-normal text-gray-500 dark:text-gray-400">{{ item.producto.nombre }}</dt>
-                  <dd class="text-base font-medium text-gray-900 dark:text-white">{{ item.cantidad }}</dd>
+                  <dt class="text-base font-bold text-gray-900 dark:text-white">Producto</dt>
+                  <dd class="text-base font-bold text-gray-900 dark:text-white">Cantidad</dd>
                 </dl>
+                <!-- Lista de productos -->
+                <div *ngFor="let item of carrito.productosCarrito">
+                  <dl class="flex items-center justify-between gap-4">
+                    <dt class="text-base font-normal text-gray-500 dark:text-gray-400">{{ item.producto.nombre }}</dt>
+                    <dd class="text-base font-medium text-gray-900 dark:text-white">
+                      <input type="number" 
+                        [(ngModel)]="item.cantidad" 
+                        (change)="actualizarProducto(item.producto.id, item.cantidad)" 
+                        (input)="limitarCantidad(item)"
+                        min="0" 
+                        max="9999" 
+                        data-input-counter 
+                        class="custom-number-input cursor-text border-gray-300 mx-1 w-20 shrink-0 rounded-lg bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white contador-stock" />
+                    </dd>
+                  </dl>
+                </div>
               </div>
+        
+              <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
+                <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
+                <dd class="text-base font-bold text-gray-900 dark:text-white">{{ getTotal() | currency }}</dd>
+              </dl>
             </div>
-      
-            <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
-              <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
-              <dd class="text-base font-bold text-gray-900 dark:text-white">{{ getTotal() | currency }}</dd>
-            </dl>
-          </div>
-      
-          <button (click)="checkout()" class="primary primary-hover flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Finalizar compra</button>
-      
-          <div class="flex items-center justify-center gap-2">
-            <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> o </span>
-            <a href="/catalogo" title="" class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 hover:underline dark:text-primary-500">
-              Continuar comprando
-              <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
-              </svg>
-            </a>
+        
+            <button (click)="checkout()" class="primary primary-hover flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Finalizar compra</button>
+        
+            <div class="flex items-center justify-center gap-2">
+              <span class="text-sm font-normal text-gray-500 dark:text-gray-400"> o </span>
+              <a href="/catalogo" title="" class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 hover:underline dark:text-primary-500">
+                Continuar comprando
+                <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
-      </div>
     </div>
   </div>
 </section>

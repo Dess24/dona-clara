@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, ElementRef } from '@angular/core';
+import { Component, ViewChild, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { NavbarComponent } from '../home/navbar/navbar.component';
 import { FooterComponent } from '../home/footer/footer.component';
 import { ProductoService } from '../../services/producto.service';
@@ -29,7 +29,7 @@ interface Producto {
   styleUrl: './catalogo.component.css',
   providers: [ProductoService, UserService, CarritoService] // Añadir CarritoService a los proveedores
 })
-export class CatalogoComponent implements OnInit {
+export class CatalogoComponent implements OnInit, OnDestroy {
   @ViewChild('alertContainer') alertContainer!: ElementRef;
   isLoggedIn: boolean = false;
   isLoggedInAdmin: boolean = false;
@@ -52,7 +52,13 @@ export class CatalogoComponent implements OnInit {
   constructor(private productoService: ProductoService, private carritoService: CarritoService, private router: Router, private userService: UserService) {} // Inyectar CarritoService
 
   ngOnInit(): void {
-    this.getProductos();
+    const categoriasSeleccionadas = localStorage.getItem('categoriasSeleccionadas');
+    if (categoriasSeleccionadas) {
+      this.categoriasSeleccionadas = JSON.parse(categoriasSeleccionadas);
+      this.buscarPorCategoriasSeleccionadas();
+    } else {
+      this.getProductos();
+    }
     this.getCategorias();
     this.isLoggedIn = !!localStorage.getItem('auth_token');
     if (this.isLoggedIn) {
@@ -60,11 +66,10 @@ export class CatalogoComponent implements OnInit {
         this.isLoggedInAdmin = !!response.user.admin;
       });
     }
-    if (this.isLoggedIn) {
-      this.userService.getUserInfo().subscribe(response => {
-        this.isLoggedInAdmin = !!response.user.admin;
-      });
-    }
+  }
+
+  ngOnDestroy(): void {
+    localStorage.removeItem('categoriasSeleccionadas');
   }
 
   onLogout(): void {
