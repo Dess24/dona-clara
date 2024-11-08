@@ -22,16 +22,12 @@ export class Navbar2Component {
 
   modal(){
     const modal = document.getElementById('modal-container') as HTMLElement;
-    const hide = document.getElementById('wpp') as HTMLElement;
     modal.style.display = 'flex';
-    hide.style.display = 'none';
   }
 
   modalClose(){
     const modal = document.getElementById('modal-container') as HTMLElement;
-    const hide = document.getElementById('wpp') as HTMLElement;
     modal.style.display = 'none';
-    hide.style.display = 'flex';
   }
 
   ngOnInit(): void {

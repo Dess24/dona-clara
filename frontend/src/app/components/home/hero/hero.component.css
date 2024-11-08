@@ -3,7 +3,9 @@
 .primary-text{
     color: #060c16;
 }
-
+.primary{
+  background-color: #1B335F;
+}
 .hidden {
   display: none;
 }
@@ -67,4 +69,7 @@
 .carousel-item img {
   height: 100%;
   object-fit: contain; /* Asegura que la imagen se ajuste dentro del contenedor sin recortarse */
+}
+#default-carousel {
+  height: 55vh;
 }

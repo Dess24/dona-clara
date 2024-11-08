@@ -153,3 +153,6 @@
 .slide-down {
   animation: slideDown 0.3s forwards;
 }
+.alerta{
+  z-index: 100;
+}

@@ -294,10 +294,15 @@ isCategoriaSeleccionada(categoria: string): boolean {
     this.carritoService.eliminarProducto(productoId).subscribe(response => {
       this.verCarrito();
       console.log(response);
+      const numeroDeProductos = this.carrito.productosCarrito.length;
+      if (numeroDeProductos === 1) {
+        window.location.reload();
+      }
     }, error => {
       console.error(error);
     });
   }
+
 
   
   openProductModal(product: Producto): void {

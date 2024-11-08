@@ -3,12 +3,12 @@ import { Navbar2Component } from '../home/navbar2/navbar2.component';
 import { UserService } from '../../services/user.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; // Importa CommonModule
-import { Router } from '@angular/router'; // Importa Router
+import { Router, RouterOutlet, RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-restore',
   standalone: true,
-  imports: [ Navbar2Component, FormsModule, CommonModule ], // Agrega CommonModule aquí
+  imports: [ Navbar2Component, FormsModule, CommonModule, RouterOutlet, RouterModule], // Agrega CommonModule aquí
   templateUrl: './restore.component.html',
   styleUrl: './restore.component.css',
   providers: [UserService]

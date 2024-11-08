@@ -7,8 +7,8 @@
 <app-navbar2/>
 <section class="bg-white pt-24">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
-        <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-            <img class="animate__animated animate__fadeInDown animate__faster w-48 h-24 mr-2" src="../../../assets/img/logo2.png" alt="logo">    
+        <a class="animate__animated animate__fadeInDown animate__fast z-10 flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+            <img class="cursor-pointer mx-auto w-40 h-20 transform transition-transform duration-200 hover:scale-105" src="../../../assets/img/logo2.png" alt="logo">    
         </a>
         <div class="w-full bg-white rounded-lg shadow-md border dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -51,9 +51,9 @@
         <section class="animate__animated animate__jackInTheBox animate__faster flex flex-row-reverse py-6 bg-white dark:bg-gray-900 antialiased rounded-xl">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
             <div class="flex items-center font-bold justify-between p-15 md:p-5 rounded-t">
-                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Validar email
-                </h1>
+                </h2>
                 <a (click)="modalClose()"
                 routerLink="/inicio"
                 type="button"
@@ -91,7 +91,7 @@
                         <input type="text" [(ngModel)]="code6" name="code6" id="code6" maxlength="1" (paste)="handlePaste($event)" class="block w-12 h-12 py-3 text-sm font-extrabold text-center text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required />
                     </div>
                     </div>
-                    <button type="submit" class="shadow-lg text-white primary focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Recuperar</button>
+                    <button type="submit" class="mt-8 shadow-lg text-white primary focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Recuperar</button>
                 </form>
             </div>
         </section>

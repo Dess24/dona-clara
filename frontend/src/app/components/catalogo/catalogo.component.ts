@@ -128,6 +128,7 @@ isCategoriaSeleccionada(categoria: string): boolean {
 
 // Eliminar una categoría seleccionada y recargar productos
 eliminarCategoria(categoria: string): void {
+  localStorage.removeItem('categoriasSeleccionadas');
   const index = this.categoriasSeleccionadas.indexOf(categoria);
   if (index !== -1) {
     this.categoriasSeleccionadas.splice(index, 1);
@@ -143,6 +144,7 @@ eliminarCategoria(categoria: string): void {
 
 // Buscar productos por las categorías seleccionadas
 buscarPorCategoriasSeleccionadas(): void {
+  localStorage.removeItem('categoriasSeleccionadas');
   this.categoriasSeleccionadas2 = this.categoriasSeleccionadas;
   if (this.categoriasSeleccionadas2.length > 0) {
     this.productoService.buscarPorCategorias(this.categoriasSeleccionadas2).subscribe(

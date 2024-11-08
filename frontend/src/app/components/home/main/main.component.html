@@ -20,11 +20,11 @@
       <section id="carousel" class="carousel">
         <div *ngFor="let producto of productos" class="card my-3.5 max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative">
           <a>
-            <img (click)="openProductModal(producto)" class="rounded-t-lg size" [src]="baseUrl + producto.imagen" alt="{{ producto.nombre }}" draggable="false" />
+            <img (click)="openProductModal(producto)" class="cursor-pointer rounded-t-lg size" [src]="baseUrl + producto.imagen" alt="{{ producto.nombre }}" draggable="false" />
           </a>
           <div class="p-5">
             <a>
-              <h5 (click)="openProductModal(producto)" class="mb-2 text-2xl font-bold tracking-tight text-black dark:text-white">{{ producto.nombre }}</h5>
+              <h5 (click)="openProductModal(producto)" class="cursor-pointer hover:underline mb-2 text-2xl font-bold tracking-tight text-black dark:text-white">{{ producto.nombre }}</h5>
             </a>
             <br><br>
             <div class="flex justify-between items-center">
@@ -53,7 +53,7 @@
     </div>
 
     <div class="mt-20 grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
-      <a *ngFor="let categoria of categorias" (click)="seleccionarCategoria(categoria.nombre)" class="flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+      <a *ngFor="let categoria of categorias" (click)="seleccionarCategoria(categoria.nombre)" class="cursor-pointer flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
         <svg class="me-2 h-4 w-4 shrink-0 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path
             stroke="currentColor"

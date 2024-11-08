@@ -11,9 +11,9 @@
                 <img src="../../../../assets/img/logo.png" class="h-6 sm:h-11" alt="" />
             </a>
             <div class="flex items-center lg:order-2">
-                <a *ngIf="!isLoggedIn" href="/login" class="font-medium lg:text-base text-gray-300 dark:text-white hover:bg-gray-50 hover:text-black focus:ring-2 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Iniciar</a>
-                <a *ngIf="!isLoggedIn" href="/register" class="font-medium lg:text-base text-gray-300 dark:text-white hover:bg-gray-50 hover:text-black focus:ring-2 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Registrarse</a>
-                <a *ngIf="isLoggedIn" href="/shopping-cart" class="flex flex-row items-center hover:text-gray-800 text-gray-300 font-medium lg:text-base carrito hover:bg-white mx-1 py-1 px-3 rounded-lg">
+                <a *ngIf="!isLoggedIn" routerLink="/login" class="font-medium lg:text-base text-gray-300 dark:text-white hover:bg-gray-50 hover:text-black focus:ring-2 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Iniciar</a>
+                <a *ngIf="!isLoggedIn" routerLink="/register" class="font-medium lg:text-base text-gray-300 dark:text-white hover:bg-gray-50 hover:text-black focus:ring-2 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Registrarse</a>
+                <a *ngIf="isLoggedIn" routerLink="/shopping-cart" class="flex flex-row items-center hover:text-gray-800 text-gray-300 font-medium lg:text-base carrito hover:bg-white mx-1 py-1 px-3 rounded-lg">
                   <svg class="w-8 h-8 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
                   </svg>
@@ -29,19 +29,19 @@
             <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                     <li>
-                        <a href="inicio" class="pb-0.5 block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white" aria-current="page">Inicio</a>
+                        <a href="/inicio" class="pb-0.5 block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white" aria-current="page">Inicio</a>
                     </li>
                     <li>
-                        <a href="/abautus" class="pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Sobre Nosotros</a>
+                        <a routerLink="/abautus" class="pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Sobre Nosotros</a>
                     </li>
                     <li>
-                        <a href="/contact" class="pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Contáctanos</a>
+                        <a routerLink="/contact" class="pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Contáctanos</a>
                     </li>
                     <li>
-                      <a href="/inicio" class="pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Destacados</a>
+                      <a routerLink="/inicio" class="pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Destacados</a>
                     </li>
                     <li>
-                      <a href="/catalogo" class="pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Catálogo</a>
+                      <a routerLink="/catalogo" class="pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Catálogo</a>
                     </li>
                     <li *ngIf="isLoggedInAdmin" >
                         <label (click)="modal()" class=" cursor-pointer flex flex-row items-center pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700" id="">Panel Admin</label>
@@ -51,10 +51,10 @@
         </div>
     </nav>
 </header>
-<section class="bg-white pt-10">
+<section class="bg-white py-10">
     <div class="flex flex-col items-center justify-center lg:py-0">
-        <a href="/inicio" class="flex items-center mb-6 text-2xl font-semibold text-gray-900">
-            <img class="animate__animated animate__fadeInDown animate__faster w-44 h-20" src="../../../assets/img/logo2.png" alt="logo">    
+        <a class="animate__animated animate__fadeInDown animate__fast z-10 flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+            <img class="cursor-pointer mx-auto w-40 h-20 transform transition-transform duration-200 hover:scale-105" src="../../../assets/img/logo2.png" alt="logo">    
         </a>
         <div class="w-full bg-white rounded-lg shadow-md border dark:border md:mt-0 sm:max-w-md xl:p-0">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">

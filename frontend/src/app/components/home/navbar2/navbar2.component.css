@@ -3,7 +3,7 @@
     background-color: #1B335F;
 }
 header{
-    z-index: 1000;
+    z-index: 99;
 }
 .primary-text{
     color: #0b172f;
