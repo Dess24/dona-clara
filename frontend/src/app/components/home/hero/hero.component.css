@@ -65,11 +65,6 @@
 .carousel-item {
   height: 100%; /* Ajusta la altura según tus necesidades */
 }
-
-.carousel-item img {
-  height: 100%;
-  object-fit: contain; /* Asegura que la imagen se ajuste dentro del contenedor sin recortarse */
-}
 #default-carousel {
   height: 55vh;
 }
