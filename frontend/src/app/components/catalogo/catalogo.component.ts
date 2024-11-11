@@ -210,20 +210,27 @@ alertCloseBuscar() {
 
 // Añadir producto al carrito
 anadirProducto(productoId: number, cantidad: number): void {
+  const producto = this.productos.find(p => p.id === productoId);
+  
   if (!this.isLoggedIn) {
     return;
   }
 
-  this.carritoService.añadirProducto(productoId, cantidad).subscribe(
-    data => {
-      console.log('Producto añadido al carrito', data);
-    },
-    error => {
-      this.errorMessage = 'Error al añadir el producto al carrito';
-      console.error('Error al añadir el producto al carrito', error);
-    }
-  );
-  this.modalCloseProduct();
+  if (producto && producto.cantidad >= cantidad) {
+    this.carritoService.añadirProducto(productoId, cantidad).subscribe(
+      data => {
+        console.log('Producto añadido al carrito', data);
+        this.showAlert();
+      },
+      error => {
+        this.errorMessage = 'Error al añadir el producto al carrito';
+        console.error('Error al añadir el producto al carrito', error);
+      }
+    );
+    this.modalCloseProduct();
+  } else {
+    this.showAlert2();
+  }
 }
 
   modal() {
@@ -346,21 +353,45 @@ aplicarFiltros(): void {
   }
   }
 
-showAlert() {
-  const modal = document.getElementById('alert-container') as HTMLElement;
-  modal.style.display = 'flex';
-  modal.classList.add('fade-in');
-
-  setTimeout(() => {
-    modal.classList.remove('fade-in');
-    modal.classList.add('fade-out');
-
-    setTimeout(() => {
-      modal.style.display = 'none';
-      modal.classList.remove('fade-out');
-    }, 500); // Duration of fade-out animation
-  }, 2000);
-}
+  showAlert(): void {
+    const modal = document.getElementById('alert-container') as HTMLElement;
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('fade-in');
+  
+      setTimeout(() => {
+        modal.classList.remove('fade-in');
+        modal.classList.add('fade-out');
+  
+        setTimeout(() => {
+          modal.style.display = 'none';
+          modal.classList.remove('fade-out');
+        }, 500); // Duration of fade-out animation
+      }, 2000);
+    } else {
+      console.error('Elemento con ID alert-container no encontrado');
+    }
+  }
+  
+  showAlert2(): void {
+    const modal = document.getElementById('alert-container2') as HTMLElement;
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('fade-in');
+  
+      setTimeout(() => {
+        modal.classList.remove('fade-in');
+        modal.classList.add('fade-out');
+  
+        setTimeout(() => {
+          modal.style.display = 'none';
+          modal.classList.remove('fade-out');
+        }, 500); // Duration of fade-out animation
+      }, 2000);
+    } else {
+      console.error('Elemento con ID alert-container2 no encontrado');
+    }
+  }
 
 modalClose2() {
   const modal = document.getElementById('alert-container') as HTMLElement;
