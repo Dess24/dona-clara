@@ -298,7 +298,7 @@ public function generateResetCode(Request $request)
     // Enviar el código por correo electrónico usando PhpMailerController
     $email = $request->email;
     $subject = 'Código de restablecimiento de contraseña';
-    $body = "Su código de restablecimiento de contraseña es: $token";
+    $body = "Su código de restablecimiento de contraseña es: $token Si no recivió ninguna solicitud, ignore este mensaje, gracias por leerlo.";
 
     $phpMailer = new PhpMailerController();
 

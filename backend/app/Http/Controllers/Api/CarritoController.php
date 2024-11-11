@@ -305,7 +305,7 @@ class CarritoController extends Controller
         // Enviar el PDF por correo electrónico
         $email = $userEmail;
         $subject = 'Factura de Compra';
-        $body = 'Adjunto encontrará la factura de su compra.';
+        $body = 'Hola ,' . $userName . ', Hemos recibido correctamente su pedido y lo estamos procesando. Adjunto encontrará la factura de su compra.';
     
         $phpMailer = new PHPMailerController();
     
