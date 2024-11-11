@@ -1,5 +1,5 @@
-<app-navbar />
-<section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+<app-navbar2 />
+<section class="bg-white py-8 antialiased dark:bg-gray-900 md:pt-24 md:py-16">
     <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
       <h2 class=" text-center text-xl font-bold text-gray-900 dark:text-white sm:text-4xl">Administración de usuarios</h2>
   
@@ -97,10 +97,10 @@
       
                 <div class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
                   <div class="flex flex-col">
-                    <a class="cursor-default w-1/6 t-base font-medium text-black hover:underline dark:text-white">{{ user.name }}</a>
-                    <a class="cursor-default text-gray-700">{{ user.email }}</a>
-                    <a class="cursor-default text-gray-700">Contacto: {{ user.telefono }}</a>
-                    <a class="cursor-default text-gray-700">Direccion: {{ user.domicilio }}</a>
+                    <a class="cursor-default w-1/6 text-lg font-semibold text-black hover:underline dark:text-white">{{ user.name }}</a>
+                    <a class="cursor-default text-base text-gray-700">Mail: {{ user.email }}</a>
+                    <a class="cursor-default text-base text-gray-700">Contacto: {{ user.telefono }}</a>
+                    <a class="cursor-default text-base text-gray-700">Dirección: {{ user.domicilio }}</a>
                   </div>
               
                   <div class="flex items-center gap-4">

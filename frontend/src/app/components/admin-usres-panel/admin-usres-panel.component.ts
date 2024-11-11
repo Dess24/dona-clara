@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { NavbarComponent } from '../home/navbar/navbar.component';
+import { Navbar2Component } from '../home/navbar2/navbar2.component';
 import { FooterComponent } from '../home/footer/footer.component';
 import { ProductoService } from '../../services/producto.service';
 import { UserService } from '../../services/user.service';
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-admin-usres-panel',
   standalone: true,
-  imports: [NavbarComponent, FooterComponent, HttpClientModule, CommonModule, FormsModule],
+  imports: [Navbar2Component, FooterComponent, HttpClientModule, CommonModule, FormsModule],
   templateUrl: './admin-usres-panel.component.html',
   styleUrl: './admin-usres-panel.component.css',
   providers: [UserService, ProductoService]

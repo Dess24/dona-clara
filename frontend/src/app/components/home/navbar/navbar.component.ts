@@ -8,7 +8,7 @@ import { MainComponent } from '../main/main.component';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [ CommonModule, RouterModule, RouterOutlet, HttpClientModule, MainComponent],
+  imports: [CommonModule, RouterModule, RouterOutlet, HttpClientModule, MainComponent],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
@@ -55,4 +55,19 @@ export class NavbarComponent implements OnInit {
     this.isLoggedInAdmin = false;
     this.router.navigate(['/login']);
   }
+
+  moveTo(section: string) {
+    // Navega a la ruta "/inicio"
+    this.router.navigate(['/inicio']).then(() => {
+      // Después de navegar, desplázate a la sección
+      const element = document.getElementById(section);
+      if (element) {
+        window.scrollTo({
+          top: element.offsetTop,
+          behavior: 'smooth'
+        });
+      }
+    });
+  }
+
 }

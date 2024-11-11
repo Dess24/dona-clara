@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, ElementRef, OnDestroy } from '@angular/core';
-import { NavbarComponent } from '../home/navbar/navbar.component';
+import { Navbar2Component } from '../home/navbar2/navbar2.component';
 import { FooterComponent } from '../home/footer/footer.component';
 import { ProductoService } from '../../services/producto.service';
 import { UserService } from '../../services/user.service';
@@ -24,7 +24,7 @@ interface Producto {
 @Component({
   selector: 'app-catalogo',
   standalone: true,
-  imports: [NavbarComponent, FooterComponent, HttpClientModule, CommonModule, FormsModule, RouterModule, RouterOutlet],
+  imports: [Navbar2Component, FooterComponent, HttpClientModule, CommonModule, FormsModule, RouterModule, RouterOutlet],
   templateUrl: './catalogo.component.html',
   styleUrl: './catalogo.component.css',
   providers: [ProductoService, UserService, CarritoService] // Añadir CarritoService a los proveedores
@@ -52,6 +52,7 @@ export class CatalogoComponent implements OnInit, OnDestroy {
   constructor(private productoService: ProductoService, private carritoService: CarritoService, private router: Router, private userService: UserService) {} // Inyectar CarritoService
 
   ngOnInit(): void {
+    window.scrollTo(0, 0); // Desplazar hacia arriba al cargar la página
     const categoriasSeleccionadas = localStorage.getItem('categoriasSeleccionadas');
     if (categoriasSeleccionadas) {
       this.categoriasSeleccionadas = JSON.parse(categoriasSeleccionadas);
@@ -128,6 +129,7 @@ isCategoriaSeleccionada(categoria: string): boolean {
 
 // Eliminar una categoría seleccionada y recargar productos
 eliminarCategoria(categoria: string): void {
+  localStorage.removeItem('categoriasSeleccionadas');
   const index = this.categoriasSeleccionadas.indexOf(categoria);
   if (index !== -1) {
     this.categoriasSeleccionadas.splice(index, 1);
@@ -143,6 +145,7 @@ eliminarCategoria(categoria: string): void {
 
 // Buscar productos por las categorías seleccionadas
 buscarPorCategoriasSeleccionadas(): void {
+  localStorage.removeItem('categoriasSeleccionadas');
   this.categoriasSeleccionadas2 = this.categoriasSeleccionadas;
   if (this.categoriasSeleccionadas2.length > 0) {
     this.productoService.buscarPorCategorias(this.categoriasSeleccionadas2).subscribe(
@@ -220,6 +223,7 @@ anadirProducto(productoId: number, cantidad: number): void {
       console.error('Error al añadir el producto al carrito', error);
     }
   );
+  this.modalCloseProduct();
 }
 
   modal() {
@@ -374,6 +378,19 @@ modalCloseProduct(): void {
   modal.style.display = 'none';
 }
 
+moveTo(section: string) {
+  // Navega a la ruta "/inicio"
+  this.router.navigate(['/inicio']).then(() => {
+    // Después de navegar, desplázate a la sección
+    const element = document.getElementById(section);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  });
+}
 
 
 

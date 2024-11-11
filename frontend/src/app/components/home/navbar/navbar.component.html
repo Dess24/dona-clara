@@ -4,7 +4,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
   </head>
-<header>  
+<header class="fixed w-full">  
     <nav class="z-20 primary text-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
         <div class="flex flex-wrap justify-around items-center mx-auto max-w-screen-xl">
             <a href="/inicio" class="flex items-center">
@@ -27,26 +27,26 @@
                 </button>
             </div>
             <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
-                <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-                    <li>
-                        <a href="/inicio" class="pb-0.5 block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white" aria-current="page">Inicio</a>
-                    </li>
-                    <li>
-                        <a routerLink="/abautus" class="pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Sobre Nosotros</a>
-                    </li>
-                    <li>
-                        <a routerLink="/contact" class="pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Contáctanos</a>
-                    </li>
-                    <li>
-                      <a routerLink="/inicio" class="pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Destacados</a>
-                    </li>
-                    <li>
-                      <a routerLink="/catalogo" class="pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Catálogo</a>
-                    </li>
-                    <li *ngIf="isLoggedInAdmin" >
-                        <label (click)="modal()" class=" cursor-pointer flex flex-row items-center pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700" id="">Panel Admin</label>
-                    </li>
-                </ul>
+              <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                <li>
+                    <a href="/inicio" class="menu-item pb-0.5 block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white" aria-current="page">Inicio</a>
+                </li>
+                <li>
+                    <a routerLink="/abautus" class="menu-item pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Sobre Nosotros</a>
+                </li>
+                <li>
+                    <a routerLink="/contact" class="menu-item pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Contáctanos</a>
+                </li>
+                <li>
+                    <a (click)="moveTo('destacados')" class="menu-item cursor-pointer pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Destacados</a>
+                </li>
+                <li>
+                    <a routerLink="/catalogo" class="menu-item pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Catálogo</a>
+                </li>
+                <li *ngIf="isLoggedInAdmin">
+                    <label (click)="modal()" class="menu-item cursor-pointer flex flex-row items-center pb-0.5 block py-2 pr-4 pl-3 text-gray-300 hover:text-white border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700" id="">Panel Admin</label>
+                </li>
+            </ul>
             </div>
         </div>
     </nav>

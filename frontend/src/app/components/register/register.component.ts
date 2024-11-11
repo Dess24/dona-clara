@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet, RouterModule} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
-import { NavbarComponent } from '../home/navbar/navbar.component';
+import { Navbar2Component } from '../home/navbar2/navbar2.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, Navbar2Component, ReactiveFormsModule, HttpClientModule, RouterOutlet, RouterModule],
   providers: [UserService],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
@@ -17,6 +17,8 @@ import { NavbarComponent } from '../home/navbar/navbar.component';
 export class RegisterComponent {
   registerForm: FormGroup;
   errorMessage: string = '';
+  isLoggedIn: boolean = false;
+  isLoggedInAdmin: boolean = false;
 
   constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
     this.registerForm = this.fb.group({
@@ -25,7 +27,7 @@ export class RegisterComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
       telefono: ['', [Validators.required, Validators.pattern(/^\d{8,9}$/)]], // Campo para teléfono/celular
-      domicilio: ['', [Validators.required, Validators.maxLength(100)]] // Campo para domicilio
+      domicilio: ['', [Validators.required, Validators.maxLength(30)]] // Campo para domicilio
     });
   }
 
@@ -83,5 +85,42 @@ export class RegisterComponent {
         }
       );
     }
+  }
+
+
+  ngOnInit(): void {
+    this.isLoggedIn = !!localStorage.getItem('auth_token');
+    if (this.isLoggedIn) {
+      this.userService.getUserInfo().subscribe(response => {
+        this.isLoggedInAdmin = !!response.user.admin;
+      });
+    }
+    if (this.isLoggedIn) {
+      this.userService.getUserInfo().subscribe(response => {
+        this.isLoggedInAdmin = !!response.user.admin;
+      });
+    }
+  }
+
+  onLogout(): void {
+    localStorage.removeItem('auth_token');
+    this.isLoggedIn = false;
+    this.isLoggedInAdmin = false;
+    this.isLoggedInAdmin = false;
+    this.router.navigate(['/login']);
+  }
+
+  modal(){
+    const modal = document.getElementById('modal-container') as HTMLElement;
+    const hide = document.getElementById('wpp') as HTMLElement;
+    modal.style.display = 'flex';
+    hide.style.display = 'none';
+  }
+
+  modalClose(){
+    const modal = document.getElementById('modal-container') as HTMLElement;
+    const hide = document.getElementById('wpp') as HTMLElement;
+    modal.style.display = 'none';
+    hide.style.display = 'flex';
   }
 }

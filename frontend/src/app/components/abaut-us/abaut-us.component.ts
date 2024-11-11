@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from '../home/navbar/navbar.component';
+import { Navbar2Component } from '../home/navbar2/navbar2.component';
 import { FooterComponent } from '../home/footer/footer.component';
 import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-abaut-us',
   standalone: true,
-  imports: [ NavbarComponent, FooterComponent ],
+  imports: [ Navbar2Component, FooterComponent ],
   templateUrl: './abaut-us.component.html',
   styleUrl: './abaut-us.component.css',
   providers: [UserService]
