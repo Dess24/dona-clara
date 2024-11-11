@@ -213,6 +213,7 @@ anadirProducto(productoId: number, cantidad: number): void {
   const producto = this.productos.find(p => p.id === productoId);
   
   if (!this.isLoggedIn) {
+    this.showAlert3();
     return;
   }
 
@@ -393,6 +394,26 @@ aplicarFiltros(): void {
     }
   }
 
+  showAlert3(): void {
+    const modal = document.getElementById('alert-container3') as HTMLElement;
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('fade-in');
+  
+      setTimeout(() => {
+        modal.classList.remove('fade-in');
+        modal.classList.add('fade-out');
+  
+        setTimeout(() => {
+          modal.style.display = 'none';
+          modal.classList.remove('fade-out');
+        }, 500); // Duration of fade-out animation
+      }, 2000);
+    } else {
+      console.error('Elemento con ID alert-container2 no encontrado');
+    }
+  }
+
 modalClose2() {
   const modal = document.getElementById('alert-container') as HTMLElement;
   modal.style.display = 'none';
@@ -426,3 +447,5 @@ moveTo(section: string) {
 
 
 }
+
+
