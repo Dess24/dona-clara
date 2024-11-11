@@ -63,3 +63,10 @@ ul li:hover ul.dropdown{
     right: 20px;
     z-index: 1000;
 }
+.menu-item {
+    transition: transform 0.3s ease;
+}
+
+.menu-item:hover {
+    transform: scale(1.1);
+}

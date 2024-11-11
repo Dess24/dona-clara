@@ -67,7 +67,7 @@ export class ContactComponent {
             modal.classList.remove('fade-out');
           }, 500); // Duration of fade-out animation
         }, 2000);
-    }, 1000); // Delay before showing the alert
+    }, 200); // Delay before showing the alert
 }
   
   modalClose() {
@@ -90,7 +90,7 @@ export class ContactComponent {
             modal.classList.remove('fade-out');
           }, 500); // Duration of fade-out animation
         }, 2000);
-    }, 1000); // Delay before showing the alert
+    },500); // Delay before showing the alert
 }
   
   modalClose2() {

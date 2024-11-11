@@ -25,10 +25,10 @@ export class CarritoService {
   }
 
   // Pagar el carrito
-  checkout(): Observable<any> {
+  checkout(): Observable<Blob> {
     const headers = this.getAuthHeaders();
-    return this.http.post<any>(`${this.apiUrl}/carrito/checkout`, {}, { headers });
-  }
+    return this.http.post(`${this.apiUrl}/carrito/checkout`, {}, { headers, responseType: 'blob' });
+}
 
   // Restar cantidad de un producto en el carrito
   restarProducto(productoId: number, cantidad: number): Observable<any> {

@@ -51,4 +51,18 @@ export class Navbar2Component {
     this.isLoggedInAdmin = false;
     this.router.navigate(['/login']);
   }
+
+  moveTo(section: string) {
+    // Navega a la ruta "/inicio"
+    this.router.navigate(['/inicio']).then(() => {
+      // Después de navegar, desplázate a la sección
+      const element = document.getElementById(section);
+      if (element) {
+        window.scrollTo({
+          top: element.offsetTop,
+          behavior: 'smooth'
+        });
+      }
+    });
+  }
 }

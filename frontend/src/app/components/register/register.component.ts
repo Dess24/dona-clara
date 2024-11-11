@@ -4,12 +4,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { Router, RouterOutlet, RouterModule} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
-import { NavbarComponent } from '../home/navbar/navbar.component';
+import { Navbar2Component } from '../home/navbar2/navbar2.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, ReactiveFormsModule, HttpClientModule, RouterOutlet, RouterModule],
+  imports: [CommonModule, Navbar2Component, ReactiveFormsModule, HttpClientModule, RouterOutlet, RouterModule],
   providers: [UserService],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
@@ -27,7 +27,7 @@ export class RegisterComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
       telefono: ['', [Validators.required, Validators.pattern(/^\d{8,9}$/)]], // Campo para teléfono/celular
-      domicilio: ['', [Validators.required, Validators.maxLength(100)]] // Campo para domicilio
+      domicilio: ['', [Validators.required, Validators.maxLength(30)]] // Campo para domicilio
     });
   }
 

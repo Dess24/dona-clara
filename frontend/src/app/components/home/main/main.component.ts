@@ -3,6 +3,7 @@ import { ProductoService } from '../../../services/producto.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { CarritoService } from '../../../services/carrito.service'; 
 
 interface Producto {
   id: number;
@@ -22,7 +23,7 @@ interface Producto {
   imports: [HttpClientModule, CommonModule], // Importar HttpClientModule y CommonModule
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
-  providers: [ProductoService] // Registrar ProductoService como proveedor
+  providers: [ProductoService, CarritoService] // Registrar ProductoService como proveedor
 })
 export class MainComponent implements OnInit {
   @ViewChild('carousel', { static: false }) carousel: ElementRef | undefined;
@@ -33,14 +34,34 @@ export class MainComponent implements OnInit {
   selectedProduct: Producto | null = null;
   categorias: any[] = [];
   categoriasSeleccionadas: string[] = [];
+  isLoggedIn: boolean = false;
 
 
-  constructor(private productoService: ProductoService, private router: Router) {}
+  constructor(private productoService: ProductoService, private router: Router, private carritoService: CarritoService,) {}
 
   ngOnInit(): void {
+    this.isLoggedIn = !!localStorage.getItem('auth_token');
     this.getProductos();
     this.getCategorias();
   }
+
+
+  // Añadir producto al carrito
+anadirProducto(productoId: number, cantidad: number): void {
+  if (!this.isLoggedIn) {
+    return;
+  }
+
+  this.carritoService.añadirProducto(productoId, cantidad).subscribe(
+    data => {
+      console.log('Producto añadido al carrito', data);
+    },
+    error => {
+      this.errorMessage = 'Error al añadir el producto al carrito';
+      console.error('Error al añadir el producto al carrito', error);
+    }
+  );
+}
 
   getCategorias(): void {
     this.productoService.getCategorias().subscribe(

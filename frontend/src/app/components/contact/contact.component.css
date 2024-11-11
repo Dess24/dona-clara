@@ -39,23 +39,23 @@ button:disabled {
   }
 .alert-container{
     position: fixed;
-    width: 32vw;
+    width: 24vw;
     display: none;
     justify-content: center;
     align-items: start;
     z-index: 100;
     top: 5px;
     left: 0;
-    margin-inline: 34%;
+    margin-inline: 37%;
 }
-.alert-container{
+.alert-container2{
     position: fixed;
-    width: 33vw;
+    width: 34vw;
     display: none;
     justify-content: center;
     align-items: start;
     z-index: 100;
     top: 5px;
     left: 0;
-    margin-inline: 34%;
+    margin-inline: 33%;
 }

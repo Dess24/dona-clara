@@ -52,6 +52,7 @@ export class CatalogoComponent implements OnInit, OnDestroy {
   constructor(private productoService: ProductoService, private carritoService: CarritoService, private router: Router, private userService: UserService) {} // Inyectar CarritoService
 
   ngOnInit(): void {
+    window.scrollTo(0, 0); // Desplazar hacia arriba al cargar la página
     const categoriasSeleccionadas = localStorage.getItem('categoriasSeleccionadas');
     if (categoriasSeleccionadas) {
       this.categoriasSeleccionadas = JSON.parse(categoriasSeleccionadas);
@@ -222,6 +223,7 @@ anadirProducto(productoId: number, cantidad: number): void {
       console.error('Error al añadir el producto al carrito', error);
     }
   );
+  this.modalCloseProduct();
 }
 
   modal() {
@@ -376,6 +378,19 @@ modalCloseProduct(): void {
   modal.style.display = 'none';
 }
 
+moveTo(section: string) {
+  // Navega a la ruta "/inicio"
+  this.router.navigate(['/inicio']).then(() => {
+    // Después de navegar, desplázate a la sección
+    const element = document.getElementById(section);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  });
+}
 
 
 

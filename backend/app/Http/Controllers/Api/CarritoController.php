@@ -64,29 +64,30 @@ class CarritoController extends Controller
     }
 
     // Ver el carrito
-    public function verCarrito()
-    {
-        $userId = Auth::id();
-        if (is_null($userId)) {
-            return response()->json(['message' => 'Usuario no autenticado'], 401);
-        }
-
-        $carrito = Carrito::where('user_id', $userId)->first();
-        if (!$carrito || $carrito->monto_total == 0) {
-            return response()->json(['message' => 'El carrito está vacío'], 404);
-        }
-
-        $productosCarrito = $carrito->productosCarrito()->with('producto')->get();
-
-        // Ocultar created_at y updated_at
-        $carrito->makeHidden(['created_at', 'updated_at']);
-        $productosCarrito->each(function ($productoCarrito) {
-            $productoCarrito->makeHidden(['created_at', 'updated_at']);
-            $productoCarrito->producto->makeHidden(['created_at', 'updated_at']);
-        });
-
-        return response()->json(['carrito' => $carrito, 'productosCarrito' => $productosCarrito]);
-    }
+     // Ver el carrito
+     public function verCarrito()
+     {
+         $userId = Auth::id();
+         if (is_null($userId)) {
+             return response()->json(['message' => 'Usuario no autenticado'], 401);
+         }
+ 
+         $carrito = Carrito::where('user_id', $userId)->first();
+         if (!$carrito || $carrito->monto_total == 0) {
+             return response()->json(['message' => 'El carrito está vacío', 'carrito' => null, 'productosCarrito' => []], 200);
+         }
+ 
+         $productosCarrito = $carrito->productosCarrito()->with('producto')->get();
+ 
+         // Ocultar created_at y updated_at
+         $carrito->makeHidden(['created_at', 'updated_at']);
+         $productosCarrito->each(function ($productoCarrito) {
+             $productoCarrito->makeHidden(['created_at', 'updated_at']);
+             $productoCarrito->producto->makeHidden(['created_at', 'updated_at']);
+         });
+ 
+         return response()->json(['carrito' => $carrito, 'productosCarrito' => $productosCarrito]);
+     }
 
     public function actualizarProducto(Request $request, $productoId)
     {
@@ -199,149 +200,129 @@ class CarritoController extends Controller
     }
 
 
-public function checkout()
-{
-    $userId = Auth::id();
-    if (is_null($userId)) {
-        return response()->json(['message' => 'Usuario no autenticado'], 401);
+    public function checkout()
+    {
+        $userId = Auth::id();
+        if (is_null($userId)) {
+            return response()->json(['message' => 'Usuario no autenticado'], 401);
+        }
+    
+        $user = Auth::user();
+        $userName = $user->name;
+        $userEmail = $user->email;
+        $userTelefono = $user->telefono;
+        $userDomicilio = $user->domicilio;
+    
+        $carrito = Carrito::where('user_id', $userId)->first();
+        if (!$carrito || $carrito->monto_total == 0) {
+            return response()->json(['message' => 'No hay productos para comprar'], 404);
+        }
+    
+        $productosCarrito = CarritoProducto::where('carrito_id', $carrito->id)->get();
+        $montoTotalGastado = $carrito->monto_total;
+    
+        CarritoProducto::where('carrito_id', $carrito->id)->delete();
+        $carrito->monto_total = 0;
+        $carrito->save();
+    
+        $productosComprados = $productosCarrito->map(function ($productoCarrito) {
+            return [
+                'nombre' => $productoCarrito->producto->nombre,
+                'cantidad' => $productoCarrito->cantidad,
+                'precio' => $productoCarrito->producto->precio,
+                'monto_total' => $productoCarrito->cantidad * $productoCarrito->producto->precio,
+            ];
+        });
+    
+        $pdfData = $this->facturaCompra($productosComprados, $montoTotalGastado, $userName, $userEmail, $userTelefono, $userDomicilio);
+        $pdfContent = $pdfData['content'];
+        $pdfFileName = $pdfData['file_name'];
+    
+        return response($pdfContent, 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="' . $pdfFileName . '"');
     }
-
-    $user = Auth::user();
-    $userName = $user->name;
-    $userEmail = $user->email; // Obtener el correo electrónico del usuario
-    $userTelefono = $user->telefono; // Obtener el teléfono del usuario
-    $userDomicilio = $user->domicilio; // Obtener el domicilio del usuario
-
-    $carrito = Carrito::where('user_id', $userId)->first();
-    if (!$carrito || $carrito->monto_total == 0) {
-        return response()->json(['message' => 'No hay productos para comprar'], 404);
-    }
-
-    // Obtener los productos del carrito antes de vaciarlo
-    $productosCarrito = CarritoProducto::where('carrito_id', $carrito->id)->get();
-
-    // Calcular el monto total gastado
-    $montoTotalGastado = $carrito->monto_total;
-
-    // Vaciar el carrito después del pago
-    CarritoProducto::where('carrito_id', $carrito->id)->delete();
-    $carrito->monto_total = 0;
-    $carrito->save();
-
-    // Preparar los datos de los productos comprados
-    $productosComprados = $productosCarrito->map(function ($productoCarrito) {
-        return [
-            'nombre' => $productoCarrito->producto->nombre,
-            'cantidad' => $productoCarrito->cantidad,
-            'precio' => $productoCarrito->producto->precio,
-            'monto_total' => $productoCarrito->cantidad * $productoCarrito->producto->precio,
-        ];
-    });
-
-    // Generar el PDF de la factura
-    $pdfPath = $this->facturaCompra($productosComprados, $montoTotalGastado, $userName, $userEmail, $userTelefono, $userDomicilio);
-
-    return response()->json([
-        'message' => 'Compra realizada con éxito',
-        'productos_comprados' => $productosComprados,
-        'monto_total_gastado' => $montoTotalGastado,
-        'pdf_path' => $pdfPath,
-    ]);
-}
     
     public function facturaCompra($productosComprados, $montoTotalGastado, $userName, $userEmail, $userTelefono, $userDomicilio)
-{
-    // Crear la carpeta 'pdfs' si no existe
-    if (!file_exists('pdfs')) {
-        mkdir('pdfs', 0777, true);
-    }
-
-    // Crear una instancia de FPDF
-    $pdf = new FPDF();
-    $pdf->AddPage();
-    $pdf->SetFont('Arial', 'B', 16);
-
-    // Agregar la imagen del logo
-    $logoPath = public_path('images/logo2.png');
-    if (file_exists($logoPath)) {
-        $pdf->Image($logoPath, ($pdf->GetPageWidth() - 50) / 2, 10, 50); // Centrar la imagen
-        $pdf->Ln(30); // Añadir espacio después de la imagen
-    }
-
-    // Título principal
-    $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Factura de Compra'), 0, 1, 'C');
-    $pdf->Ln(10);
-
-    // Nombre del usuario
-    $pdf->SetFont('Arial', '', 12);
-    $pdf->Cell(0, 10, 'Nombre del Usuario: ' . iconv('UTF-8', 'ISO-8859-1', $userName), 0, 1);
-    $pdf->Ln(5);
-
-    // Fecha de la compra
-    $fechaCompra = date('d-m-Y H:i:s');
-    $pdf->Cell(0, 10, 'Fecha de la Compra: ' . $fechaCompra, 0, 1);
-    $pdf->Ln(10);
-
-    // Encabezado de la tabla
-    $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(90, 10, 'Nombre del Producto', 1); // Ancho fijo de 90
-    $pdf->Cell(30, 10, 'Cantidad', 1); // Ajustar ancho a 30
-    $pdf->Cell(70, 10, 'Precio', 1); // Ancho fijo de 70
-    $pdf->Ln();
-
-    // Datos de los productos comprados
-    $pdf->SetFont('Arial', '', 12);
-    foreach ($productosComprados as $producto) {
-        $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', $producto['nombre']), 1); // Ancho fijo de 90
-        $pdf->Cell(30, 10, $producto['cantidad'], 1); // Ajustar ancho a 30
-        $precioTotal = $producto['cantidad'] * $producto['precio'];
-        $pdf->Cell(70, 10, number_format($precioTotal, 2) . ' (' . number_format($producto['precio'], 2) . '$ por unidad)', 1); // Ancho fijo de 70
+    {
+        if (!file_exists('pdfs')) {
+            mkdir('pdfs', 0777, true);
+        }
+    
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', 'B', 16);
+    
+        $logoPath = public_path('images/logo2.png');
+        if (file_exists($logoPath)) {
+            $pdf->Image($logoPath, ($pdf->GetPageWidth() - 50) / 2, 10, 50);
+            $pdf->Ln(30);
+        }
+    
+        $pdf->Cell(0, 10, iconv('UTF-8', 'ISO-8859-1', 'Factura de Compra'), 0, 1, 'C');
+        $pdf->Ln(10);
+    
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'Nombre del Usuario: ' . iconv('UTF-8', 'ISO-8859-1', $userName), 0, 1);
+        $pdf->Ln(5);
+    
+        $fechaCompra = date('d-m-Y H:i:s');
+        $pdf->Cell(0, 10, 'Fecha de la Compra: ' . $fechaCompra, 0, 1);
+        $pdf->Ln(10);
+    
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(90, 10, 'Nombre del Producto', 1);
+        $pdf->Cell(30, 10, 'Cantidad', 1);
+        $pdf->Cell(70, 10, 'Precio', 1);
         $pdf->Ln();
+    
+        $pdf->SetFont('Arial', '', 12);
+        foreach ($productosComprados as $producto) {
+            $pdf->Cell(90, 10, iconv('UTF-8', 'ISO-8859-1', $producto['nombre']), 1);
+            $pdf->Cell(30, 10, $producto['cantidad'], 1);
+            $precioTotal = $producto['cantidad'] * $producto['precio'];
+            $pdf->Cell(70, 10, number_format($precioTotal, 2) . ' (' . number_format($producto['precio'], 2) . '$ por unidad)', 1);
+            $pdf->Ln();
+        }
+    
+        $pdf->Ln(10);
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, 'Monto Total Gastado: ' . number_format($montoTotalGastado, 2), 0, 1, 'R');
+    
+        $pdf->Ln(20);
+        $pdf->SetFont('Arial', 'I', 10);
+        $pdf->Cell(0, 10, 'El pago del producto se debe coordinar con el proveedor del mismo', 0, 1, 'C');
+    
+        $pdf->Ln(10);
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, 'Contacto: ' . $userTelefono, 0, 1);
+        $pdf->Cell(0, 10, 'Direccion: ' . iconv('UTF-8', 'ISO-8859-1', $userDomicilio), 0, 1);
+    
+        $pdfFileName = 'factura_compra_' . time() . '.pdf';
+        $pdfPath = 'pdfs/' . $pdfFileName;
+        $pdf->Output('F', $pdfPath);
+    
+        // Enviar el PDF por correo electrónico
+        $email = $userEmail;
+        $subject = 'Factura de Compra';
+        $body = 'Adjunto encontrará la factura de su compra.';
+    
+        $phpMailer = new PHPMailerController();
+    
+        try {
+            ob_start();
+            $phpMailer->sendEmail($email, $subject, $body, $pdfPath);
+            $smtpLog = ob_get_clean();
+        } catch (\Exception $e) {
+            // Manejar el error de envío de correo
+        }
+    
+        return [
+            'content' => file_get_contents($pdfPath),
+            'file_name' => $pdfFileName
+        ];
     }
 
-    // Monto total gastado
-    $pdf->Ln(10);
-    $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(0, 10, 'Monto Total Gastado: ' . number_format($montoTotalGastado, 2), 0, 1, 'R');
-
-    // Texto adicional
-    $pdf->Ln(20);
-    $pdf->SetFont('Arial', 'I', 10);
-    $pdf->Cell(0, 10, 'El pago del producto se debe coordinar con el proveedor del mismo', 0, 1, 'C');
-
-    // Agregar teléfono y dirección del usuario
-    $pdf->Ln(10);
-    $pdf->SetFont('Arial', '', 12);
-    $pdf->Cell(0, 10, 'Contacto: ' . $userTelefono, 0, 1);
-    $pdf->Cell(0, 10, 'Direccion: ' . iconv('UTF-8', 'ISO-8859-1', $userDomicilio), 0, 1);
-
-    // Guardar el PDF en un archivo
-    $pdfPath = 'pdfs/factura_compra_' . time() . '.pdf';
-    $pdf->Output('F', $pdfPath);
-
-    // Enviar el PDF por correo electrónico
-    $email = $userEmail;
-    $subject = 'Factura de Compra';
-    $body = 'Adjunto encontrará la factura de su compra.';
-
-    $phpMailer = new PHPMailerController();
-
-    try {
-        ob_start();
-        $phpMailer->sendEmail($email, $subject, $body, $pdfPath);
-        $smtpLog = ob_get_clean();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Factura generada y enviada correctamente.',
-        ], 200);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Factura generada, pero no se pudo enviar el correo. Error: ' . $e->getMessage()
-        ], 200);
-    }
-}
 
 public function userData(Request $request)
 {

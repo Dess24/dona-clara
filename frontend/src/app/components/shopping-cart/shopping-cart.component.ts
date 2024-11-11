@@ -42,6 +42,8 @@ export class ShoppingCartComponent implements OnInit {
   errorMessage: string | null = null;
   sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente
   selectedProduct: Producto | null = null;
+  private downloadUrl: string | null = null;
+  private downloadAnchor: HTMLAnchorElement | null = null;
 
 
   constructor(private carritoService: CarritoService, private productoService: ProductoService) { }
@@ -96,15 +98,50 @@ export class ShoppingCartComponent implements OnInit {
   
   checkout(): void {
     this.carritoService.checkout().subscribe(
-      data => {
-        this.verCarrito(); // Actualizar el carrito después del checkout
-        window.location.reload(); // Recargar la página
+      (response: Blob) => {
+        this.downloadUrl = window.URL.createObjectURL(response);
+        this.downloadAnchor = document.createElement('a');
+        this.downloadAnchor.href = this.downloadUrl;
+        this.downloadAnchor.download = 'factura_compra.pdf';
+        document.body.appendChild(this.downloadAnchor);
+
+        this.openModal();
       },
       error => {
         this.errorMessage = 'Error al realizar el checkout';
         console.error('Error al realizar el checkout', error);
       }
     );
+  }
+
+  openModal(): void {
+    const modal = document.getElementById('confirm-download-modal');
+    if (modal) {
+      modal.style.display = 'block';
+    }
+  }
+
+  closeModal(): void {
+    const modal = document.getElementById('confirm-download-modal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+    if (this.downloadUrl) {
+      window.URL.revokeObjectURL(this.downloadUrl);
+      this.downloadUrl = null;
+    }
+    if (this.downloadAnchor) {
+      document.body.removeChild(this.downloadAnchor);
+      this.downloadAnchor = null;
+    }
+  }
+
+  confirmDownload(): void {
+    if (this.downloadAnchor) {
+      this.downloadAnchor.click();
+    }
+    this.closeModal();
+    this.verCarrito(); // Actualizar el carrito después del checkout
   }
 
   getTotal(): number {
@@ -295,14 +332,14 @@ isCategoriaSeleccionada(categoria: string): boolean {
       this.verCarrito();
       console.log(response);
       const numeroDeProductos = this.carrito.productosCarrito.length;
+      console.log(`Número de productos en el carrito: ${numeroDeProductos}`);
       if (numeroDeProductos === 1) {
         window.location.reload();
       }
     }, error => {
       console.error(error);
     });
-  }
-
+}
 
   
   openProductModal(product: Producto): void {
@@ -345,9 +382,15 @@ isCategoriaSeleccionada(categoria: string): boolean {
   }
 
   limitarCantidad(item: any): void {
-    if (item.cantidad > item.producto.cantidad) {
+    if (item.cantidad < 1) {
+      item.cantidad = 1;
+    } else if (item.cantidad > item.producto.cantidad) {
       item.cantidad = item.producto.cantidad;
     }
+  }
+
+  getPrecioTotal(item: any): number {
+    return item.producto.precio * item.cantidad;
   }
   
 }

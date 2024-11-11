@@ -10,7 +10,7 @@
       <a class="animate__animated animate__backInDown animate__fast z-10 flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
         <img class="cursor-pointer mx-auto w-96 w-48 transform transition-transform duration-200 hover:scale-105" src="../../../assets/img/logo2.png" alt="logo">    
       </a>
-      <a href="/inicio" class="inline-flex justify-between items-center px-1 pr-4 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700" role="alert">
+      <a (click)="moveTo('destacados')" class="cursor-pointer inline-flex justify-between items-center px-1 pr-4 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700" role="alert">
         <span class="text-xs bg-primary-600 rounded-full text-black px-4 py-1.5 mr-3">New</span> <span class="text-sm text-blue-950 font-medium">Nuevos destacados! No te los pierdas!</span> 
         <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
       </a>
@@ -294,7 +294,7 @@
             </div>
   
             <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
-              <a (click)="showAlert()" href="#" title="" class="flex items-center justify-center py-2.5 px-5 text-md font-medium text-white focus:outline-none primary rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" role="button">
+              <a (click)="showAlert();" (click)="selectedProduct && anadirProducto(selectedProduct.id, 1)" title="" class="flex items-center justify-center py-2.5 px-5 text-md font-medium text-white focus:outline-none primary rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" role="button">
                 <svg class="w-6 h-6 text-white dark:text-white -ms-2 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
                 </svg>
