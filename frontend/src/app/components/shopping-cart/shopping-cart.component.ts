@@ -44,6 +44,8 @@ export class ShoppingCartComponent implements OnInit {
   selectedProduct: Producto | null = null;
   private downloadUrl: string | null = null;
   private downloadAnchor: HTMLAnchorElement | null = null;
+  filtroAlfabeticoActivo: string | null = null;
+  filtroPrecioActivo: string | null = null;
 
 
   constructor(private carritoService: CarritoService, private productoService: ProductoService) { }
@@ -65,6 +67,69 @@ export class ShoppingCartComponent implements OnInit {
       }
     );
   }
+
+  ordenarAlfabeticamente(orden: string, restablecer: boolean = true): void {
+    const filtro = orden === 'asc' ? 'alfabetico-asc' : 'alfabetico-desc';
+    
+    if (this.filtroAlfabeticoActivo === filtro) {
+      if (restablecer) {
+        this.verCarrito();
+      }
+      this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('alfabetico'));
+      this.filtroAlfabeticoActivo = null;
+      return;
+    }
+    
+    this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('alfabetico'));
+    
+    if (orden === 'asc') {
+      this.carrito.productosCarrito.sort((a, b) => a.producto.nombre.localeCompare(b.producto.nombre));
+    } else {
+      this.carrito.productosCarrito.sort((a, b) => b.producto.nombre.localeCompare(a.producto.nombre));
+    }
+    
+    this.sortState = 1;
+    this.categoriasSeleccionadas.push(filtro);
+    this.filtroAlfabeticoActivo = filtro;
+    
+    if (restablecer) {
+      this.aplicarFiltros();
+    }
+  }
+
+  ordenarPorPrecio(orden: string, restablecer: boolean = true): void {
+    const filtro = orden === 'asc' ? 'precio-asc' : 'precio-desc';
+    
+    if (this.filtroPrecioActivo === filtro) {
+      if (restablecer) {
+        this.verCarrito();
+      }
+      this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('precio'));
+      this.filtroPrecioActivo = null;
+      return;
+    }
+    
+    this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('precio'));
+    
+    if (orden === 'asc') {
+      this.carrito.productosCarrito.sort((a, b) => a.producto.precio - b.producto.precio);
+    } else {
+      this.carrito.productosCarrito.sort((a, b) => b.producto.precio - a.producto.precio);
+    }
+    
+    this.sortState = 1;
+    this.categoriasSeleccionadas.push(filtro);
+    this.filtroPrecioActivo = filtro;
+    
+    if (restablecer) {
+      this.aplicarFiltros();
+    }
+  }
+
+  aplicarFiltros(): void {
+    // Implementar la lógica para aplicar los filtros
+  }
+
 
   anadirProducto(productoId: number, cantidad: number): void {
     this.carritoService.añadirProducto(productoId, cantidad).subscribe(
@@ -297,33 +362,6 @@ isCategoriaSeleccionada(categoria: string): boolean {
       childElement.style.color = isSelected ? '' : 'white';
       childElement.style.pointerEvents = isSelected ? '' : 'none';
     });
-  }
-
-
-  ordenarAlfabeticamente(): void {
-    if (this.sortState === 0) {
-        this.productos.sort((a, b) => a.nombre.localeCompare(b.nombre));
-        this.sortState = 1;
-    } else if (this.sortState === 1) {
-        this.productos.sort((a, b) => b.nombre.localeCompare(a.nombre));
-        this.sortState = 2;
-    } else {
-        this.getProductos();
-        this.sortState = 0;
-    }
-  }
-  
-  ordenarPorPrecio(): void {
-    if (this.sortState === 0) {
-        this.productos.sort((a, b) => a.precio - b.precio);
-        this.sortState = 1;
-    } else if (this.sortState === 1) {
-        this.productos.sort((a, b) => b.precio - a.precio);
-        this.sortState = 2;
-    } else {
-        this.getProductos();
-        this.sortState = 0;
-    }
   }
   
 
