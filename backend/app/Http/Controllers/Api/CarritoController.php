@@ -304,8 +304,8 @@ class CarritoController extends Controller
     
         // Enviar el PDF por correo electrónico
         $email = $userEmail;
-        $subject = 'Factura de Compra';
-        $body = 'Hola ,' . $userName . ', Hemos recibido correctamente su pedido y lo estamos procesando. Adjunto encontrará la factura de su compra.';
+        $subject = 'Lista de Compra';
+        $body = 'Hola ,' . $userName . ', Hemos recibido correctamente su pedido y lo estamos procesando. Adjunto encontrará la lista de su compra.';
     
         $phpMailer = new PHPMailerController();
     
@@ -371,3 +371,4 @@ public function eliminarProducto(Request $request)
     return response()->json(['message' => 'Producto eliminado del carrito']);
 }
 }
+
