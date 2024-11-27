@@ -9,7 +9,7 @@ import { Navbar2Component } from '../home/navbar2/navbar2.component';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, Navbar2Component, ReactiveFormsModule, HttpClientModule, RouterOutlet, RouterModule],
+  imports: [CommonModule, Navbar2Component, ReactiveFormsModule, HttpClientModule, RouterModule],
   providers: [UserService],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
