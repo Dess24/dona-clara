@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CarritoService {
-  private apiUrl = 'http://localhost:8000/api'; // Cambia esto por la URL de tu API
+  apiUrl = 'https://donaclara.shop/api';  // Base URL de tu API
 
   constructor(private http: HttpClient) { }
 
