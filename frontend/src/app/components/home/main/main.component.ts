@@ -29,7 +29,7 @@ export class MainComponent implements OnInit {
   @ViewChild('carousel', { static: false }) carousel: ElementRef | undefined;
   @ViewChildren('card') cards: QueryList<ElementRef> | undefined;
   productos: any[] = [];
-  baseUrl: string = 'http://localhost:8000/images/uploads/';
+  baseUrl: string = 'https://donaclara.shop/images/uploads/';
   errorMessage: string = '';
   selectedProduct: Producto | null = null;
   categorias: any[] = [];

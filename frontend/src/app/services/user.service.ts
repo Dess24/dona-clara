@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  apiUrl = 'http://localhost:8000/api'; // URL base de tu API
+  apiUrl = 'https://donaclara.shop/api'; // URL base de tu API
 
   constructor(private http: HttpClient) { }
 
