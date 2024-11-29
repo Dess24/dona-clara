@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-
     {
         path: 'inicio',
         loadComponent: () =>
@@ -81,5 +80,4 @@ export const routes: Routes = [
         redirectTo: 'inicio',
         pathMatch: 'full',
     },
-
 ];
