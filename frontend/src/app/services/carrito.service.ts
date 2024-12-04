@@ -59,3 +59,4 @@ export class CarritoService {
     return this.http.post<any>(`${this.apiUrl}/carrito/actualizar-producto/${productoId}`, { cantidad: nuevaCantidad }, { headers });
   }
 }
+

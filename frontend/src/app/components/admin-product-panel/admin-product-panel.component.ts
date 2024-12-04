@@ -33,7 +33,7 @@ export class AdminProductPanelComponent implements OnInit{
   categorias: any[] = [];
   errorMessage: string | null = null;
   searchQuery: string = '';
-  baseUrl: string = 'http://localhost:8000/images/uploads/';
+  baseUrl: string = 'https://donaclara.shop/api/public/images/uploads/';
   productoAEliminar: number | null = null;
   productoAHabilitar: number | null = null;
   private stock: number = 0;

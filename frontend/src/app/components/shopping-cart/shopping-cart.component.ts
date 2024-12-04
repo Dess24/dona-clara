@@ -37,7 +37,7 @@ export class ShoppingCartComponent implements OnInit {
   categorias: any[] = [];
   categoriasSeleccionadas: string[] = [];
   searchQuery: string = '';
-  baseUrl: string = 'http://localhost:8000/images/uploads/';
+  baseUrl: string = 'https://donaclara.shop/api/public/images/uploads/';
   carrito: { productosCarrito: ItemCarrito[] } = { productosCarrito: [] };
   errorMessage: string | null = null;
   sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente

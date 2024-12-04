@@ -16,7 +16,6 @@ interface Producto {
   habilitado: boolean;
   destacado: boolean;
 }
-
 @Component({
   selector: 'app-main',
   standalone: true,
@@ -29,7 +28,7 @@ export class MainComponent implements OnInit {
   @ViewChild('carousel', { static: false }) carousel: ElementRef | undefined;
   @ViewChildren('card') cards: QueryList<ElementRef> | undefined;
   productos: any[] = [];
-  baseUrl: string = 'https://donaclara.shop/images/uploads/';
+  baseUrl: string = 'https://donaclara.shop/api/public/images/uploads/';
   errorMessage: string = '';
   selectedProduct: Producto | null = null;
   categorias: any[] = [];

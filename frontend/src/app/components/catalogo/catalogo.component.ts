@@ -39,7 +39,7 @@ export class CatalogoComponent implements OnInit, OnDestroy {
   categoriasSeleccionadas2: string[] = [];
   errorMessage: string | null = null;
   searchQuery: string = '';
-  baseUrl: string = 'http://localhost:8000/images/uploads/';
+  baseUrl: string = 'https://donaclara.shop/api/public/images/uploads/';
   sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente
   showLoginMessage: boolean = false;
   filtroAlfabeticoActivo: string | null = null;
