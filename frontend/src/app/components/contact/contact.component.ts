@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
 import { Navbar2Component } from '../home/navbar2/navbar2.component';
 import { UserService } from '../../services/user.service';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-contact',
@@ -18,7 +19,7 @@ export class ContactComponent {
   descripcion: string = '';
   formSubmitted: boolean = false;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   enviarMensaje(): void {
     this.formSubmitted = true;
@@ -96,6 +97,20 @@ export class ContactComponent {
   modalClose2() {
     const modal = document.getElementById('alert-container2') as HTMLElement;
     modal.style.display = 'none';
+  }
+
+  moveTo(section: string) {
+    // Navega a la ruta "/inicio"
+    this.router.navigate(['/inicio']).then(() => {
+      // Después de navegar, desplázate a la sección
+      const element = document.getElementById(section);
+      if (element) {
+        window.scrollTo({
+          top: element.offsetTop,
+          behavior: 'smooth'
+        });
+      }
+    });
   }
 
   
