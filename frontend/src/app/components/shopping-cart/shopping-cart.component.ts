@@ -199,6 +199,7 @@ export class ShoppingCartComponent implements OnInit {
       document.body.removeChild(this.downloadAnchor);
       this.downloadAnchor = null;
     }
+    window.location.reload();
   }
 
   confirmDownload(): void {
