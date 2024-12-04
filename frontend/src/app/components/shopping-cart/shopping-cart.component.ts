@@ -433,3 +433,4 @@ isCategoriaSeleccionada(categoria: string): boolean {
   }
   
 }
+
