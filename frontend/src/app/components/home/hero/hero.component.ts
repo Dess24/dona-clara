@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, ViewChildren, QueryList, ElementRef, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-hero',
@@ -13,14 +14,19 @@ export class HeroComponent implements AfterViewInit, OnInit {
   @ViewChildren('carouselItem') carouselItems!: QueryList<ElementRef>;
   currentIndex: number = 0;
   isLoggedIn: boolean = false;
+  fotos: any[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private userService: UserService) {}
   ngAfterViewInit() {
     this.showSlide(this.currentIndex);
   }
 
   ngOnInit(): void {
     this.isLoggedIn = !!localStorage.getItem('auth_token');
+    this.userService.getFotosSlider().subscribe(data => {
+      console.log(data); // Verifica los datos en la consola
+      this.fotos = data;
+    });
   }
 
   showSlide(index: number, direction: 'left' | 'right' = 'left') {

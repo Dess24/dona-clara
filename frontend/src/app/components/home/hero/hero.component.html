@@ -12,19 +12,10 @@
 
         <div id="default-carousel" class="mb-16 mx-auto relative">
             <!-- Carousel wrapper -->
-            <div class="relative h-full w-full overflow-hidden">
-              <!-- Item 2 -->
-              <div #carouselItem class="carousel-item duration-700 ease-in-out hidden ">
-                <img src="http://localhost:8000/images/Doña Clara_slider_3.jpg" class="img " alt="...">
-              </div>
-              <!-- Item 3 -->
-              <div #carouselItem class="carousel-item duration-700 ease-in-out hidden ">
-                <img src="https://localhost:8000/images/Doña Clara_slider_2.jpg" class="img " alt="...">
-              </div>
-              <!-- Item 3 -->
-              <div #carouselItem class="carousel-item duration-700 ease-in-out hidden ">
-                <img src="https://localhost:8000/images/Doña Clara_slider_1.jpg" class="img " alt="...">
-              </div>
+
+
+            <div *ngFor="let foto of fotos; let i = index" class="carousel-item duration-700 ease-in-out" #carouselItem [ngClass]="{'hidden': i !== 0}">
+              <img [src]="'http://localhost:8000/images/' + foto.ruta" class="img" alt="...">
             </div>
             <!-- Slider controls -->
             <button (click)="prevSlide()" type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">

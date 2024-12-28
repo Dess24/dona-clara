@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
+use App\Models\FotosSlider;
 
 class UsersController extends Controller
 {
@@ -393,5 +394,62 @@ public function ordenarUsuarios(Request $request)
     $usuarios = User::orderBy('name', $orden)->get();
 
     return response()->json($usuarios);
+}
+
+
+public function subirImagenSlider(Request $request)
+{
+    $request->validate([
+        'imagen' => 'required|image|mimes:jpeg,png,jpg,gif', // Eliminado el límite de tamaño
+    ]);
+
+    if ($request->hasFile('imagen')) {
+        $file = $request->file('imagen');
+        $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $file->getClientOriginalExtension();
+        $randomNumber = rand(100, 999);
+        $nombreArchivo = $originalName . '_' . $randomNumber . '.' . $extension;
+
+        // Mover el archivo a la ubicación deseada
+        $file->move(public_path('images'), $nombreArchivo);
+
+        // Registrar solo el nombre del archivo en la tabla fotosSlider
+        $fotoSlider = new FotosSlider();
+        $fotoSlider->ruta = $nombreArchivo;
+        $fotoSlider->save();
+
+        return response()->json(['message' => 'Imagen subida y registrada correctamente', 'nombreArchivo' => $nombreArchivo], 201);
+    }
+
+    return response()->json(['message' => 'No se pudo subir la imagen'], 500);
+}
+
+public function borrarImagenSlider($id)
+{
+    // Buscar la imagen en la base de datos
+    $fotoSlider = FotosSlider::find($id);
+
+    if ($fotoSlider) {
+        // Obtener la ruta de la imagen
+        $ruta = public_path('images/' . $fotoSlider->ruta);
+
+        // Eliminar el registro de la base de datos
+        $fotoSlider->delete();
+
+        // Verificar si el archivo existe y eliminarlo
+        if (file_exists($ruta)) {
+            unlink($ruta);
+        }
+
+        return response()->json(['message' => 'Imagen eliminada correctamente'], 200);
+    }
+
+    return response()->json(['message' => 'Imagen no encontrada'], 404);
+}
+
+public function allSliders()
+{
+    $fotos = FotosSlider::orderBy('id')->get();
+    return response()->json($fotos);
 }
 }

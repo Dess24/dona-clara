@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  apiUrl = 'https://donaclara.shop/api'; // URL base de tu API
+  apiUrl = 'http://localhost:8000/api'; // URL base de tu API
 
   constructor(private http: HttpClient) { }
 
@@ -97,5 +97,24 @@ getUserInfo(): Observable<{ user: { admin: number } }> {
 ordenarUsuarios(campo: string, orden: string): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}/usuarios/ordenar`, { params: { campo, orden } });
 }
-  
+
+  // Obtener todas las fotos del slider
+  getFotosSlider(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/fotos-slider`);
+  }
+
+  borrarImagenSlider(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/borrar-imagen-slider/${id}`);
+  }
+
+  subirImagenSlider(imagen: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('imagen', imagen);
+
+    return this.http.post<any>(`${this.apiUrl}/imagenSlider`, formData, {
+      headers: new HttpHeaders({
+        // 'Content-Type': 'multipart/form-data' // No es necesario establecer este encabezado, Angular lo hace automáticamente
+      })
+    });
+  }
 }

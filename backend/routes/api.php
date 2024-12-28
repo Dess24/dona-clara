@@ -37,6 +37,9 @@ Route::get('productos/categorias/{categoriaNombres}', [ProductoController::class
 Route::get('/productos/nombre/{nombre}', [ProductoController::class, 'buscarPorNombre']);
 Route::get('/recientes', [ProductoController::class, 'mostrarRecientes']);
 Route::post('/imagenes', [ProductoController::class, 'subirImagen']);
+Route::post('/imagenSlider', [UsersController::class, 'subirImagenSlider']);
+Route::delete('/borrar-imagen-slider/{id}', [UsersController::class, 'borrarImagenSlider']);
+Route::get('/fotos-slider', [UsersController::class, 'allSliders']);
 
 //Cambiar Contraseña
 Route::post('/generate-reset-code', [UsersController::class, 'generateResetCode']);
