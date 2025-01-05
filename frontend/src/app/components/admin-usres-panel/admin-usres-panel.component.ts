@@ -3,6 +3,7 @@ import { Navbar2Component } from '../home/navbar2/navbar2.component';
 import { FooterComponent } from '../home/footer/footer.component';
 import { ProductoService } from '../../services/producto.service';
 import { UserService } from '../../services/user.service';
+import { CarritoService } from '../../services/carrito.service'; 
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +14,7 @@ import { FormsModule } from '@angular/forms';
   imports: [Navbar2Component, FooterComponent, HttpClientModule, CommonModule, FormsModule],
   templateUrl: './admin-usres-panel.component.html',
   styleUrl: './admin-usres-panel.component.css',
-  providers: [UserService, ProductoService]
+  providers: [UserService, ProductoService, CarritoService]
 })
 export class AdminUsresPanelComponent implements OnInit {
 
@@ -27,8 +28,9 @@ export class AdminUsresPanelComponent implements OnInit {
   selectedUser: any = null;
   currentUser: any = null;
   sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente
+  userHistoriales: any[] = [];
 
-  constructor(private userService: UserService, private productoService: ProductoService) {}
+  constructor(private userService: UserService, private productoService: ProductoService, private carritoService: CarritoService) {}
 
   ngOnInit(): void {
     this.getAllUsuarios();
@@ -353,4 +355,33 @@ ordenarUsuarios(campo: string, orden: string): void {
     const modal = document.getElementById('alert-container3') as HTMLElement;
     modal.style.display = 'none';
   }
+
+
+  modal7(user: any): void {
+    this.selectedUser = user;
+    this.getHistorialesByUser(user.id);
+    const modal = document.getElementById('historyModal') as HTMLElement;
+    modal.style.display = 'flex';
+  }
+
+  modalClose7() {
+    this.selectedUser = null;
+    this.userHistoriales = [];
+    const modal = document.getElementById('historyModal') as HTMLElement;
+    modal.style.display = 'none';
+  }
+
+  getHistorialesByUser(userId: number): void {
+    this.carritoService.getHistorialesByUser(userId).subscribe(
+      data => {
+        this.userHistoriales = data;
+        const modal = document.getElementById('historyModal') as HTMLElement;
+        modal.style.display = 'flex';
+      },
+      error => {
+        console.error('Error al obtener los historiales del usuario:', error);
+      }
+    );
+  }
+
 }

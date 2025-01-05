@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use FPDF;
 use App\Models\User;
+use App\Models\Historial;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -237,7 +238,17 @@ class CarritoController extends Controller
         $pdfData = $this->facturaCompra($productosComprados, $montoTotalGastado, $userName, $userEmail, $userTelefono, $userDomicilio);
         $pdfContent = $pdfData['content'];
         $pdfFileName = $pdfData['file_name'];
-    
+
+        $pdfPath = 'pdfs/' . $pdfFileName; // Ruta del PDF
+
+        // Crear un registro en la tabla Historial
+        Historial::create([
+            'idUsuario' => $userId,
+            'userName' => $userName,
+            'pdf' => $pdfPath,
+            'estado' => 'Pendiente',
+        ]);
+
         return response($pdfContent, 200)
             ->header('Content-Type', 'application/pdf')
             ->header('Content-Disposition', 'attachment; filename="' . $pdfFileName . '"');
@@ -369,6 +380,32 @@ public function eliminarProducto(Request $request)
     $carritoProducto->delete();
 
     return response()->json(['message' => 'Producto eliminado del carrito']);
+}
+
+// Función para obtener todos los historiales
+public function getAllHistoriales()
+{
+    $historiales = Historial::all();
+    return response()->json($historiales);
+}
+
+// Función para obtener los historiales de un usuario específico
+public function getHistorialesByUser($userId)
+{
+    $historiales = Historial::where('idUsuario', $userId)->get();
+    return response()->json($historiales);
+}
+
+public function updateEstado(Request $request, $idPedido)
+{
+    $historial = Historial::where('idPedido', $idPedido)->first();
+    if ($historial) {
+        $historial->estado = $request->estado;
+        $historial->save();
+        return response()->json(['message' => 'Estado actualizado correctamente.'], 200);
+    } else {
+        return response()->json(['message' => 'Pedido no encontrado.'], 404);
+    }
 }
 }
 

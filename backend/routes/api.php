@@ -69,4 +69,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('modificar/{id}', [ProductoController::class, 'modificarProducto']);
     Route::put('actualizar-stock/{id}', [ProductoController::class, 'actualizarStock']);
     Route::put('actualizar-destacado/{id}', [ProductoController::class, 'actualizarDestacado']);
+    Route::put('/historial/{idPedido}/estado', [CarritoController::class, 'updateEstado']);
 });
+
+// Rutas para el historial de compras
+Route::get('/historiales', [CarritoController::class, 'getAllHistoriales']);
+Route::get('/historiales/usuario/{userId}', [CarritoController::class, 'getHistorialesByUser']);

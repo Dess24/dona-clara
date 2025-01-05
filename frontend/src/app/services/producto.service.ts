@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ProductoService {
-  private apiUrl = 'https://donaclara.shop/api';
+  private apiUrl = 'http://localhost:8000/api';
 
   constructor(private http: HttpClient) { }
 

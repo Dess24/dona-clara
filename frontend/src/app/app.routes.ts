@@ -74,6 +74,13 @@ export const routes: Routes = [
         (m) => m.AdminUsresPanelComponent
         ),
     },
+    {
+        path: 'historial',
+        loadComponent: () =>
+        import('./components/historial/historial.component').then(
+        (m) => m.HistorialComponent
+        ),
+    },
     // Dejar '**' siempre al final
     {
         path: '**',

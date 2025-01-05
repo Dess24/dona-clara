@@ -4,13 +4,15 @@ import { Router, RouterOutlet, RouterModule} from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MainComponent } from '../main/main.component';
+import { CarritoService } from '../../../services/carrito.service'; 
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [CommonModule, RouterModule, RouterOutlet, HttpClientModule, MainComponent],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
+  providers: [UserService, CarritoService]
 })
 export class NavbarComponent implements AfterViewInit, OnInit  {
   @ViewChildren('carouselItem') carouselItems!: QueryList<ElementRef>;
@@ -18,8 +20,11 @@ export class NavbarComponent implements AfterViewInit, OnInit  {
   isLoggedInAdmin: boolean = false;
   currentIndex: number = 0;
   fotos: any[] = [];
+  userHistoriales: any[] = [];
+  selectedUser: any = null;
+  currentUser: any = null;
   
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(private router: Router, private userService: UserService, private carritoService: CarritoService) {}
   
   ngAfterViewInit() {
     this.nshowSlide(this.currentIndex);
@@ -103,6 +108,7 @@ export class NavbarComponent implements AfterViewInit, OnInit  {
     if (this.isLoggedIn) {
       this.userService.getUserInfo().subscribe(response => {
         this.isLoggedInAdmin = !!response.user.admin;
+        this.currentUser = response.user;
       });
     }
   }
@@ -149,4 +155,39 @@ export class NavbarComponent implements AfterViewInit, OnInit  {
     }
   }
 
+
+
+
+  modal7(): void {
+    this.selectedUser = this.currentUser;
+    this.getHistorialesByUser();
+    setTimeout(() => {
+      const modal = document.getElementById('historyModal') as HTMLElement;
+      modal.style.display = 'flex';
+    }, 0);
+  }
+  
+  modalClose7() {
+    this.selectedUser = null;
+    this.userHistoriales = [];
+    const modal = document.getElementById('historyModal') as HTMLElement;
+    modal.style.display = 'none';
+  }
+
+  getHistorialesByUser(): void {
+    if (this.currentUser) {
+      this.carritoService.getHistorialesByUser(this.currentUser.id).subscribe(
+        data => {
+          this.userHistoriales = data;
+          const modal = document.getElementById('historyModal') as HTMLElement;
+          modal.style.display = 'flex';
+        },
+        error => {
+          console.error('Error al obtener los historiales del usuario:', error);
+        }
+      );
+    } else {
+      console.error('No se encontró el usuario actual.');
+    }
+  }
 }

@@ -1,0 +1,57 @@
+.primary{
+    background-color: #1B335F;
+}
+.text{
+    color: #111f3b;
+}
+.wpp{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.footer{
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.5s forwards;
+  }
+  
+  .fade-out {
+    animation: fadeOut 0.5s forwards;
+  }
+.alert-container{
+    position: fixed;
+    width: 24vw;
+    display: none;
+    justify-content: center;
+    align-items: start;
+    z-index: 100;
+    top: 5px;
+    left: 0;
+    margin-inline: 37%;
+}
+.alert-container2{
+    position: fixed;
+    width: 34vw;
+    display: none;
+    justify-content: center;
+    align-items: start;
+    z-index: 100;
+    top: 5px;
+    left: 0;
+    margin-inline: 33%;
+}

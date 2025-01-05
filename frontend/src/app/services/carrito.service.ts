@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CarritoService {
-  private apiUrl = 'https://donaclara.shop/api'; // Cambia esto por la URL de tu API
+  private apiUrl = 'http://localhost:8000/api'; // Cambia esto por la URL de tu API
 
   constructor(private http: HttpClient) { }
 
@@ -58,5 +58,20 @@ export class CarritoService {
     const headers = this.getAuthHeaders();
     return this.http.post<any>(`${this.apiUrl}/carrito/actualizar-producto/${productoId}`, { cantidad: nuevaCantidad }, { headers });
   }
+
+  getAllHistoriales(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/historiales`);
+  }
+  
+
+  getHistorialesByUser(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/historiales/usuario/${userId}`);
+  }
+
+  updateEstadoPedido(idPedido: number, estado: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.put<any>(`${this.apiUrl}/historial/${idPedido}/estado`, { estado }, { headers });
+  }
+  
 }
 
