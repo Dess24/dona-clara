@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MainComponent } from '../main/main.component';
 import { CarritoService } from '../../../services/carrito.service'; 
 
+
 @Component({
   selector: 'app-navbar2',
   standalone: true,
