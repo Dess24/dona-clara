@@ -39,14 +39,16 @@ export class ContactComponent {
           // Si decides recargar la página, asegúrate de que solo lo hagas en caso de éxito
           window.location.reload();
         } else {
-          console.error('Error en la respuesta del backend', response);
-          this.showAlert2(); // Se ejecuta si la respuesta del backend no es exitosa
+          // console.error('Error en la respuesta del backend', response);
+          // this.showAlert2(); // Se ejecuta si la respuesta del backend no es exitosa
+          window.location.reload();
         }
       },
       error => {
         // Aquí manejamos cualquier error que pueda ocurrir en la solicitud HTTP
-        console.error('Error al enviar el correo', error);
-        this.showAlert2(); // Se ejecuta si ocurre un error al contactar el backend
+        // console.error('Error al enviar el correo', error);
+        // this.showAlert2(); // Se ejecuta si ocurre un error al contactar el backend
+        window.location.reload();
       }
     );
   }
