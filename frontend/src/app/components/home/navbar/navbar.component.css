@@ -196,3 +196,31 @@ ul li:hover ul.dropdown {
 }
 
 
+#navbar {
+  transition: background-color 0.5s ease;
+}
+
+
+
+
+
+
+.desplegar, .desplegar2 {
+  position: relative;
+  overflow: hidden;
+}
+
+.desplegar span, .desplegar2 span {
+  display: inline-block;
+  max-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: max-width 0.4s ease-in, opacity 0.3s ease-in;
+  opacity: 0;
+}
+
+.desplegar:hover span, .desplegar2:hover span {
+  max-width: 200px; /* Adjust as needed */
+  opacity: 1;
+  transition: max-width 0.8s ease-out, opacity 0.2s ease-out; /* Faster transition on hover out */
+}

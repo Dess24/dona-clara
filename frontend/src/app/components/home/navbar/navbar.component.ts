@@ -1,10 +1,10 @@
-import { Component, OnInit, AfterViewInit, ViewChildren, QueryList, ElementRef,} from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet, RouterModule} from '@angular/router';
+import { Router, RouterOutlet, RouterModule } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MainComponent } from '../main/main.component';
-import { CarritoService } from '../../../services/carrito.service'; 
+import { CarritoService } from '../../../services/carrito.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +14,7 @@ import { CarritoService } from '../../../services/carrito.service';
   styleUrls: ['./navbar.component.css'],
   providers: [UserService, CarritoService]
 })
-export class NavbarComponent implements AfterViewInit, OnInit  {
+export class NavbarComponent implements AfterViewInit, OnInit {
   @ViewChildren('carouselItem') carouselItems!: QueryList<ElementRef>;
   isLoggedIn: boolean = false;
   isLoggedInAdmin: boolean = false;
@@ -23,14 +23,39 @@ export class NavbarComponent implements AfterViewInit, OnInit  {
   userHistoriales: any[] = [];
   selectedUser: any = null;
   currentUser: any = null;
-  
+
   constructor(private router: Router, private userService: UserService, private carritoService: CarritoService) {}
-  
+
   ngAfterViewInit() {
     this.nshowSlide(this.currentIndex);
   }
 
-  
+  ngOnInit(): void {
+    this.userService.getFotosSlider().subscribe(data => {
+      console.log(data); // Verifica los datos en la consola
+      this.fotos = data;
+    });
+
+    this.isLoggedIn = !!localStorage.getItem('auth_token');
+    if (this.isLoggedIn) {
+      this.userService.getUserInfo().subscribe(response => {
+        this.isLoggedInAdmin = !!response.user.admin;
+        this.currentUser = response.user;
+      });
+    }
+
+    window.addEventListener('scroll', this.onScroll.bind(this));
+    this.onScroll(); // Llamar a la función onScroll al cargar la página
+  }
+
+  onScroll(): void {
+    const navbar = document.getElementById('navbar') as HTMLElement;
+    if (window.scrollY > 50) {
+      navbar.style.backgroundColor = 'rgba(27, 51, 95, 0.85)'; // Color sólido
+    } else {
+      navbar.style.backgroundColor = 'transparent'; // Fondo transparente
+    }
+  }
 
   nshowSlide(index: number, direction: 'left' | 'right' = 'left') {
     this.carouselItems.forEach((item, i) => {
@@ -57,23 +82,21 @@ export class NavbarComponent implements AfterViewInit, OnInit  {
     this.nshowSlide(this.currentIndex, 'left');
   }
 
-
-  modal(){
+  modal() {
     const modal = document.getElementById('modal-container') as HTMLElement;
     const hide = document.getElementById('wpp') as HTMLElement;
     modal.style.display = 'flex';
     hide.style.display = 'none';
   }
 
-  modalClose(){
+  modalClose() {
     const modal = document.getElementById('modal-container') as HTMLElement;
     const hide = document.getElementById('wpp') as HTMLElement;
     modal.style.display = 'none';
     hide.style.display = 'flex';
   }
 
-
-  modal2(){
+  modal2() {
     const modal = document.getElementById('modal-container2') as HTMLElement;
     const hide = document.getElementById('wpp') as HTMLElement;
     modal.style.display = 'flex';
@@ -91,32 +114,11 @@ export class NavbarComponent implements AfterViewInit, OnInit  {
   openModal2AndCloseModal1() {
     this.modalClose();
     this.modal2();
-}
-
-  ngOnInit(): void {
-    this.userService.getFotosSlider().subscribe(data => {
-      console.log(data); // Verifica los datos en la consola
-      this.fotos = data;
-    });
-
-    this.isLoggedIn = !!localStorage.getItem('auth_token');
-    if (this.isLoggedIn) {
-      this.userService.getUserInfo().subscribe(response => {
-        this.isLoggedInAdmin = !!response.user.admin;
-      });
-    }
-    if (this.isLoggedIn) {
-      this.userService.getUserInfo().subscribe(response => {
-        this.isLoggedInAdmin = !!response.user.admin;
-        this.currentUser = response.user;
-      });
-    }
   }
 
   onLogout(): void {
     localStorage.removeItem('auth_token');
     this.isLoggedIn = false;
-    this.isLoggedInAdmin = false;
     this.isLoggedInAdmin = false;
     this.router.navigate(['/login']);
   }
@@ -155,9 +157,6 @@ export class NavbarComponent implements AfterViewInit, OnInit  {
     }
   }
 
-
-
-
   modal7(): void {
     this.selectedUser = this.currentUser;
     this.getHistorialesByUser();
@@ -166,7 +165,7 @@ export class NavbarComponent implements AfterViewInit, OnInit  {
       modal.style.display = 'flex';
     }, 0);
   }
-  
+
   modalClose7() {
     this.selectedUser = null;
     this.userHistoriales = [];
