@@ -30,6 +30,9 @@ export interface Producto {
 export class AdminProductPanelComponent implements OnInit{
 
   productos: any[] = [];
+  displayedProductos: any[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
   categorias: any[] = [];
   errorMessage: string | null = null;
   searchQuery: string = '';
@@ -84,6 +87,7 @@ getProductos(): void {
   this.productoService.getProductos().subscribe(
     data => {
       // Filtrar productos habilitados y deshabilitados
+      this.updateDisplayedProductos();
       this.productos = data.sort((a: Producto, b: Producto) => {
         if (a.habilitado === b.habilitado) {
           return 0;
@@ -92,13 +96,38 @@ getProductos(): void {
         } else {
           return 1;
         }
+
       });
+      this.updateDisplayedProductos();
+
     },
     error => {
       this.errorMessage = 'Error al cargar los productos';
       console.error('Error al cargar los productos', error);
     }
   );
+}
+
+updateDisplayedProductos(): void {
+  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  const endIndex = startIndex + this.itemsPerPage;
+  this.displayedProductos = this.productos.slice(startIndex, endIndex);
+}
+
+nextPage(): void {
+  if ((this.currentPage * this.itemsPerPage) < this.productos.length) {
+    this.currentPage++;
+    this.updateDisplayedProductos();
+    document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+prevPage(): void {
+  if (this.currentPage > 1) {
+    this.currentPage--;
+    this.updateDisplayedProductos();
+    document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 
 // Manejar la selección de la imagen

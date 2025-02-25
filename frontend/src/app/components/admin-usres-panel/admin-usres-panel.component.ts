@@ -23,6 +23,9 @@ export class AdminUsresPanelComponent implements OnInit {
   productos: any[] = [];
   categorias: any[] = [];
   users: any[] = [];
+  displayedUsers: any[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
   errorMessage: string | null = null;
   searchQuery: string = '';
   selectedUser: any = null;
@@ -44,12 +47,12 @@ export class AdminUsresPanelComponent implements OnInit {
   // Buscar todos los usuarios
   getAllUsuarios(): void {
     this.userService.getAllUsuarios().subscribe(
-      data => {
-        this.users = data;
+      (response) => {
+        this.users = response;
+        this.updateDisplayedUsers();
       },
-      error => {
-        this.errorMessage = 'Error al cargar los usuarios';
-        console.error('Error al cargar los usuarios', error);
+      (error) => {
+        console.error('Error fetching users:', error);
       }
     );
   }
@@ -66,22 +69,38 @@ export class AdminUsresPanelComponent implements OnInit {
     );
   }
 
-  // Buscar usuarios por nombre
-  buscarPorNombre(): void {
-    if (this.searchQuery.trim() === '') {
-      this.getAllUsuarios();
-    } else {
-      this.userService.buscarPorNombre(this.searchQuery).subscribe(
-        data => {
-          this.users = data;
-        },
-        error => {
-          this.errorMessage = 'Error al buscar usuarios por nombre';
-          console.error('Error al buscar usuarios por nombre', error);
-          this.alertBuscar();
-        }
-      );
+  updateDisplayedUsers(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.displayedUsers = this.users.slice(startIndex, endIndex);
+  }
+
+  nextPage(): void {
+    if ((this.currentPage * this.itemsPerPage) < this.users.length) {
+      this.currentPage++;
+      this.updateDisplayedUsers();
+      document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updateDisplayedUsers();
+      document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  buscarPorNombre(): void {
+    this.userService.buscarPorNombre(this.searchQuery).subscribe(
+      (response) => {
+        this.users = response;
+        this.updateDisplayedUsers();
+      },
+      (error) => {
+        console.error('Error searching users:', error);
+      }
+    );
   }
 
   alertBuscar() {
