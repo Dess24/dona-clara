@@ -58,8 +58,21 @@
   pointer-events: none;
 }
 
-.hero {
-  height: 50vh;
+.hero2 {
+  background-image: url(../../../assets/img/background1.jpg);
+  background-size: cover;
+  position: relative;
+}
+.hreo2::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.242);
+  mix-blend-mode: multiply;
+  z-index: 1;
 }
 
 .title {

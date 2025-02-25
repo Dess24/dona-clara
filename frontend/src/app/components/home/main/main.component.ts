@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CarritoService } from '../../../services/carrito.service'; 
+import { UserService } from '../../../services/user.service';
 
 interface Producto {
   id: number;
@@ -25,6 +26,9 @@ interface Producto {
   providers: [ProductoService, CarritoService] // Registrar ProductoService como proveedor
 })
 export class MainComponent implements OnInit {
+  @ViewChildren('carouselItem') carouselItems!: QueryList<ElementRef>;
+  currentIndex: number = 0;
+  fotos: any[] = [];
   @ViewChild('carousel', { static: false }) carousel: ElementRef | undefined;
   @ViewChildren('card') cards: QueryList<ElementRef> | undefined;
   productos: any[] = [];
@@ -36,12 +40,16 @@ export class MainComponent implements OnInit {
   isLoggedIn: boolean = false;
 
 
-  constructor(private productoService: ProductoService, private router: Router, private carritoService: CarritoService,) {}
+  constructor(private productoService: ProductoService, private router: Router, private carritoService: CarritoService, private userService: UserService,) {}
 
   ngOnInit(): void {
     this.isLoggedIn = !!localStorage.getItem('auth_token');
     this.getProductos();
     this.getCategorias();
+    this.userService.getFotosSlider().subscribe(data => {
+      console.log(data); // Verifica los datos en la consola
+      this.fotos = data;
+    });
   }
 
 
@@ -98,6 +106,7 @@ anadirProducto(productoId: number, cantidad: number): void {
   }
 
   ngAfterViewInit() {
+    this.showSlide(this.currentIndex);
   }
 
   showAlert() {
@@ -173,5 +182,31 @@ anadirProducto(productoId: number, cantidad: number): void {
     if (modal) {
       modal.style.display = 'none';
     }
+  }
+
+
+  showSlide(index: number, direction: 'left' | 'right' = 'left') {
+    this.carouselItems.forEach((item, i) => {
+      item.nativeElement.classList.add('hidden');
+      item.nativeElement.classList.remove('slide-in-left', 'slide-in-right', 'slide-out-left', 'slide-out-right');
+      if (i === index) {
+        item.nativeElement.classList.remove('hidden');
+        item.nativeElement.classList.add(direction === 'left' ? 'slide-in-left' : 'slide-in-right');
+      }
+    });
+  }
+
+  nextSlide() {
+    const nextIndex = (this.currentIndex + 1) % this.carouselItems.length;
+    this.carouselItems.toArray()[this.currentIndex].nativeElement.classList.add('slide-out-right');
+    this.currentIndex = nextIndex;
+    this.showSlide(this.currentIndex, 'right');
+  }
+
+  prevSlide() {
+    const prevIndex = (this.currentIndex - 1 + this.carouselItems.length) % this.carouselItems.length;
+    this.carouselItems.toArray()[this.currentIndex].nativeElement.classList.add('slide-out-left');
+    this.currentIndex = prevIndex;
+    this.showSlide(this.currentIndex, 'left');
   }
 }

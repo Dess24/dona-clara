@@ -185,4 +185,13 @@ export class Navbar2Component {
       console.error('No se encontró el usuario actual.');
     }
   }
+
+  onScroll(): void {
+    const navbar = document.getElementById('navbar') as HTMLElement;
+    if (window.scrollY > 50) {
+      navbar.style.backgroundColor = 'rgba(27, 51, 95, 0.85)'; // Color sólido
+    } else {
+      navbar.style.backgroundColor = 'transparent'; // Fondo transparente
+    }
+  }
 }

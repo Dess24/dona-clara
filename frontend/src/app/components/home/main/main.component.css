@@ -14,8 +14,8 @@
     padding: 0 30px;
 }
 .body-nh{
-    padding-top: 5vh;
-    padding-bottom: 10vh;
+    padding-top: 10vh;
+    padding-bottom: 20vh;
 }
 .body-nh i{
     top: 50%;
@@ -32,6 +32,9 @@
     transform: translateY(-50%);
     transition: transform 0.1s linear;
     z-index: 20;
+}
+.body-nh i:hover {
+  transform: translateY(-50%) scale(1.1);
 }
 .body-nh i:active{
     transform: translateY(-50%) scale(1.1);
@@ -110,9 +113,6 @@
     font-weight: 700;
     margin-bottom: 1rem;
 }
-.categories{
-    margin-bottom: 6vh;
-}
 .wpp{
     position: fixed;
     bottom: 20px;
@@ -138,6 +138,90 @@
     left: 16px;
     z-index: 10;
 }
+
+
+
+
+
+
+
+/* Slider */
+.slide-in-left {
+    animation: slideInLeft 0.7s forwards;
+  }
+  
+  .slide-in-right {
+    animation: slideInRight 0.7s forwards;
+  }
+  
+  .slide-out-left {
+    animation: slideOutLeft 0.7s forwards;
+  }
+  
+  .slide-out-right {
+    animation: slideOutRight 0.7s forwards;
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slideOutLeft {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+  
+  
+  
+  /* Carousel */
+  #default-carousel {
+    height: 53vh;
+    width: 100%;
+  }
+  .carousel-item {
+    height: 100%;
+    width: 100%;
+  }
+  .img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.99); /* Añade un filtro negro */
+}
+  .disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+
 
 
 
@@ -201,3 +285,17 @@
   .fade-out {
     animation: fadeOut 0.5s forwards;
   }
+
+
+.sliderSection{
+  height: 90vh;
+  background-image: url(../../../../assets/img/background3.jpg);
+  background-size: cover;
+}
+
+
+.sliderSection2{
+  height: 90vh;
+  background-image: url(../../../../assets/img/background2.jpg);
+  background-size: cover;
+}
