@@ -224,3 +224,19 @@ ul li:hover ul.dropdown {
   opacity: 1;
   transition: max-width 0.8s ease-out, opacity 0.2s ease-out; /* Faster transition on hover out */
 }
+
+
+.contenedor{
+  color: rgb(21 128 61);
+}
+.contenedor *{
+  color: rgb(21 128 61);
+}
+.contenedor:hover {
+  background-color: rgb(21 128 61);
+  color: white;
+}
+
+.contenedor:hover * {
+  color: white;
+}
