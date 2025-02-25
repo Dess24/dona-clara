@@ -32,6 +32,8 @@ export class AdminUsresPanelComponent implements OnInit {
   currentUser: any = null;
   sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente
   userHistoriales: any[] = [];
+  filtroAlfabeticoActivo: string | null = null;
+
 
   constructor(private userService: UserService, private productoService: ProductoService, private carritoService: CarritoService) {}
 
@@ -94,14 +96,41 @@ export class AdminUsresPanelComponent implements OnInit {
   buscarPorNombre(): void {
     this.userService.buscarPorNombre(this.searchQuery).subscribe(
       (response) => {
-        this.users = response;
-        this.updateDisplayedUsers();
+        if (response.usuarios.length === 0) {
+          alert('No se encontraron usuarios con ese criterio');
+          window.location.reload(); 
+        } else {
+          this.users = response.usuarios;
+          this.updateDisplayedUsers();
+        }
       },
       (error) => {
         console.error('Error searching users:', error);
       }
     );
   }
+
+  ordenarAlfabeticamente(orden: string): void {
+    if (this.users.length > 0 && this.users[0].name) {
+      if (orden === 'asc') {
+        this.users.sort((a, b) => a.name.localeCompare(b.name));
+      } else {
+        this.users.sort((a, b) => b.name.localeCompare(a.name));
+      }
+      this.updateDisplayedUsers(); // Actualizar los usuarios mostrados después de ordenar
+    } else {
+      console.error('No se puede ordenar, la propiedad "name" no existe en los objetos de la lista "users".');
+    }
+  }
+  
+
+  aplicarFiltros(): void {
+  if (this.filtroAlfabeticoActivo) {
+    const orden = this.filtroAlfabeticoActivo.endsWith('asc') ? 'asc' : 'desc';
+    this.ordenarAlfabeticamente(orden);
+  }
+  this.updateDisplayedUsers(); // Asegúrate de actualizar los usuarios mostrados después de aplicar los filtros
+}
 
   alertBuscar() {
     const modal = document.getElementById('alert-buscar') as HTMLElement;
