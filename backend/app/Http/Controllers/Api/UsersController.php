@@ -222,18 +222,23 @@ public function register(Request $request)
 
 
 
-    // Buscar usuarios por nombre
+// Buscar usuarios por nombre, email, teléfono o domicilio
     public function buscarPorNombre(Request $request)
     {
-        $nombre = $request->input('name');
-        $usuarios = User::where('name', 'LIKE', '%' . $nombre . '%')->get();
+        $query = $request->input('query');
+        $usuarios = User::where('name', 'LIKE', '%' . $query . '%')
+                        ->orWhere('email', 'LIKE', '%' . $query . '%')
+                        ->orWhere('telefono', 'LIKE', '%' . $query . '%')
+                        ->orWhere('domicilio', 'LIKE', '%' . $query . '%')
+                        ->get();
 
         if ($usuarios->isEmpty()) {
-            return response()->json(['message' => 'No se encontraron usuarios con ese nombre'], 404);
+            return response()->json(['usuarios' => []]);
         }
 
-        return response()->json($usuarios);
+        return response()->json(['usuarios' => $usuarios]);
     }
+
 
      // Borrar usuario por ID
     public function borrarUsuario($id)

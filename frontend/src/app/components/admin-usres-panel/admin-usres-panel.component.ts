@@ -23,12 +23,17 @@ export class AdminUsresPanelComponent implements OnInit {
   productos: any[] = [];
   categorias: any[] = [];
   users: any[] = [];
+  displayedUsers: any[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
   errorMessage: string | null = null;
   searchQuery: string = '';
   selectedUser: any = null;
   currentUser: any = null;
   sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente
   userHistoriales: any[] = [];
+  filtroAlfabeticoActivo: string | null = null;
+
 
   constructor(private userService: UserService, private productoService: ProductoService, private carritoService: CarritoService) {}
 
@@ -44,12 +49,12 @@ export class AdminUsresPanelComponent implements OnInit {
   // Buscar todos los usuarios
   getAllUsuarios(): void {
     this.userService.getAllUsuarios().subscribe(
-      data => {
-        this.users = data;
+      (response) => {
+        this.users = response;
+        this.updateDisplayedUsers();
       },
-      error => {
-        this.errorMessage = 'Error al cargar los usuarios';
-        console.error('Error al cargar los usuarios', error);
+      (error) => {
+        console.error('Error fetching users:', error);
       }
     );
   }
@@ -66,23 +71,66 @@ export class AdminUsresPanelComponent implements OnInit {
     );
   }
 
-  // Buscar usuarios por nombre
-  buscarPorNombre(): void {
-    if (this.searchQuery.trim() === '') {
-      this.getAllUsuarios();
-    } else {
-      this.userService.buscarPorNombre(this.searchQuery).subscribe(
-        data => {
-          this.users = data;
-        },
-        error => {
-          this.errorMessage = 'Error al buscar usuarios por nombre';
-          console.error('Error al buscar usuarios por nombre', error);
-          this.alertBuscar();
-        }
-      );
+  updateDisplayedUsers(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.displayedUsers = this.users.slice(startIndex, endIndex);
+  }
+
+  nextPage(): void {
+    if ((this.currentPage * this.itemsPerPage) < this.users.length) {
+      this.currentPage++;
+      this.updateDisplayedUsers();
+      document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
     }
   }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updateDisplayedUsers();
+      document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  buscarPorNombre(): void {
+    this.userService.buscarPorNombre(this.searchQuery).subscribe(
+      (response) => {
+        if (response.usuarios.length === 0) {
+          alert('No se encontraron usuarios con ese criterio');
+          window.location.reload(); 
+        } else {
+          this.users = response.usuarios;
+          this.updateDisplayedUsers();
+        }
+      },
+      (error) => {
+        console.error('Error searching users:', error);
+      }
+    );
+  }
+
+  ordenarAlfabeticamente(orden: string): void {
+    if (this.users.length > 0 && this.users[0].name) {
+      if (orden === 'asc') {
+        this.users.sort((a, b) => a.name.localeCompare(b.name));
+      } else {
+        this.users.sort((a, b) => b.name.localeCompare(a.name));
+      }
+      this.updateDisplayedUsers(); // Actualizar los usuarios mostrados después de ordenar
+    } else {
+      console.error('No se puede ordenar, la propiedad "name" no existe en los objetos de la lista "users".');
+    }
+  }
+  
+
+  aplicarFiltros(): void {
+  if (this.filtroAlfabeticoActivo) {
+    const orden = this.filtroAlfabeticoActivo.endsWith('asc') ? 'asc' : 'desc';
+    this.ordenarAlfabeticamente(orden);
+  }
+  this.updateDisplayedUsers(); // Asegúrate de actualizar los usuarios mostrados después de aplicar los filtros
+}
 
   alertBuscar() {
     const modal = document.getElementById('alert-buscar') as HTMLElement;

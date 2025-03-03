@@ -41,9 +41,9 @@ getUserInfo(): Observable<{ user: { admin: number } }> {
     });
   }
 
-  // Buscar usuarios por nombre
-  buscarPorNombre(nombre: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/buscar-usuarios`, { params: { name: nombre } });
+  // Buscar usuarios por nombre, email, teléfono o domicilio
+  buscarPorNombre(query: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/buscar-usuarios`, { params: { query } });
   }
 
   // Borrar usuario por ID

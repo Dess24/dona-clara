@@ -30,6 +30,9 @@ export interface Producto {
 export class AdminProductPanelComponent implements OnInit{
 
   productos: any[] = [];
+  displayedProductos: any[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
   categorias: any[] = [];
   errorMessage: string | null = null;
   searchQuery: string = '';
@@ -92,13 +95,38 @@ getProductos(): void {
         } else {
           return 1;
         }
+
       });
+      this.updateDisplayedProductos();
+
     },
     error => {
       this.errorMessage = 'Error al cargar los productos';
       console.error('Error al cargar los productos', error);
     }
   );
+}
+
+updateDisplayedProductos(): void {
+  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  const endIndex = startIndex + this.itemsPerPage;
+  this.displayedProductos = this.productos.slice(startIndex, endIndex);
+}
+
+nextPage(): void {
+  if ((this.currentPage * this.itemsPerPage) < this.productos.length) {
+    this.currentPage++;
+    this.updateDisplayedProductos();
+    document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+prevPage(): void {
+  if (this.currentPage > 1) {
+    this.currentPage--;
+    this.updateDisplayedProductos();
+    document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 
 // Manejar la selección de la imagen
@@ -214,13 +242,14 @@ onSubmit(): void {
       this.getProductos();
       return;
     }
-
+  
     this.productoService.buscarPorNombre(this.searchQuery).subscribe(
       data => {
         this.productos = data.productos; // Asegúrate de acceder a la propiedad correcta
         if (this.productos.length === 0) {
           alert('No se encontraron productos');
         }
+        this.updateDisplayedProductos(); // Actualizar los productos mostrados
       },
       error => {
         this.errorMessage = 'Error al buscar productos por nombre';
@@ -547,9 +576,11 @@ isCategoriaSeleccionada(categoria: string): boolean {
 
 // Eliminar una categoría seleccionada y recargar productos
 eliminarCategoria(categoria: string): void {
+  localStorage.removeItem('categoriasSeleccionadas');
   const index = this.categoriasSeleccionadas.indexOf(categoria);
   if (index !== -1) {
     this.categoriasSeleccionadas.splice(index, 1);
+    this.currentPage = 1; // Cambiar a la página 1 de la paginación
     if (this.categoriasSeleccionadas.length === 0) {
       this.getProductos();
     } else {
@@ -560,24 +591,25 @@ eliminarCategoria(categoria: string): void {
   console.log('Categorías seleccionadas:', this.categoriasSeleccionadas);
 }
 
-// Buscar productos por las categorías seleccionadas
-buscarPorCategoriasSeleccionadas(): void {
-  this.categoriasSeleccionadas2 = this.categoriasSeleccionadas;
-  if (this.categoriasSeleccionadas2.length > 0) {
-    this.productoService.buscarPorCategorias(this.categoriasSeleccionadas2).subscribe(
-      data => {
-        this.productos = data;
-        this.modalClose(); // Cerrar el modal después de buscar
-      },
-      error => {
-        this.errorMessage = 'Error al buscar productos por categorías';
-        console.error('Error al buscar productos por categorías', error);
-      }
-    );
-  } else {
-    window.location.reload(); // Recargar la página si no hay categorías seleccionadas
+  // Buscar productos por las categorías seleccionadas
+  buscarPorCategoriasSeleccionadas(): void {
+    this.categoriasSeleccionadas2 = this.categoriasSeleccionadas;
+    if (this.categoriasSeleccionadas2.length > 0) {
+      this.productoService.buscarPorCategorias(this.categoriasSeleccionadas2).subscribe(
+        data => {
+          this.productos = data;
+          this.updateDisplayedProductos(); // Actualizar los productos mostrados
+          this.modalClose(); // Cerrar el modal después de buscar
+        },
+        error => {
+          this.errorMessage = 'Error al buscar productos por categorías';
+          console.error('Error al buscar productos por categorías', error);
+        }
+      );
+    } else {
+      window.location.reload(); // Recargar la página si no hay categorías seleccionadas
+    }
   }
-}
 
 
 modal5(): void {
@@ -714,74 +746,77 @@ alertClose1() {
 
 
 
-// Aplicar filtros
-aplicarFiltros(): void {
-  if (this.filtroAlfabeticoActivo) {
-  const orden = this.filtroAlfabeticoActivo.endsWith('asc') ? 'asc' : 'desc';
-  this.ordenarAlfabeticamente(orden, false); // No restablecer productos
-  }
-  if (this.filtroPrecioActivo) {
-  const orden = this.filtroPrecioActivo.endsWith('asc') ? 'asc' : 'desc';
-  this.ordenarPorPrecio(orden, false); // No restablecer productos
-  }
+  // Aplicar filtros
+  aplicarFiltros(): void {
+    if (this.filtroAlfabeticoActivo) {
+      const orden = this.filtroAlfabeticoActivo.endsWith('asc') ? 'asc' : 'desc';
+      this.ordenarAlfabeticamente(orden, false); // No restablecer productos
+    }
+    if (this.filtroPrecioActivo) {
+      const orden = this.filtroPrecioActivo.endsWith('asc') ? 'asc' : 'desc';
+      this.ordenarPorPrecio(orden, false); // No restablecer productos
+    }
+    this.updateDisplayedProductos(); // Asegúrate de actualizar los productos mostrados después de aplicar los filtros
   }
   
   ordenarAlfabeticamente(orden: string, restablecer: boolean = true): void {
-  const filtro = orden === 'asc' ? 'alfabetico-asc' : 'alfabetico-desc';
+    const filtro = orden === 'asc' ? 'alfabetico-asc' : 'alfabetico-desc';
   
-  if (this.filtroAlfabeticoActivo === filtro) {
-  if (restablecer) {
-  this.getProductos();
-  }
-  this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('alfabetico'));
-  this.filtroAlfabeticoActivo = null;
-  return;
-  }
+    if (this.filtroAlfabeticoActivo === filtro) {
+      if (restablecer) {
+        this.getProductos();
+      }
+      this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('alfabetico'));
+      this.filtroAlfabeticoActivo = null;
+      return;
+    }
   
-  this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('alfabetico'));
+    this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('alfabetico'));
   
-  if (orden === 'asc') {
-  this.productos.sort((a, b) => a.nombre.localeCompare(b.nombre));
-  } else {
-  this.productos.sort((a, b) => b.nombre.localeCompare(a.nombre));
-  }
+    if (orden === 'asc') {
+      this.productos.sort((a, b) => a.nombre.localeCompare(b.nombre));
+    } else {
+      this.productos.sort((a, b) => b.nombre.localeCompare(a.nombre));
+    }
   
-  this.sortState = 1;
-  this.categoriasSeleccionadas.push(filtro);
-  this.filtroAlfabeticoActivo = filtro;
+    this.sortState = 1;
+    this.categoriasSeleccionadas.push(filtro);
+    this.filtroAlfabeticoActivo = filtro;
   
-  if (restablecer) {
-  this.aplicarFiltros();
-  }
+    if (restablecer) {
+      this.aplicarFiltros();
+    }
+    this.updateDisplayedProductos(); // Asegúrate de actualizar los productos mostrados después de ordenar
   }
   
   ordenarPorPrecio(orden: string, restablecer: boolean = true): void {
-  const filtro = orden === 'asc' ? 'precio-asc' : 'precio-desc';
+    const filtro = orden === 'asc' ? 'precio-asc' : 'precio-desc';
   
-  if (this.filtroPrecioActivo === filtro) {
-  if (restablecer) {
-  this.getProductos();
-  }
-  this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('precio'));
-  this.filtroPrecioActivo = null;
-  return;
-  }
+    if (this.filtroPrecioActivo === filtro) {
+      if (restablecer) {
+        this.getProductos();
+      }
+      this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('precio'));
+      this.filtroPrecioActivo = null;
+      return;
+    }
   
-  this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('precio'));
+    this.categoriasSeleccionadas = this.categoriasSeleccionadas.filter(c => !c.startsWith('precio'));
   
-  if (orden === 'asc') {
-  this.productos.sort((a, b) => a.precio - b.precio);
-  } else {
-  this.productos.sort((a, b) => b.precio - a.precio);
-  }
+    if (orden === 'asc') {
+      this.productos.sort((a, b) => a.precio - b.precio);
+    } else {
+      this.productos.sort((a, b) => b.precio - a.precio);
+    }
   
-  this.sortState = 1;
-  this.categoriasSeleccionadas.push(filtro);
-  this.filtroPrecioActivo = filtro;
+    this.sortState = 1;
+    this.categoriasSeleccionadas.push(filtro);
+    this.filtroPrecioActivo = filtro;
   
-  if (restablecer) {
-  this.aplicarFiltros();
-  }
+    if (restablecer) {
+      this.aplicarFiltros();
+    }
+    this.updateDisplayedProductos(); // Asegúrate de actualizar los productos mostrados después de ordenar
   }
 
   onFileSelectedImg(event: Event): void {
