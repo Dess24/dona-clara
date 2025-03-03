@@ -24,11 +24,11 @@
         </a>
         <div class="p-5">
           <a>
-            <h5 (click)="openProductModal(producto)" class="cursor-pointer hover:underline mb-2 text-2xl font-bold tracking-tight text-black dark:text-white">{{ producto.nombre }}</h5>
+            <h5 (click)="openProductModal(producto)" class="cursor-pointer mb-2 text-2xl font-bold tracking-tight text-black dark:text-white hover:scale-105 transition-transform duration-200">{{ producto.nombre }}</h5>
           </a>
           <br><br>
           <div class="flex justify-between items-center">
-            <span class="cursor-default precio text-xl font-bold text-gray-900 dark:text-white">{{ producto.precio | currency }}</span>
+            <span class="cursor-default precio text-xl font-bold text-black dark:text-white hover:scale-105 transition-transform duration-200">{{ producto.precio | currency }}</span>
             <button type="button" (click)="showAlert()" (click)="anadirProducto(producto.id, 1)" class="mas-productos-btn inline-flex items-center rounded-lg primary text-white px-5 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-100 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
               <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
@@ -77,7 +77,7 @@
 
 
 
-
+<!--
 <section class="categories bg-white py-8 antialiased dark:bg-gray-900 md:py-52">
   <div class="mx-auto max-w-screen-xl px-16 2xl:px-0">
     <div class="flex items-center justify-center gap-4 mb-8 md:mb-8">
@@ -85,7 +85,7 @@
     </div>
   
     <div class="cursor-pointer mt-20 grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
-      <a *ngFor="let categoria of categorias" (click)="seleccionarCategoria(categoria.nombre)" class="flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+      <a *ngFor="let categoria of categorias" (click)="seleccionarCategoria(categoria.nombre)" class="flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 transform transition-transform duration-200 hover:scale-102">
         <svg class="me-2 h-4 w-4 shrink-0 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path
             stroke="currentColor"
@@ -99,6 +99,124 @@
       </a>
     </div>
   </div>
+</section>
+-->
+
+
+  <section class="max-w-5xl mx-auto my-40">
+    <h2 class="text-center primary-text text-xl font-bold text-black dark:text-white sm:text-4xl mb-10">Compra por categorías</h2>
+    <div class="flex flex-col">
+
+
+      <div class="flex flex-row justify-between my-10">
+        <div id="category" class="border flex flex-col justify-between items-center py-16 px-20 bg-gray-50 hover:shadow-lg hover:cursor-pointer rounded-lg transform transition-transform duration-100 hover:scale-105 relative">
+          <div class="my-1">
+            <svg class="h-10 w-10 shrink-0 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 12c.263 0 .524-.06.767-.175a2 2 0 0 0 .65-.491c.186-.21.333-.46.433-.734.1-.274.15-.568.15-.864a2.4 2.4 0 0 0 .586 1.591c.375.422.884.659 1.414.659.53 0 1.04-.237 1.414-.659A2.4 2.4 0 0 0 12 9.736a2.4 2.4 0 0 0 .586 1.591c.375.422.884.659 1.414.659.53 0 1.04-.237 1.414-.659A2.4 2.4 0 0 0 16 9.736c0 .295.052.588.152.861s.248.521.434.73a2 2 0 0 0 .649.488 1.809 1.809 0 0 0 1.53 0 2.03 2.03 0 0 0 .65-.488c.185-.209.332-.457.433-.73.1-.273.152-.566.152-.861 0-.974-1.108-3.85-1.618-5.121A.983.983 0 0 0 17.466 4H6.456a.986.986 0 0 0-.93.645C5.045 5.962 4 8.905 4 9.736c.023.59.241 1.148.611 1.567.37.418.865.667 1.389.697Zm0 0c.328 0 .651-.091.94-.266A2.1 2.1 0 0 0 7.66 11h.681a2.1 2.1 0 0 0 .718.734c.29.175.613.266.942.266.328 0 .651-.091.94-.266.29-.174.537-.427.719-.734h.681a2.1 2.1 0 0 0 .719.734c.289.175.612.266.94.266.329 0 .652-.091.942-.266.29-.174.536-.427.718-.734h.681c.183.307.43.56.719.734.29.174.613.266.941.266a1.819 1.819 0 0 0 1.06-.351M6 12a1.766 1.766 0 0 1-1.163-.476M5 12v7a1 1 0 0 0 1 1h2v-5h3v5h7a1 1 0 0 0 1-1v-7m-5 3v2h2v-2h-2Z"
+              ></path>
+            </svg>
+          </div>
+          <div class="my-1 z-30">
+            <h3 class="text-lg font-semibold tracking-wide z-30">Nombre</h3>
+          </div>
+          <!--Waves-->
+          <div class="absolute z-20 wave1" style="height: 150px; overflow: hidden;">
+            <svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;">
+              <path d="M-104.74,148.12 C150.00,149.60 332.61,131.39 514.33,-8.37 L518.28,250.48 L-84.42,261.30 Z" style="stroke: none; fill: rgb(27,51,95);"></path>
+            </svg>
+          </div>
+          <div class="absolute z-10 wave2" style="height: 150px; overflow: hidden;" >
+            <svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;">
+              <path d="M-83.86,135.33 C60.04,35.92 268.28,87.09 523.92,169.77 L514.90,219.96 L-56.20,227.84 Z" style="stroke: none; fill: rgb(166, 193, 13);"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div id="category" class="border flex flex-col justify-between items-center py-16 px-20 bg-gray-50 hover:shadow-lg hover:cursor-pointer rounded-lg transform transition-transform duration-100 hover:scale-105">
+          <div class="my-1">
+            <svg class="h-10 w-10 shrink-0 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v5m-3 0h6M4 11h16M5 15h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1Z"></path>
+            </svg>
+          </div>
+          <div class="my-1">
+            <h3 class="text-lg font-medium tracking-wide">Nombre</h3>
+          </div>
+        </div>
+
+        <div id="category" class="border flex flex-col justify-between items-center py-16 px-20 bg-gray-50 hover:shadow-lg hover:cursor-pointer rounded-lg transform transition-transform duration-100 hover:scale-105">
+          <div class="my-1">
+            <svg class="h-10 w-10 shrink-0 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v5m-3 0h6M4 11h16M5 15h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1Z"></path>
+            </svg>
+          </div>
+          <div class="my-1">
+            <h3 class="text-lg font-medium tracking-wide">Nombre</h3>
+          </div>
+        </div>
+
+        <div id="category" class="border flex flex-col justify-between items-center py-16 px-20 bg-gray-50 hover:shadow-lg hover:cursor-pointer rounded-lg transform transition-transform duration-100 hover:scale-105">
+          <div class="my-1">
+            <svg class="h-10 w-10 shrink-0 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v5m-3 0h6M4 11h16M5 15h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1Z"></path>
+            </svg>
+          </div>
+          <div class="my-1">
+            <h3 class="text-lg font-medium tracking-wide">Nombre</h3>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="flex flex-row justify-between my-10">
+        <div id="category" class="border flex flex-col justify-between items-center py-16 px-20 bg-gray-50 hover:shadow-lg hover:cursor-pointer rounded-lg transform transition-transform duration-100 hover:scale-105">
+          <div class="my-1">
+            <svg class="h-10 w-10 shrink-0 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v5m-3 0h6M4 11h16M5 15h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1Z"></path>
+            </svg>
+          </div>
+          <div class="my-1">
+            <h3 class="text-lg font-medium tracking-wide">Nombre</h3>
+          </div>
+        </div>
+        <div id="category" class="border flex flex-col justify-between items-center py-16 px-20 bg-gray-50 hover:shadow-lg hover:cursor-pointer rounded-lg transform transition-transform duration-100 hover:scale-105">
+          <div class="my-1">
+            <svg class="h-10 w-10 shrink-0 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v5m-3 0h6M4 11h16M5 15h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1Z"></path>
+            </svg>
+          </div>
+          <div class="my-1">
+            <h3 class="text-lg font-medium tracking-wide">Nombre</h3>
+          </div>
+        </div>
+        <div id="category" class="border flex flex-col justify-between items-center py-16 px-20 bg-gray-50 hover:shadow-lg hover:cursor-pointer rounded-lg transform transition-transform duration-100 hover:scale-105">
+          <div class="my-1">
+            <svg class="h-10 w-10 shrink-0 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v5m-3 0h6M4 11h16M5 15h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1Z"></path>
+            </svg>
+          </div>
+          <div class="my-1">
+            <h3 class="text-lg font-medium tracking-wide">Nombre</h3>
+          </div>
+        </div>
+        <div id="category" class="border flex flex-col justify-between items-center py-16 px-20 bg-gray-50 hover:shadow-lg hover:cursor-pointer rounded-lg transform transition-transform duration-100 hover:scale-105">
+          <div class="my-1">
+            <svg class="h-10 w-10 shrink-0 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v5m-3 0h6M4 11h16M5 15h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1Z"></path>
+            </svg>
+          </div>
+          <div class="my-1">
+            <h3 class="text-lg font-medium tracking-wide">Nombre</h3>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
   </section>
 
 
@@ -132,7 +250,7 @@
         <div class="py-12 max-w-screen-md px-4 mx-auto ">
           <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
             <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
-              <img *ngIf="selectedProduct" class="mx-auto dark:hidden max-h-96" [src]="baseUrl + selectedProduct.imagen" alt="" />
+              <img *ngIf="selectedProduct" class="mx-auto dark:hidden max-h-96 rounded-md" [src]="baseUrl + selectedProduct.imagen" alt="" />
             </div>
     
             <div class="mt-6 sm:mt-8 lg:mt-0">
@@ -159,7 +277,7 @@
                   <svg class="w-6 h-6 text-white dark:text-white -ms-2 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
                   </svg>
-                  AÃ±adir al carrito
+                  Añadir al carrito
                 </a>
     
                 <a href="#" title="" class="text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center" role="button">

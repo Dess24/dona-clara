@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavbarComponent } from '../home/navbar/navbar.component';
+import { Navbar3Component } from '../home/navbar3/navbar3.component';
 import { CarritoService } from '../../services/carrito.service';
 import { UserService } from '../../services/user.service';
 import { ProductoService } from '../../services/producto.service';
@@ -27,7 +27,7 @@ interface ItemCarrito {
 @Component({
   selector: 'app-shopping-cart',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, FormsModule],
+  imports: [CommonModule, Navbar3Component, FormsModule],
   templateUrl: './shopping-cart.component.html',
   styleUrl: './shopping-cart.component.css',
   providers: [ProductoService, UserService, CarritoService] // Añadir CarritoService a los proveedores

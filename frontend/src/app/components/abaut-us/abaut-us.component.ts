@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Navbar2Component } from '../home/navbar2/navbar2.component';
+import { Navbar3Component } from '../home/navbar3/navbar3.component';
 import { FooterComponent } from '../home/footer/footer.component';
 import { UserService } from '../../services/user.service';
 import { Router} from '@angular/router';
@@ -7,7 +7,7 @@ import { Router} from '@angular/router';
 @Component({
   selector: 'app-abaut-us',
   standalone: true,
-  imports: [ Navbar2Component ],
+  imports: [Navbar3Component ],
   templateUrl: './abaut-us.component.html',
   styleUrl: './abaut-us.component.css',
   providers: [UserService]
