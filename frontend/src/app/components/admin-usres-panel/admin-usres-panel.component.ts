@@ -25,7 +25,7 @@ export class AdminUsresPanelComponent implements OnInit {
   users: any[] = [];
   displayedUsers: any[] = [];
   currentPage: number = 1;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 5;
   errorMessage: string | null = null;
   searchQuery: string = '';
   selectedUser: any = null;
@@ -33,6 +33,8 @@ export class AdminUsresPanelComponent implements OnInit {
   sortState: number = 0; // 0: no ordenado, 1: ascendente, 2: descendente
   userHistoriales: any[] = [];
   filtroAlfabeticoActivo: string | null = null;
+  totalPages: number = 0;
+
 
 
   constructor(private userService: UserService, private productoService: ProductoService, private carritoService: CarritoService) {}
@@ -71,27 +73,54 @@ export class AdminUsresPanelComponent implements OnInit {
     );
   }
 
-  updateDisplayedUsers(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.displayedUsers = this.users.slice(startIndex, endIndex);
-  }
 
-  nextPage(): void {
-    if ((this.currentPage * this.itemsPerPage) < this.users.length) {
-      this.currentPage++;
-      this.updateDisplayedUsers();
-      document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
+// Modificar la función updateDisplayedUsers para calcular totalPages
+updateDisplayedUsers(): void {
+  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  const endIndex = startIndex + this.itemsPerPage;
+  this.displayedUsers = this.users.slice(startIndex, endIndex);
+  this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
+}
 
-  prevPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updateDisplayedUsers();
-      document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
-    }
+// Función para obtener las páginas
+getPages(): number[] {
+  if (this.totalPages <= 6) {
+    return Array.from({ length: this.totalPages - 1 }, (_, i) => i + 1);
+  } else if (this.currentPage <= 3) {
+    return [1, 2, 3, 4, 5];
+  } else if (this.currentPage >= this.totalPages - 3) {
+    return [this.totalPages - 4, this.totalPages - 3, this.totalPages - 2, this.totalPages - 1];
+  } else {
+    return [this.currentPage - 2, this.currentPage - 1, this.currentPage, this.currentPage + 1, this.currentPage + 2];
   }
+}
+
+// Función para ir a la página anterior
+prevPage(): void {
+  if (this.currentPage > 1) {
+    this.currentPage--;
+    this.updateDisplayedUsers();
+    document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+// Función para ir a la página siguiente
+nextPage(): void {
+  if (this.currentPage < this.totalPages) {
+    this.currentPage++;
+    this.updateDisplayedUsers();
+    document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+// Función para ir a una página específica
+goToPage(page: number): void {
+  if (page >= 1 && page <= this.totalPages) {
+    this.currentPage = page;
+    this.updateDisplayedUsers();
+    document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
+  }
+}
 
   buscarPorNombre(): void {
     this.userService.buscarPorNombre(this.searchQuery).subscribe(

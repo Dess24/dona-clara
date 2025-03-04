@@ -49,6 +49,7 @@ export class CatalogoComponent implements OnInit, OnDestroy {
   displayedProductos: any[] = [];
   currentPage: number = 1;
   itemsPerPage: number = 9;
+  totalPages: number = 0;
   
   
 
@@ -89,6 +90,7 @@ export class CatalogoComponent implements OnInit, OnDestroy {
     this.productoService.getProductos().subscribe(
       data => {
         this.productos = data.filter((producto: Producto) => producto.habilitado); // Filtrar productos habilitados
+        this.totalPages = Math.ceil(this.productos.length / this.itemsPerPage);
         this.updateDisplayedProductos();
       },
       error => {
@@ -104,21 +106,40 @@ export class CatalogoComponent implements OnInit, OnDestroy {
     this.displayedProductos = this.productos.slice(startIndex, endIndex);
   }
 
-  nextPage(): void {
-    if ((this.currentPage * this.itemsPerPage) < this.productos.length) {
-      this.currentPage++;
-      this.updateDisplayedProductos();
-      document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
-
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.updateDisplayedProductos();
-      document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
     }
   }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updateDisplayedProductos();
+    }
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updateDisplayedProductos();
+    }
+  }
+
+  getPages(): number[] {
+    if (this.totalPages <= 6) {
+      return Array.from({ length: this.totalPages - 1 }, (_, i) => i + 1);
+    } else if (this.currentPage <= 3) {
+      return [1, 2, 3, 4, 5];
+    } else if (this.currentPage >= this.totalPages - 3) {
+      return [this.totalPages - 4, this.totalPages - 3, this.totalPages - 2, this.totalPages - 1];
+    } else {
+      return [this.currentPage - 2, this.currentPage - 1, this.currentPage, this.currentPage + 1, this.currentPage + 2];
+    }
+  }
+  
+
 
   // Listar todas las categorías
   getCategorias(): void {
