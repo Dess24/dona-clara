@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Navbar2Component } from '../home/navbar2/navbar2.component';
+import { Navbar3Component } from '../home/navbar3/navbar3.component';
 import { UserService } from '../../services/user.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; // Importa CommonModule
@@ -8,7 +8,7 @@ import { Router, RouterOutlet, RouterModule} from '@angular/router';
 @Component({
   selector: 'app-restore',
   standalone: true,
-  imports: [ Navbar2Component, FormsModule, CommonModule, RouterOutlet, RouterModule], // Agrega CommonModule aquí
+  imports: [ Navbar3Component, FormsModule, CommonModule, RouterOutlet, RouterModule], // Agrega CommonModule aquí
   templateUrl: './restore.component.html',
   styleUrl: './restore.component.css',
   providers: [UserService]

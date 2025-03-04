@@ -108,3 +108,6 @@ input[type=number]::-webkit-outer-spin-button {
     left: 0;
   }
 
+.background{
+    background-image: url(../../../assets/img/background1.jpg);
+}

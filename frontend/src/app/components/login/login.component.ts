@@ -4,13 +4,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { Router, RouterOutlet, RouterModule} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
-import { Navbar2Component } from '../home/navbar2/navbar2.component';
-import { NavbarComponent } from "../home/navbar/navbar.component";
+import { Navbar3Component } from '../home/navbar3/navbar3.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, RouterOutlet, RouterModule, Navbar2Component, NavbarComponent],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, RouterOutlet, RouterModule, Navbar3Component],
   providers: [UserService],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']

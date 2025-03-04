@@ -55,3 +55,6 @@
     left: 0;
     margin-inline: 33%;
 }
+section{
+  min-height: 52vh;
+}

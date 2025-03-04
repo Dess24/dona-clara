@@ -299,3 +299,37 @@
   background-image: url(../../../../assets/img/background2.jpg);
   background-size: cover;
 }
+
+
+/* waves */
+#category {
+  overflow: hidden;
+}
+
+.wave1, .wave2 {
+  will-change: opacity, transform;
+}
+
+.wave1 {
+  opacity: 0;
+  transform: translateX(-2%); /* Rango de animación mucho más reducido */
+  transition: opacity 0.05s ease-in-out, transform 0.05s ease-in-out; /* Duración de transición reducida para la salida */
+}
+
+.wave2 {
+  opacity: 0;
+  transform: translateX(2%); /* Rango de animación mucho más reducido */
+  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out; /* Duración de transición reducida para la salida */
+}
+
+#category:hover .wave1 {
+  opacity: 1;
+  transform: translateX(2%);
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out; /* Duración de transición para la entrada */
+}
+
+#category:hover .wave2 {
+  opacity: 1;
+  transform: translateX(-2%);
+  transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out; /* Duración de transición para la entrada */
+}

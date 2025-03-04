@@ -3,14 +3,15 @@ import { CarritoService } from '../../services/carrito.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule} from '@angular/router';
-import { Navbar2Component } from '../home/navbar2/navbar2.component';
+import { Navbar3Component } from '../home/navbar3/navbar3.component';
+import { FooterComponent } from '../home/footer/footer.component';
 
 
 
 @Component({
   selector: 'app-historial',
   standalone: true,
-  imports: [HttpClientModule, CommonModule, RouterModule, Navbar2Component],
+  imports: [HttpClientModule, CommonModule, RouterModule, Navbar3Component, FooterComponent],
   templateUrl: './historial.component.html',
   styleUrl: './historial.component.css',
   providers: [CarritoService] // Añadir CarritoService a los proveedores

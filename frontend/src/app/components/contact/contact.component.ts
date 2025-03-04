@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
-import { Navbar2Component } from '../home/navbar2/navbar2.component';
+import { Navbar3Component } from '../home/navbar3/navbar3.component';
 import { UserService } from '../../services/user.service';
 import { Router} from '@angular/router';
+import { FooterComponent } from '../home/footer/footer.component';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, Navbar2Component, FormsModule],
+  imports: [CommonModule, Navbar3Component, FormsModule, FooterComponent],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css'],
   providers: [UserService]
