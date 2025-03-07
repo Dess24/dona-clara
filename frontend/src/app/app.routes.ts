@@ -26,6 +26,13 @@ export const routes: Routes = [
         ),
     },
     {
+        path: 'packs',
+        loadComponent: () =>
+            import('./components/packs/packs.component').then(
+            (m) => m.PacksComponent
+        ),
+    },
+    {
         path: 'login',
         loadComponent: () =>
         import('./components/login/login.component').then(

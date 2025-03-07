@@ -38,6 +38,34 @@ Schema::create('productos', function (Blueprint $table) {
     $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('set null');
 });
 
+
+    // Crear la tabla ofertas
+    Schema::create('ofertas', function (Blueprint $table) {
+        $table->id();
+        $table->string ('nombre');
+        $table->string('descripcion')->nullable();
+        $table->unsignedBigInteger('user_id');
+        $table->decimal('precio', 8, 2);
+        $table->timestamps();
+
+        // Definir la clave foránea
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+    });
+
+    // Crear la tabla oferta_detalles
+    Schema::create('oferta_detalles', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('oferta_id');
+        $table->unsignedBigInteger('producto_id');
+        $table->integer('cantidad');
+        $table->decimal('precio', 8, 2);
+        $table->timestamps();
+
+        // Definir las claves foráneas
+        $table->foreign('oferta_id')->references('id')->on('ofertas')->onDelete('cascade');
+        $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
+    });
+
     // Crear la tabla imagenes
     Schema::create('imagenes', function (Blueprint $table) {
         $table->id();
@@ -128,5 +156,7 @@ Schema::create('productos', function (Blueprint $table) {
     {
         Schema::dropIfExists('productos');
         Schema::dropIfExists('categorias');
+        Schema::dropIfExists('oferta_detalles');
+        Schema::dropIfExists('ofertas');
     }
 };
