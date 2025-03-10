@@ -57,6 +57,18 @@ export class NavbarComponent implements AfterViewInit, OnInit {
     }
   }
 
+  toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu-3');
+    if (menu) {
+      menu.classList.toggle('hidden');
+    }
+  }
+
+  overrideNavbarColor(): void {
+    const navbar = document.getElementById('navbar') as HTMLElement;
+    navbar.style.backgroundColor = 'rgba(27, 51, 95, 0.85)'; // Color sólido
+  }
+
   nshowSlide(index: number, direction: 'left' | 'right' = 'left') {
     this.carouselItems.forEach((item, i) => {
       item.nativeElement.classList.add('hidden');

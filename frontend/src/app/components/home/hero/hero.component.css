@@ -33,3 +33,10 @@
   position: relative;
   z-index: 2;
 }
+
+
+@media (max-width: 768px) {
+  .low-wave{
+    display: none;
+  }
+}

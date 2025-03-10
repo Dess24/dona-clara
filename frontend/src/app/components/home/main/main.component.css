@@ -222,6 +222,12 @@
   }
 
 
+  #default-carousel2 {
+    height: 85vh;
+    width: 100%;
+  }
+
+
 
 
 
@@ -332,4 +338,38 @@
   opacity: 1;
   transform: translateX(-2%);
   transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out; /* Duración de transición para la entrada */
+}
+
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .section1 {
+      grid-auto-flow: row;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      padding: 0 15px;
+      margin-top: 5vh;
+      margin-bottom: 5vh;
+  }
+
+  .carousel {
+      grid-auto-columns: 100%;
+      gap: 15px;
+      padding: 0 5px;
+  }
+
+  .body-nh i {
+      display: none;
+  }
+
+  .card {
+      max-width: 100%;
+  }
+
+  .size {
+      min-width: 100%;
+      min-height: auto;
+      max-width: 100%;
+      max-height: auto;
+  }
 }
