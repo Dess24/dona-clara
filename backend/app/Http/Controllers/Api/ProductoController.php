@@ -7,6 +7,8 @@ use App\Models\Producto;
 use App\Models\Categoria;
 use App\Models\Imagen;
 use Illuminate\Http\Request;
+use App\Models\Oferta;
+use App\Models\OfertaDetalle;
 
 class ProductoController extends Controller
 {
@@ -311,6 +313,41 @@ public function modificarProducto(Request $request, $id)
         return response()->json(['message' => 'No hay productos disponibles'], 404);
     }
     return response()->json($productos);
+}
+
+public function crearOferta(Request $request)
+{
+    // Validar los datos de la solicitud
+    $validatedData = $request->validate([
+        'nombre' => 'required|string|max:255',
+        'descripcion' => 'nullable|string|max:1000',
+        'user_id' => 'required|exists:users,id',
+        'precio' => 'required|numeric|min:0',
+        'productos' => 'required|array',
+        'productos.*.producto_id' => 'required|exists:productos,id',
+        'productos.*.cantidad' => 'required|integer|min:1',
+    ]);
+
+    // Crear la oferta
+    $oferta = Oferta::create([
+        'nombre' => $validatedData['nombre'],
+        'descripcion' => $validatedData['descripcion'] ?? '',
+        'user_id' => $validatedData['user_id'],
+        'precio' => $validatedData['precio'],
+    ]);
+
+    // Añadir productos a la oferta
+    foreach ($validatedData['productos'] as $productoData) {
+        $producto = Producto::find($productoData['producto_id']);
+        OfertaDetalle::create([
+            'oferta_id' => $oferta->id,
+            'producto_id' => $producto->id,
+            'cantidad' => $productoData['cantidad'],
+            'precio' => $producto->precio,
+        ]);
+    }
+
+    return response()->json(['message' => 'Oferta creada exitosamente', 'oferta' => $oferta], 201);
 }
 
 }

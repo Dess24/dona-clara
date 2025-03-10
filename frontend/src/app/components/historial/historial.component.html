@@ -20,7 +20,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let historial of historiales" class="odd:bg-white even:bg-gray-100 dark:odd:bg-gray-800 dark:even:bg-gray-700">
+        <tr *ngFor="let historial of displayedHistoriales" class="odd:bg-white even:bg-gray-100 dark:odd:bg-gray-800 dark:even:bg-gray-700">
           <td class="border px-4 py-2 text-gray-700 dark:text-gray-200 border-gray-800 font-medium">{{ historial.idPedido }}</td>
           <td class="border px-4 py-2 text-gray-700 dark:text-gray-200 border-gray-800 font-medium">{{ historial.userName }}</td>
           <td class="border px-4 py-2 text-gray-700 dark:text-gray-200 border-gray-800 font-medium">{{ historial.created_at | date:'dd/MM/yyyy - H:mm' }}</td>
@@ -44,10 +44,40 @@
                 Realizado
               </button>
             </ng-container>
+            <button (click)="abrirPDF(historial.pdf)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
+              <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M4 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4zm0 2h16v16H4V4zm2 2h12v2H6V6zm0 4h12v2H6v-2zm0 4h12v2H6v-2z" clip-rule="evenodd"/>
+              </svg>
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
+    <nav class="mt-6 flex items-center justify-center sm:mt-8" aria-label="Page navigation example">
+      <ul class="flex h-8 items-center -space-x-px text-sm">
+        <li>
+          <a (click)="prevPage()" class="ms-0 flex h-8 items-center justify-center rounded-s-lg border border-e-0 border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <span class="sr-only">Previous</span>
+            <svg class="h-4 w-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
+            </svg>
+          </a>
+        </li>
+        <li *ngFor="let page of getPages()">
+          <a (click)="goToPage(page)" [ngClass]="{'z-10 border-primary-300 bg-primary-50 text-primary-600': currentPage === page, 'border-gray-300 bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700': currentPage !== page}" class="flex h-8 items-center justify-center border px-3 leading-tight dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            {{ page }}
+          </a>
+        </li>
+        <li>
+          <a (click)="nextPage()" class="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <span class="sr-only">Next</span>
+            <svg class="h-4 w-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </section>
 

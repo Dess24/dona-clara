@@ -1,0 +1,38 @@
+/* Asegura que el navbar esté en la parte superior */
+app-navbar3 {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+  
+  /* Asegura que el footer esté en la parte inferior */
+  app-footer {
+    width: 100%;
+    z-index: 1000;
+  }
+  
+  /* Añade un margen superior al contenido para que no se superponga con el navbar */
+  .container {
+    margin-top: 70px; /* Ajusta este valor según la altura de tu navbar */
+    margin-bottom: 100px; /* Ajusta este valor según la altura de tu footer */
+  }
+  
+  /* Estilos personalizados */
+  h1 {
+    font-size: 2.5rem;
+    color: #343a40;
+  }
+  
+  .form-group label {
+    font-weight: bold;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    border-radius: 0.25rem;
+  }
+  
+  .btn {
+    border-radius: 0.25rem;
+  }

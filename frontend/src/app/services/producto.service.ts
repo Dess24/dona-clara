@@ -141,4 +141,12 @@ export class ProductoService {
     formData.append('imagen', imagen, imagen.name);
     return this.http.post<any>(`${this.apiUrl}/imagenes`, formData, { headers });
   }
+
+    // Crear una oferta (requiere token)
+    crearOferta(oferta: any): Observable<any> {
+      const headers = new HttpHeaders()
+        .set('Authorization', `Bearer ${this.getToken()}`)
+        .set('Referer', 'https://donaclara.shop/');
+      return this.http.post<any>(`${this.apiUrl}/ofertas`, oferta, { headers });
+    }
 }

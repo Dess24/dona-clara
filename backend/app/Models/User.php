@@ -48,4 +48,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Historial::class, 'idUsuario');
     }
+
+    public function ofertas()
+    {
+        return $this->hasMany(Oferta::class, 'user_id');
+    }
 }

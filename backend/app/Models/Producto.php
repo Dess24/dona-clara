@@ -33,4 +33,9 @@ class Producto extends Model
     {
         return $this->hasMany(Imagen::class);
     }
+
+    public function ofertaDetalles()
+    {
+        return $this->hasMany(OfertaDetalle::class, 'producto_id');
+    }
 }

@@ -23,6 +23,10 @@ export class NavbarComponent implements AfterViewInit, OnInit {
   userHistoriales: any[] = [];
   selectedUser: any = null;
   currentUser: any = null;
+  currentPage: number = 1;
+ itemsPerPage: number = 5; // Ajusta este valor según tus necesidades
+  totalPages: number = 0;
+  displayedHistoriales: any[] = [];
 
   constructor(private router: Router, private userService: UserService, private carritoService: CarritoService) {}
 
@@ -177,21 +181,21 @@ export class NavbarComponent implements AfterViewInit, OnInit {
       modal.style.display = 'flex';
     }, 0);
   }
-
+  
   modalClose7() {
     this.selectedUser = null;
     this.userHistoriales = [];
+    this.displayedHistoriales = [];
     const modal = document.getElementById('historyModal') as HTMLElement;
     modal.style.display = 'none';
   }
-
+  
   getHistorialesByUser(): void {
     if (this.currentUser) {
       this.carritoService.getHistorialesByUser(this.currentUser.id).subscribe(
         data => {
           this.userHistoriales = data;
-          const modal = document.getElementById('historyModal') as HTMLElement;
-          modal.style.display = 'flex';
+          this.updateDisplayedHistoriales(); // Actualizar los historiales mostrados
         },
         error => {
           console.error('Error al obtener los historiales del usuario:', error);
@@ -199,6 +203,46 @@ export class NavbarComponent implements AfterViewInit, OnInit {
       );
     } else {
       console.error('No se encontró el usuario actual.');
+    }
+  }
+  
+  updateDisplayedHistoriales(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.displayedHistoriales = this.userHistoriales.slice(startIndex, endIndex);
+    this.totalPages = Math.ceil(this.userHistoriales.length / this.itemsPerPage);
+  }
+  
+  getPages(): number[] {
+    if (this.totalPages <= 6) {
+      return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    } else if (this.currentPage <= 3) {
+      return [1, 2, 3, 4, 5, this.totalPages];
+    } else if (this.currentPage >= this.totalPages - 2) {
+      return [1, this.totalPages - 4, this.totalPages - 3, this.totalPages - 2, this.totalPages - 1, this.totalPages];
+    } else {
+      return [1, this.currentPage - 2, this.currentPage - 1, this.currentPage, this.currentPage + 1, this.currentPage + 2, this.totalPages];
+    }
+  }
+  
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updateDisplayedHistoriales();
+    }
+  }
+  
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updateDisplayedHistoriales();
+    }
+  }
+  
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updateDisplayedHistoriales();
     }
   }
 }
